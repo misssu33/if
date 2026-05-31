@@ -30,7 +30,7 @@ export function PresetPicker({ presets, loading }: PresetPickerProps) {
         SNS 프리셋
       </label>
       <select
-        className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+        className="min-h-11 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
         value={preset?.id ?? ''}
         disabled={loading}
         onChange={(e) => {

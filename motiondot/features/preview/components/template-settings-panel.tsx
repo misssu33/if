@@ -16,7 +16,7 @@ export function TemplateSettingsPanel() {
   const setCtaText = usePreviewStore((s) => s.setCtaText);
 
   return (
-    <section className="flex flex-col gap-4 rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+    <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-5 dark:border-zinc-800">
       <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         모션 템플릿
       </h3>

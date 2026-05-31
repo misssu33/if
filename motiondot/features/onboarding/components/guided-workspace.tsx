@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { AppHeader } from '@/components/layout';
+import { AppShell } from '@/components/layout/app-shell';
 import { PageShell } from '@/components/ui';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
-import { GuidedStepper } from './guided-stepper';
 import { StepUpload } from './step-upload';
 import { StepPresetTemplate } from './step-preset-template';
 import { StepPreviewExport } from './step-preview-export';
-import { Button } from '@/components/ui';
 
 export function GuidedWorkspace() {
   const hydrate = useOnboardingStore((s) => s.hydrate);
@@ -20,19 +18,14 @@ export function GuidedWorkspace() {
   }, [hydrate]);
 
   return (
-    <PageShell className="min-h-screen">
-      <AppHeader />
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-8">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <GuidedStepper />
-          <Button type="button" variant="secondary" onClick={openLanding}>
-            홈으로
-          </Button>
+    <PageShell className="min-h-screen overflow-x-hidden">
+      <AppShell currentStep={currentStep} onHome={openLanding}>
+        <div className="flex min-w-0 flex-col gap-6">
+          {currentStep === 1 && <StepUpload />}
+          {currentStep === 2 && <StepPresetTemplate />}
+          {currentStep === 3 && <StepPreviewExport />}
         </div>
-        {currentStep === 1 && <StepUpload />}
-        {currentStep === 2 && <StepPresetTemplate />}
-        {currentStep === 3 && <StepPreviewExport />}
-      </div>
+      </AppShell>
     </PageShell>
   );
 }

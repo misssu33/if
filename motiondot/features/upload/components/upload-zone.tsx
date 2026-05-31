@@ -28,11 +28,11 @@ export function UploadZone({ mediaKind = 'video', compact = false }: UploadZoneP
       : 'border-zinc-300 hover:border-violet-400 dark:border-zinc-700';
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex min-w-0 flex-col gap-4">
       <div
         {...getRootProps()}
         className={`cursor-pointer rounded-xl border-2 border-dashed text-center transition-colors ${borderClass} ${
-          compact ? 'p-6' : 'p-8'
+          compact ? 'p-5 sm:p-6' : 'min-h-[11rem] p-6 sm:min-h-[12rem] sm:p-8'
         } ${isUploading ? 'pointer-events-none opacity-60' : ''}`}
       >
         <input {...getInputProps()} aria-label={isImage ? '이미지 선택' : '비디오 선택'} />

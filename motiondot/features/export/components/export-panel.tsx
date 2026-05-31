@@ -21,7 +21,7 @@ export function ExportPanel() {
   const loading = singleLoading || batchLoading;
 
   return (
-    <section className="flex flex-col gap-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
+    <section className="flex min-w-0 flex-col gap-4 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         최종 Export
       </h2>
@@ -34,7 +34,7 @@ export function ExportPanel() {
               key={f}
               type="button"
               onClick={() => toggleFormat(f)}
-              className={`rounded px-2 py-1 text-xs uppercase ${
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 py-2 text-xs font-medium uppercase sm:min-h-0 sm:min-w-0 sm:rounded sm:px-2 sm:py-1 ${
                 selectedFormats.includes(f)
                   ? 'bg-violet-600 text-white'
                   : 'bg-zinc-100 dark:bg-zinc-800'
@@ -52,7 +52,7 @@ export function ExportPanel() {
           type="text"
           value={namingPattern}
           onChange={(e) => setNamingPattern(e.target.value)}
-          className="rounded border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-700 dark:bg-zinc-900"
+          className="min-h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="{name}-{format}"
         />
       </label>

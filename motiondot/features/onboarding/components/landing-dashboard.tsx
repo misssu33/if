@@ -12,7 +12,7 @@ export function LandingDashboard() {
   const applySample = useApplySampleProject();
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 py-4">
+    <div className="mx-auto flex w-full min-w-0 flex-col gap-8 py-4 sm:gap-10">
       <section className="text-center">
         <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
           영상·이미지로 SNS 광고 만들기

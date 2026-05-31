@@ -19,7 +19,7 @@ export function StepUpload() {
   const hasFiles = files.length > 0;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-w-0 flex-col gap-4">
       <OnboardingTooltip id="batch-conversion" />
       {!hasFiles ? (
         <EmptyState
@@ -32,9 +32,10 @@ export function StepUpload() {
         />
       ) : null}
       <UploadZone mediaKind={mediaKind} />
-      <div className="flex justify-end">
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
         <Button
           type="button"
+          className="w-full sm:w-auto"
           disabled={!hasFiles && intent === 'video'}
           onClick={() => nextStep()}
         >
@@ -42,7 +43,12 @@ export function StepUpload() {
         </Button>
       </div>
       {intent === 'image' && !hasFiles && (
-        <Button type="button" variant="secondary" onClick={() => nextStep()}>
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full sm:w-auto"
+          onClick={() => nextStep()}
+        >
           이미지 없이 템플릿만 선택
         </Button>
       )}

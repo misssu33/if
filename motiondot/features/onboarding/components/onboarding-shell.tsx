@@ -28,7 +28,9 @@ export function OnboardingShell() {
       {showLanding ? (
         <PageShell className="min-h-screen">
           <AppHeader />
-          <LandingDashboard />
+          <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
+            <LandingDashboard />
+          </div>
         </PageShell>
       ) : (
         <GuidedWorkspace />

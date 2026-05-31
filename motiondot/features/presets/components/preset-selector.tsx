@@ -10,7 +10,7 @@ export function PresetSelector() {
   const { presets, loading, error } = usePresetCatalog();
 
   return (
-    <section className="flex flex-col gap-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
+    <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         Export 프리셋
       </h2>

@@ -41,7 +41,7 @@ export function ConversionFileRow({
   const canRemove = !!onRemove && job.status === 'pending' && !isUploadPhase;
 
   return (
-    <li className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
+    <li className="min-w-0 rounded-lg border border-zinc-200 p-3 sm:p-4 dark:border-zinc-800">
       <div className="mb-2 flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -76,27 +76,27 @@ export function ConversionFileRow({
           <Button
             type="button"
             variant="secondary"
-            className="!px-2 !py-1 text-xs"
+            className="min-h-10 px-3 py-2 text-xs sm:min-h-0 sm:!px-2 sm:!py-1"
             onClick={onRemove}
           >
             제거
           </Button>
         )}
-        {canCancel && !job.jobId.startsWith('pending:') && (
+        {canCancel && !job.jobId.startsWith('pending') && (
           <Button
             type="button"
             variant="secondary"
-            className="!px-2 !py-1 text-xs"
+            className="min-h-10 px-3 py-2 text-xs sm:min-h-0 sm:!px-2 sm:!py-1"
             onClick={() => onCancel(job.jobId)}
           >
             취소
           </Button>
         )}
-        {canRetry && !job.jobId.startsWith('pending:') && (
+        {canRetry && !job.jobId.startsWith('pending') && (
           <Button
             type="button"
             variant="primary"
-            className="!px-2 !py-1 text-xs"
+            className="min-h-10 px-3 py-2 text-xs sm:min-h-0 sm:!px-2 sm:!py-1"
             onClick={() => onRetry(job.jobId)}
           >
             재시도

@@ -19,7 +19,7 @@ export function StepPreviewExport() {
   const hasVideo = files.some((f) => !f.mediaKind || f.mediaKind === 'video');
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       <OnboardingTooltip id="export-formats" />
       {!hasVideo && (
         <EmptyState
@@ -29,20 +29,28 @@ export function StepPreviewExport() {
           onAction={() => useOnboardingStore.getState().setStep(1)}
         />
       )}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <PreviewPanel />
-        <div className="flex flex-col gap-6">
+      <div className="flex min-w-0 flex-col gap-6 lg:grid lg:grid-cols-2 lg:items-start">
+        {/* 모바일: 변환·Export 우선 */}
+        <div className="order-1 flex min-w-0 flex-col gap-6 lg:order-2">
           <ExportPanel />
-          <section className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+          <section className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800 sm:p-6">
             <h3 className="mb-3 text-sm font-semibold">Export 진행</h3>
             <ExportProgress />
             <BatchDownloadPanel />
           </section>
           <BatchProgressPanel />
         </div>
+        <div className="order-2 min-w-0 lg:order-1">
+          <PreviewPanel />
+        </div>
       </div>
-      <div className="flex justify-start">
-        <Button type="button" variant="secondary" onClick={() => prevStep()}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-start">
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full sm:w-auto"
+          onClick={() => prevStep()}
+        >
           이전
         </Button>
       </div>
