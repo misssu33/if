@@ -1,8 +1,19 @@
-/** MotionDot 큐 이름 상수 */
-export const MOTIONDOT_QUEUE_NAME = 'motiondot-convert';
+/**
+ * @deprecated 신규 코드는 `./config`를 import 하세요.
+ */
+export {
+  QUEUE_NAMES,
+  ALL_QUEUE_NAMES,
+  JOB_NAMES,
+  type QueueName,
+  type JobName,
+  PENDING_JOB_ID_PREFIX,
+  pendingJobId,
+  isPendingJobId,
+  redisKeys,
+} from './config';
 
-export const JOB_NAMES = {
-  CONVERT: 'convert',
-} as const;
+import { QUEUE_NAMES } from './config';
 
-export type JobName = (typeof JOB_NAMES)[keyof typeof JOB_NAMES];
+/** @deprecated `QUEUE_NAMES.EXPORT` (`export_queue`) 사용 */
+export const MOTIONDOT_QUEUE_NAME = QUEUE_NAMES.EXPORT;

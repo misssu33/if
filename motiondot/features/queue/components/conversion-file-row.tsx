@@ -1,5 +1,6 @@
 'use client';
 
+import { isPendingJobId } from '@/lib/queue';
 import { ProgressBar } from '@/components/feedback';
 import { Button } from '@/components/ui';
 import type { ConversionJobItem } from '../types';
@@ -82,7 +83,7 @@ export function ConversionFileRow({
             제거
           </Button>
         )}
-        {canCancel && !job.jobId.startsWith('pending:') && (
+        {canCancel && !isPendingJobId(job.jobId) && (
           <Button
             type="button"
             variant="secondary"
@@ -92,7 +93,7 @@ export function ConversionFileRow({
             취소
           </Button>
         )}
-        {canRetry && !job.jobId.startsWith('pending:') && (
+        {canRetry && !isPendingJobId(job.jobId) && (
           <Button
             type="button"
             variant="primary"

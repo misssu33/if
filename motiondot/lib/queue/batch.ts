@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
 import type { BatchConvertResponse, ConvertJobPayload } from '@/types';
-import { getConvertQueue } from './client';
+import { getExportQueue } from './client';
 import { saveBatchJobIds } from './batch-registry';
 import { DEFAULT_JOB_OPTIONS } from './job-options';
 import { setJobProgress } from './progress';
-import { JOB_NAMES } from './types';
+import { JOB_NAMES } from './config';
 
 type EnqueueConvertInput = Omit<ConvertJobPayload, 'jobId'> & {
   jobId?: string;
@@ -17,7 +17,7 @@ export async function enqueueConvertJob(
   const jobId = input.jobId ?? randomUUID();
   const payload: ConvertJobPayload = { ...input, jobId };
 
-  await getConvertQueue().add(JOB_NAMES.CONVERT, payload, {
+  await getExportQueue().add(JOB_NAMES.CONVERT, payload, {
     ...DEFAULT_JOB_OPTIONS,
     jobId,
   });
@@ -38,7 +38,7 @@ export async function enqueueBatchConvertJobs(
   jobs: EnqueueConvertInput[],
   batchId: string = randomUUID(),
 ): Promise<BatchConvertResponse> {
-  const queue = getConvertQueue();
+  const queue = getExportQueue();
   const jobIds: string[] = [];
 
   for (const item of jobs) {

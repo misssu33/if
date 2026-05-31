@@ -7,6 +7,7 @@ import type {
   PendingUploadInput,
 } from '../types';
 import { computeBatchProgress } from '../utils/compute-batch-progress';
+import { pendingJobId } from '@/lib/queue';
 import { mapServerStatus } from '../utils/map-server-status';
 
 export interface RegisterBatchJobItem {
@@ -71,10 +72,6 @@ interface ConversionState {
 }
 
 const emptyBatch = (): BatchProgressState => computeBatchProgress(null, []);
-
-function pendingJobId(localId: string): string {
-  return `pending:${localId}`;
-}
 
 export const useConversionStore = create<ConversionState>((set, get) => ({
   jobs: [],

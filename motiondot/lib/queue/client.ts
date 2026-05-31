@@ -1,16 +1,38 @@
 import { Queue } from 'bullmq';
 import type { ConvertJobPayload } from '@/types';
 import { getRedisConnection } from '@/lib/redis';
-import { MOTIONDOT_QUEUE_NAME } from './types';
+import { QUEUE_NAMES, type QueueName } from './config';
 
-let queueInstance: Queue<ConvertJobPayload> | null = null;
+const queueByName = new Map<QueueName, Queue>();
 
-/** API 라우트용 BullMQ Queue */
-export function getConvertQueue(): Queue<ConvertJobPayload> {
-  if (!queueInstance) {
-    queueInstance = new Queue<ConvertJobPayload>(MOTIONDOT_QUEUE_NAME, {
-      connection: getRedisConnection(),
-    });
+function getOrCreateQueue<T = ConvertJobPayload>(name: QueueName): Queue<T> {
+  const existing = queueByName.get(name);
+  if (existing) {
+    return existing as Queue<T>;
   }
-  return queueInstance;
+  const queue = new Queue<T>(name, {
+    connection: getRedisConnection(),
+  });
+  queueByName.set(name, queue as Queue);
+  return queue;
+}
+
+/** 업로드 후처리용 큐 (향후 worker 연동) */
+export function getUploadQueue(): Queue {
+  return getOrCreateQueue(QUEUE_NAMES.UPLOAD);
+}
+
+/** FFmpeg 변환·보내기 작업 큐 */
+export function getExportQueue(): Queue<ConvertJobPayload> {
+  return getOrCreateQueue<ConvertJobPayload>(QUEUE_NAMES.EXPORT);
+}
+
+/** Remotion 렌더 작업 큐 (향후 worker 연동) */
+export function getRenderQueue(): Queue {
+  return getOrCreateQueue(QUEUE_NAMES.RENDER);
+}
+
+/** @deprecated `getExportQueue()` 사용 */
+export function getConvertQueue(): Queue<ConvertJobPayload> {
+  return getExportQueue();
 }
