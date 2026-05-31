@@ -45,10 +45,18 @@ export function OnboardingFlowPlaceholder({
         className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/50 sm:p-5"
         role="status"
       >
-        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+          템플릿으로 시작
+        </h3>
+        <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
           아래에서 SNS 프리셋과 모션 템플릿을 선택하세요. 미디어 없이도 3단계
-          미리보기까지 진행할 수 있습니다.
+          미리보기까지 안전하게 진행할 수 있습니다.
         </p>
+        {onBack && (
+          <Button type="button" variant="secondary" className="mt-4 w-full sm:w-auto" onClick={onBack}>
+            랜딩으로 돌아가기
+          </Button>
+        )}
       </aside>
     );
   }

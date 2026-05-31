@@ -1,10 +1,13 @@
 'use client';
 
 import { PresetSelector } from '@/features/presets';
+import { usePresetCatalog } from '@/features/presets/hooks/use-preset-catalog';
+import { useAutoDefaultPreset } from '@/features/preview/hooks/use-auto-default-preset';
 import { TemplateSettingsPanel } from '@/features/preview/components/template-settings-panel';
 import { PreviewGrid } from '@/features/preview/components/preview-grid';
 import { useBatchStore } from '@/stores';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
+import { useImageGifPreviewFormat } from '../hooks/use-image-gif-preview-format';
 import { OnboardingFlowPlaceholder } from './onboarding-flow-placeholder';
 import { OnboardingTooltip } from './onboarding-tooltip';
 import { Button } from '@/components/ui';
@@ -14,13 +17,18 @@ export function StepPresetTemplate() {
   const intent = useOnboardingStore((s) => s.uploadIntent);
   const nextStep = useOnboardingStore((s) => s.nextStep);
   const prevStep = useOnboardingStore((s) => s.prevStep);
+  const openLanding = useOnboardingStore((s) => s.openLanding);
+  const { presets } = usePresetCatalog();
+
+  useAutoDefaultPreset(presets, true);
+  useImageGifPreviewFormat(intent === 'image');
 
   return (
     <div className="flex min-w-0 flex-col gap-6">
       <OnboardingTooltip id="sns-presets" />
       <OnboardingTooltip id="motion-templates" />
       {intent === 'template' && (
-        <OnboardingFlowPlaceholder intent="template" />
+        <OnboardingFlowPlaceholder intent="template" onBack={openLanding} />
       )}
       <PresetSelector />
       {files.length > 0 && (

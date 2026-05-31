@@ -2,6 +2,7 @@
 
 import { AbsoluteFill, Img, Video } from 'remotion';
 import type { MediaZoneConfig } from '@/types/motion-template';
+import { resolvePlaybackKind } from '@/features/preview/utils/resolve-media-kind';
 import { useAnimationPreset } from '../animation';
 import { MotionContainer } from './motion-container';
 
@@ -21,7 +22,8 @@ export function AnimatedMedia({
 }: AnimatedMediaProps) {
   const style = useAnimationPreset(config.timing, config.animation, loopComposition);
 
-  if (config.kind === 'none' || !src) return null;
+  const playback = resolvePlaybackKind(config, src ?? '');
+  if (playback === 'none' || !src) return null;
 
   const mediaStyle = {
     width: '100%',
@@ -33,7 +35,7 @@ export function AnimatedMedia({
   } as const;
 
   const content =
-    config.kind === 'video' ? (
+    playback === 'video' ? (
       <Video src={src} style={mediaStyle} muted />
     ) : (
       <Img src={src} style={mediaStyle} />

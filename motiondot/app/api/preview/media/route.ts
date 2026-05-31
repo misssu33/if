@@ -56,7 +56,11 @@ export async function GET(request: Request) {
             ? 'image/gif'
             : ext === '.webp'
               ? 'image/webp'
-              : 'application/octet-stream';
+            : ext === '.jpg' || ext === '.jpeg'
+              ? 'image/jpeg'
+              : ext === '.png'
+                ? 'image/png'
+                : 'application/octet-stream';
 
     return new Response(buffer, {
       headers: { 'Content-Type': type, 'Cache-Control': 'no-store' },

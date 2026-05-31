@@ -29,7 +29,7 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
         />
       )}
 
-      {layout.background.kind === 'none' && (
+      {(layout.background.kind === 'none' || !bgSrc) && (
         <AbsoluteFill
           style={{
             background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)`,

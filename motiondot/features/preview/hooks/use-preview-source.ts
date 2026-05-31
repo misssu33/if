@@ -7,8 +7,9 @@ import { useTemplateCatalog } from '@/features/templates/hooks/use-template-cata
 import { resolveTemplateId } from '@/features/templates/utils/legacy-template-map';
 import { buildPreviewProps } from '../engine/build-preview-props';
 import { usePreviewStore } from '../stores/use-preview-store';
+import { isValidCompositionProps } from '../utils/validate-composition-props';
 
-/** 업로드 + 템플릿 JSON → Remotion props */
+/** 업로드 + 템플릿 JSON → Remotion props (프리셋 없어도 템플릿만으로 미리보기) */
 export function usePreviewSource() {
   const files = useBatchStore((s) => s.files);
   const resolved = useExportSettingsStore((s) => s.resolved);
@@ -46,12 +47,14 @@ export function usePreviewSource() {
     [templateId, templates, getById],
   );
 
-  const inputProps = useMemo(() => {
-    if (!template || !resolved) return null;
+  const format = resolved?.outputFormat ?? previewFormat;
+
+  const rawInputProps = useMemo(() => {
+    if (!template) return null;
     return buildPreviewProps({
       template,
       file,
-      format: previewFormat,
+      format,
       mediaSrc,
       durationSec,
       headline,
@@ -61,9 +64,8 @@ export function usePreviewSource() {
     });
   }, [
     template,
-    resolved,
     file,
-    previewFormat,
+    format,
     mediaSrc,
     durationSec,
     headline,
@@ -72,14 +74,17 @@ export function usePreviewSource() {
     badgeText,
   ]);
 
+  const inputProps = isValidCompositionProps(rawInputProps) ? rawInputProps : null;
+
   return {
     files,
     file,
     inputProps,
     loopPlayback,
-    previewFormat,
+    previewFormat: format,
     templates,
     templatesLoading,
     template,
+    hasPreset: !!resolved,
   };
 }
