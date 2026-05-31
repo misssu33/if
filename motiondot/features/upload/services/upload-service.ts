@@ -6,20 +6,33 @@ import { writeFile } from 'fs/promises';
 import { ensureStorageDirs, getTempArchiveDir } from '@/lib/storage';
 import { MAX_VIDEO_BYTES } from '../constants';
 import type { UploadFileMeta } from '../types';
-import { validateVideoUpload } from './validate-upload-server';
+import {
+  validateImageUpload,
+  validateVideoUpload,
+} from './validate-upload-server';
 
 /** 서버 전용: 업로드 버퍼 → temp/archive */
 export async function saveUploadBuffer(
   buffer: Buffer,
   originalName: string,
   mimeType: string,
+  mediaKind: 'video' | 'image' = 'video',
 ): Promise<UploadFileMeta> {
-  const validationError = validateVideoUpload(
-    originalName,
-    mimeType,
-    buffer.length,
-    MAX_VIDEO_BYTES,
-  );
+  const validationError =
+    mediaKind === 'image'
+      ? validateImageUpload(
+          originalName,
+          mimeType,
+          buffer.length,
+          MAX_VIDEO_BYTES,
+        )
+      : validateVideoUpload(
+          originalName,
+          mimeType,
+          buffer.length,
+          MAX_VIDEO_BYTES,
+        );
+
   if (validationError) {
     throw new Error(validationError);
   }
@@ -35,5 +48,6 @@ export async function saveUploadBuffer(
     mimeType,
     sizeBytes: buffer.length,
     tempPath,
+    mediaKind,
   };
 }

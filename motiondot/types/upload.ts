@@ -8,4 +8,6 @@ export interface UploadFileMeta {
   mimeType: string;
   sizeBytes: number;
   tempPath: string;
+  /** video | image */
+  mediaKind?: 'video' | 'image';
 }

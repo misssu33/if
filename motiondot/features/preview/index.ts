@@ -6,3 +6,4 @@ export { buildPreviewProps } from './engine/build-preview-props';
 export { usePreviewSource } from './hooks/use-preview-source';
 export { usePreviewStore } from './stores/use-preview-store';
 export { REMOTION_COMPOSITION_ID } from './remotion/root';
+export { TemplateSettingsPanel } from './components/template-settings-panel';

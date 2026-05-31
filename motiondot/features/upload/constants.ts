@@ -13,3 +13,13 @@ export const MAX_UPLOAD_FILES = 20;
 
 /** 파일당 최대 크기 (500MB) */
 export const MAX_VIDEO_BYTES = 500 * 1024 * 1024;
+
+/** react-dropzone 허용 이미지 MIME */
+export const IMAGE_ACCEPT = {
+  'image/jpeg': ['.jpg', '.jpeg'],
+  'image/png': ['.png'],
+  'image/webp': ['.webp'],
+  'image/gif': ['.gif'],
+} as const;
+
+export type UploadMediaKind = 'video' | 'image';

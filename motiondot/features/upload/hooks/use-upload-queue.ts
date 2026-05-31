@@ -2,13 +2,14 @@
 
 import { useCallback } from 'react';
 import { useBatchStore } from '@/stores';
-import { MAX_UPLOAD_FILES } from '../constants';
-import { uploadVideosParallel } from '../services/upload-client';
+import { MAX_UPLOAD_FILES, type UploadMediaKind } from '../constants';
+import { uploadMediaParallel } from '../services/upload-client';
 import { useUploadUiStore } from '../stores/use-upload-ui-store';
+import { validateImageFile } from '../utils/validate-image-file';
 import { validateVideoFile } from '../utils/validate-video-file';
 
-/** 다중 비디오 업로드 큐 실행 */
-export function useUploadQueue() {
+/** 다중 미디어 업로드 큐 */
+export function useUploadQueue(mediaKind: UploadMediaKind = 'video') {
   const addFiles = useBatchStore((s) => s.addFiles);
   const removeBatchFile = useBatchStore((s) => s.removeFile);
   const items = useUploadUiStore((s) => s.items);
@@ -19,6 +20,8 @@ export function useUploadQueue() {
   const setUploading = useUploadUiStore((s) => s.setUploading);
   const setRejectionMessage = useUploadUiStore((s) => s.setRejectionMessage);
 
+  const validate = mediaKind === 'image' ? validateImageFile : validateVideoFile;
+
   const processFiles = useCallback(
     async (files: File[]) => {
       setRejectionMessage(null);
@@ -27,7 +30,7 @@ export function useUploadQueue() {
       const errors: string[] = [];
 
       for (const file of files) {
-        const err = validateVideoFile(file);
+        const err = validate(file);
         if (err) errors.push(`${file.name}: ${err}`);
         else valid.push(file);
       }
@@ -35,23 +38,15 @@ export function useUploadQueue() {
       if (errors.length > 0) {
         setRejectionMessage(errors.slice(0, 3).join(' · '));
       }
-
       if (valid.length === 0) return;
 
-      const currentCount = items.length;
-      const slots = MAX_UPLOAD_FILES - currentCount;
+      const slots = MAX_UPLOAD_FILES - items.length;
       if (slots <= 0) {
         setRejectionMessage(`최대 ${MAX_UPLOAD_FILES}개까지 업로드할 수 있습니다.`);
         return;
       }
 
       const toUpload = valid.slice(0, slots);
-      if (valid.length > slots) {
-        setRejectionMessage(
-          `${valid.length - slots}개 파일이 최대 개수 제한으로 제외되었습니다.`,
-        );
-      }
-
       const localIds = enqueueFiles(toUpload);
       setUploading(true);
 
@@ -60,30 +55,25 @@ export function useUploadQueue() {
         localId: localIds[i],
       }));
 
-      const parallelPayload = uploadItems.map(({ file, localId }) => ({
-        file,
-        onProgress: (progress: number) => {
-          updateItem(localId, { status: 'uploading', progress });
-        },
-      }));
-
       for (const { localId } of uploadItems) {
         updateItem(localId, { status: 'uploading', progress: 0 });
       }
 
-      const results = await uploadVideosParallel(parallelPayload, 3);
-      const succeeded = [];
+      const results = await uploadMediaParallel(
+        uploadItems.map(({ file, localId }) => ({
+          file,
+          onProgress: (progress) => updateItem(localId, { status: 'uploading', progress }),
+        })),
+        mediaKind,
+        3,
+      );
 
+      const succeeded = [];
       for (let i = 0; i < results.length; i++) {
         const { localId } = uploadItems[i];
         const result = results[i];
-
         if (result.meta) {
-          updateItem(localId, {
-            status: 'success',
-            progress: 100,
-            meta: result.meta,
-          });
+          updateItem(localId, { status: 'success', progress: 100, meta: result.meta });
           succeeded.push(result.meta);
         } else {
           updateItem(localId, {
@@ -94,20 +84,10 @@ export function useUploadQueue() {
         }
       }
 
-      if (succeeded.length > 0) {
-        addFiles(succeeded);
-      }
-
+      if (succeeded.length > 0) addFiles(succeeded);
       setUploading(false);
     },
-    [
-      items.length,
-      enqueueFiles,
-      updateItem,
-      addFiles,
-      setUploading,
-      setRejectionMessage,
-    ],
+    [items.length, enqueueFiles, updateItem, addFiles, setUploading, setRejectionMessage, validate, mediaKind],
   );
 
   const removeUploadedFile = useCallback(
@@ -118,10 +98,5 @@ export function useUploadQueue() {
     [removeItem, removeBatchFile],
   );
 
-  return {
-    items,
-    isUploading,
-    processFiles,
-    removeUploadedFile,
-  };
+  return { items, isUploading, processFiles, removeUploadedFile };
 }

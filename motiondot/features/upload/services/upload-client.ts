@@ -1,18 +1,21 @@
 'use client';
 
 import type { UploadFileMeta } from '@/types';
+import type { UploadMediaKind } from '../constants';
 
 type UploadProgressHandler = (progress: number) => void;
 
 /** 단일 파일 업로드 (XHR — 진행률 지원) */
-export function uploadVideoFile(
+export function uploadMediaFile(
   file: File,
+  mediaKind: UploadMediaKind = 'video',
   onProgress?: UploadProgressHandler,
 ): Promise<UploadFileMeta> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     const form = new FormData();
     form.append('file', file);
+    form.append('mediaKind', mediaKind);
 
     xhr.upload.addEventListener('progress', (event) => {
       if (!event.lengthComputable || !onProgress) return;
@@ -39,22 +42,23 @@ export function uploadVideoFile(
       reject(new Error(message));
     });
 
-    xhr.addEventListener('error', () => {
-      reject(new Error('Network error during upload'));
-    });
-
-    xhr.addEventListener('abort', () => {
-      reject(new Error('Upload cancelled'));
-    });
+    xhr.addEventListener('error', () => reject(new Error('Network error during upload')));
+    xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')));
 
     xhr.open('POST', '/api/upload');
     xhr.send(form);
   });
 }
 
-/** 병렬 업로드 (동시성 제한, 입력 순서 유지) */
-export async function uploadVideosParallel(
+/** @deprecated uploadMediaFile 사용 */
+export const uploadVideoFile = (
+  file: File,
+  onProgress?: UploadProgressHandler,
+) => uploadMediaFile(file, 'video', onProgress);
+
+export async function uploadMediaParallel(
   items: { file: File; onProgress: UploadProgressHandler }[],
+  mediaKind: UploadMediaKind = 'video',
   concurrency = 3,
 ): Promise<{ file: File; meta?: UploadFileMeta; error?: string }[]> {
   const results: ({ file: File; meta?: UploadFileMeta; error?: string } | undefined)[] =
@@ -66,7 +70,7 @@ export async function uploadVideosParallel(
       const i = nextIndex++;
       const current = items[i];
       try {
-        const meta = await uploadVideoFile(current.file, current.onProgress);
+        const meta = await uploadMediaFile(current.file, mediaKind, current.onProgress);
         results[i] = { file: current.file, meta };
       } catch (err) {
         results[i] = {
@@ -85,3 +89,6 @@ export async function uploadVideosParallel(
     (r, i) => r ?? { file: items[i].file, error: 'Upload failed' },
   );
 }
+
+/** @deprecated */
+export const uploadVideosParallel = uploadMediaParallel;
