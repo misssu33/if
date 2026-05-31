@@ -58,7 +58,8 @@ export function AppShell({ currentStep, onHome, children }: AppShellProps) {
         <button
           type="button"
           className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-          aria-label="메뉴 닫기"
+          aria-hidden="true"
+          tabIndex={-1}
           onClick={closeDrawer}
         />
       )}
