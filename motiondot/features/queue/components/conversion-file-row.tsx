@@ -1,0 +1,75 @@
+'use client';
+
+import { ProgressBar } from '@/components/feedback';
+import { Button } from '@/components/ui';
+import type { ConversionJobItem } from '../types';
+import { ConversionStatusBadge } from './conversion-status-badge';
+
+type ConversionFileRowProps = {
+  job: ConversionJobItem;
+  onCancel: (jobId: string) => void;
+  onRetry: (jobId: string) => void;
+};
+
+export function ConversionFileRow({
+  job,
+  onCancel,
+  onRetry,
+}: ConversionFileRowProps) {
+  const canCancel =
+    job.status === 'pending' ||
+    job.status === 'queued' ||
+    job.status === 'processing';
+  const canRetry = job.status === 'failed' || job.status === 'cancelled';
+
+  return (
+    <li className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
+            {job.fileName}
+          </p>
+          {job.message && (
+            <p className="mt-0.5 text-xs text-zinc-500">{job.message}</p>
+          )}
+        </div>
+        <ConversionStatusBadge status={job.status} />
+      </div>
+
+      <ProgressBar value={job.progress} />
+
+      {job.error && (
+        <p className="mt-2 text-xs text-red-600 dark:text-red-400">{job.error}</p>
+      )}
+
+      {job.outputPath && job.status === 'completed' && (
+        <p className="mt-1 text-xs text-emerald-600 dark:text-emerald-400">
+          {job.outputPath}
+        </p>
+      )}
+
+      <div className="mt-3 flex gap-2">
+        {canCancel && (
+          <Button
+            type="button"
+            variant="secondary"
+            className="!px-2 !py-1 text-xs"
+            onClick={() => onCancel(job.jobId)}
+          >
+            취소
+          </Button>
+        )}
+        {canRetry && (
+          <Button
+            type="button"
+            variant="primary"
+            className="!px-2 !py-1 text-xs"
+            onClick={() => onRetry(job.jobId)}
+          >
+            재시도
+          </Button>
+        )}
+      </div>
+    </li>
+  );
+}

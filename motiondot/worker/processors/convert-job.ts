@@ -10,10 +10,12 @@ export async function processConvertJob(
     return await getConvertThreadPool().run(payload);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Convert failed';
+    const isCancelled = message.includes('cancelled');
+
     await setJobProgress({
       jobId: payload.jobId,
       batchId: payload.batchId,
-      status: 'failed',
+      status: isCancelled ? 'cancelled' : 'failed',
       progress: 0,
       error: message,
     });

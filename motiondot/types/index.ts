@@ -5,6 +5,7 @@ export type {
   JobProgress,
   BatchConvertRequest,
   BatchConvertResponse,
+  BatchProgressResponse,
   BatchProgress,
 } from './job';
 export type { OutputFormat, UploadFileMeta } from './upload';

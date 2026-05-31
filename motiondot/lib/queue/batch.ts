@@ -3,7 +3,9 @@ import 'server-only';
 import { randomUUID } from 'crypto';
 import type { BatchConvertResponse, ConvertJobPayload } from '@/types';
 import { getConvertQueue } from './client';
+import { saveBatchJobIds } from './batch-registry';
 import { DEFAULT_JOB_OPTIONS } from './job-options';
+import { setJobProgress } from './progress';
 import { JOB_NAMES } from './types';
 
 type EnqueueConvertInput = Omit<ConvertJobPayload, 'jobId'> & {
@@ -17,15 +19,23 @@ export async function enqueueConvertJob(
   const jobId = input.jobId ?? randomUUID();
   const payload: ConvertJobPayload = { ...input, jobId };
 
-  const job = await getConvertQueue().add(JOB_NAMES.CONVERT, payload, {
+  await getConvertQueue().add(JOB_NAMES.CONVERT, payload, {
     ...DEFAULT_JOB_OPTIONS,
     jobId,
   });
 
-  return job.id ?? jobId;
+  await setJobProgress({
+    jobId,
+    batchId: input.batchId,
+    status: 'queued',
+    progress: 0,
+    message: 'Queued',
+  });
+
+  return jobId;
 }
 
-/** 배치 변환 작업 일괄 등록 */
+/** 배치 변환 작업 일괄 등록 (jobIds 순서 유지) */
 export async function enqueueBatchConvertJobs(
   jobs: EnqueueConvertInput[],
   batchId: string = randomUUID(),
@@ -33,21 +43,25 @@ export async function enqueueBatchConvertJobs(
   const queue = getConvertQueue();
   const jobIds: string[] = [];
 
-  await Promise.all(
-    jobs.map(async (item) => {
-      const jobId = item.jobId ?? randomUUID();
-      jobIds.push(jobId);
-      const payload: ConvertJobPayload = {
-        ...item,
-        jobId,
-        batchId,
-      };
-      await queue.add(JOB_NAMES.CONVERT, payload, {
-        ...DEFAULT_JOB_OPTIONS,
-        jobId,
-      });
-    }),
-  );
+  for (const item of jobs) {
+    const jobId = item.jobId ?? randomUUID();
+    jobIds.push(jobId);
+    const payload: ConvertJobPayload = { ...item, jobId, batchId };
 
+    await queue.add(JOB_NAMES.CONVERT, payload, {
+      ...DEFAULT_JOB_OPTIONS,
+      jobId,
+    });
+
+    await setJobProgress({
+      jobId,
+      batchId,
+      status: 'queued',
+      progress: 0,
+      message: 'Queued',
+    });
+  }
+
+  await saveBatchJobIds(batchId, jobIds);
   return { batchId, jobIds };
 }

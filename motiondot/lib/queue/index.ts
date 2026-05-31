@@ -3,3 +3,5 @@ export { getConvertQueue } from './client';
 export { enqueueConvertJob, enqueueBatchConvertJobs } from './batch';
 export { DEFAULT_JOB_OPTIONS } from './job-options';
 export { setJobProgress, getJobProgress } from './progress';
+export { getBatchProgress } from './batch-progress';
+export { cancelConvertJob, isJobCancelled } from './cancel';

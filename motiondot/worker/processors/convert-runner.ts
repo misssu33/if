@@ -2,7 +2,7 @@ import path from 'path';
 import { loadPreset } from '@/features/presets/load-preset';
 import { resolveOutputPath } from '@/features/export/services/export-service';
 import { convertByFormat } from '@/lib/ffmpeg/convert';
-import { setJobProgress } from '@/lib/queue';
+import { isJobCancelled, setJobProgress } from '@/lib/queue';
 import type { ConvertJobPayload } from '@/types';
 
 /** FFmpeg 변환 실행 (Worker / worker_thread 공용) */
@@ -10,13 +10,25 @@ export async function executeConvert(
   payload: ConvertJobPayload,
 ): Promise<string> {
   const { jobId, inputPath, presetId, format, quality, batchId } = payload;
+
+  if (await isJobCancelled(jobId)) {
+    await setJobProgress({
+      jobId,
+      batchId,
+      status: 'cancelled',
+      progress: 0,
+      message: 'Cancelled',
+    });
+    throw new Error('Job cancelled');
+  }
+
   const preset = await loadPreset(presetId);
   const outputPath = resolveOutputPath(jobId, format);
 
   await setJobProgress({
     jobId,
     batchId,
-    status: 'active',
+    status: 'processing',
     progress: 10,
     message: `${format.toUpperCase()} 변환 중`,
   });
@@ -30,6 +42,17 @@ export async function executeConvert(
     quality,
     format,
   });
+
+  if (await isJobCancelled(jobId)) {
+    await setJobProgress({
+      jobId,
+      batchId,
+      status: 'cancelled',
+      progress: 0,
+      message: 'Cancelled',
+    });
+    throw new Error('Job cancelled');
+  }
 
   await setJobProgress({
     jobId,
