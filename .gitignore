@@ -1,1 +1,9 @@
 node_modules/
+motiondot/node_modules/
+motiondot/.next/
+motiondot/out/
+motiondot/.env
+motiondot/temp/*
+!motiondot/temp/.gitkeep
+motiondot/outputs/*
+!motiondot/outputs/.gitkeep

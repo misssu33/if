@@ -1,0 +1,9 @@
+{
+  "id": "instagram-reels",
+  "name": "Instagram Reels",
+  "platform": "instagram-reels",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "maxDurationSec": 90
+}
