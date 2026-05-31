@@ -1,0 +1,161 @@
+{
+  "id": "tiktok-product-hook",
+  "name": "TikTok Product Hook",
+  "description": "세로 숏폼 제품 훅 — 비디오 + 헤드라인 + CTA",
+  "category": "product",
+  "durationSec": 5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 0,
+        "durationFrames": 90
+      },
+      "position": {
+        "x": "0",
+        "y": "0",
+        "width": "100%",
+        "height": "100%"
+      },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "zoom",
+      "timing": {
+        "startFrame": 5,
+        "durationFrames": 70
+      },
+      "position": {
+        "x": "0",
+        "y": "0",
+        "width": "100%",
+        "height": "100%"
+      },
+      "objectFit": "cover"
+    },
+    "logo": {
+      "kind": "image",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 0,
+        "durationFrames": 150
+      },
+      "position": {
+        "x": "82%",
+        "y": "4%",
+        "width": "14%",
+        "height": "8%"
+      },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "이 제품, 왜 핫할까?",
+      "animation": "slide-up",
+      "timing": {
+        "startFrame": 10,
+        "durationFrames": 40
+      },
+      "position": {
+        "x": "8%",
+        "y": "72%",
+        "width": "84%"
+      }
+    },
+    "subline": {
+      "defaultText": "3초 만에 핵심만",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 18,
+        "durationFrames": 35
+      },
+      "position": {
+        "x": "8%",
+        "y": "72%",
+        "width": "84%"
+      }
+    },
+    "cta": {
+      "defaultText": "더 알아보기",
+      "animation": "pop",
+      "timing": {
+        "startFrame": 25,
+        "durationFrames": 35
+      },
+      "position": {
+        "x": "50%",
+        "y": "85%"
+      },
+      "borderRadius": 12
+    },
+    "badge": {
+      "defaultText": "NEW",
+      "animation": "loop-pulse",
+      "timing": {
+        "startFrame": 5,
+        "durationFrames": 80
+      },
+      "position": {
+        "x": "8%",
+        "y": "8%"
+      }
+    }
+  },
+  "timeline": [
+    {
+      "id": "bg",
+      "layer": "background",
+      "startFrame": 0,
+      "durationFrames": 150,
+      "animation": "fade"
+    },
+    {
+      "id": "head",
+      "layer": "headline",
+      "startFrame": 10,
+      "durationFrames": 50,
+      "animation": "slide-up"
+    },
+    {
+      "id": "cta",
+      "layer": "cta",
+      "startFrame": 25,
+      "durationFrames": 40,
+      "animation": "pop"
+    }
+  ],
+  "theme": {
+    "primary": "#7c3aed",
+    "secondary": "#a78bfa",
+    "text": "#ffffff",
+    "ctaBackground": "#7c3aed",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.45)"
+  },
+  "typography": {
+    "headline": {
+      "fontSize": 48,
+      "fontWeight": 800,
+      "lineHeight": 1.1
+    },
+    "subline": {
+      "fontSize": 24,
+      "fontWeight": 500,
+      "lineHeight": 1.3
+    },
+    "cta": {
+      "fontSize": 18,
+      "fontWeight": 700
+    },
+    "badge": {
+      "fontSize": 14,
+      "fontWeight": 700
+    }
+  }
+}

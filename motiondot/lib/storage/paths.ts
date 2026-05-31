@@ -6,11 +6,8 @@ export const DEFAULT_ANDROID_PROJECT_ROOT =
 
 /** temp/ 하위 용도별 디렉터리 */
 export const TEMP_SUBDIRS = {
-  /** FFmpeg 등으로 추출한 프레임 이미지 */
   frames: 'frames',
-  /** GIF 인코딩 중간 파일 (팔레트, 시퀀스 등) */
   gif: 'gif',
-  /** zip 등 압축·패키징 중간/임시 파일 */
   archive: 'archive',
 } as const;
 
@@ -25,20 +22,15 @@ export const OUTPUT_SUBDIRS = {
 
 export type OutputSubdir = (typeof OUTPUT_SUBDIRS)[keyof typeof OUTPUT_SUBDIRS];
 
-/** 프로젝트 루트 (Android: PROJECT_ROOT, 그 외: cwd) */
 export function getProjectRoot(): string {
   const root = process.env.PROJECT_ROOT?.trim();
-  if (root) {
-    return path.resolve(root);
-  }
+  if (root) return path.resolve(root);
   return process.cwd();
 }
 
 function resolveFromRoot(dir: string): string {
   const normalized = dir.replace(/^\.\//, '');
-  if (path.isAbsolute(normalized)) {
-    return path.resolve(normalized);
-  }
+  if (path.isAbsolute(normalized)) return path.resolve(normalized);
   return path.join(getProjectRoot(), normalized);
 }
 
@@ -46,22 +38,18 @@ export function getTempDir(): string {
   return resolveFromRoot(process.env.TEMP_DIR ?? 'temp');
 }
 
-/** temp/frames — 프레임 추출 */
 export function getTempFramesDir(): string {
   return path.join(getTempDir(), TEMP_SUBDIRS.frames);
 }
 
-/** temp/gif — GIF 생성 중간파일 */
 export function getTempGifDir(): string {
   return path.join(getTempDir(), TEMP_SUBDIRS.gif);
 }
 
-/** temp/archive — 압축파일 */
 export function getTempArchiveDir(): string {
   return path.join(getTempDir(), TEMP_SUBDIRS.archive);
 }
 
-/** temp 하위 용도별 경로 */
 export function getTempSubdir(subdir: TempSubdir): string {
   return path.join(getTempDir(), subdir);
 }
@@ -70,24 +58,33 @@ export function getOutputDir(): string {
   return resolveFromRoot(process.env.OUTPUT_DIR ?? 'outputs');
 }
 
-/** outputs/gif — 최종 GIF */
 export function getOutputGifDir(): string {
   return path.join(getOutputDir(), OUTPUT_SUBDIRS.gif);
 }
 
-/** outputs/mp4 — 최종 MP4 */
 export function getOutputMp4Dir(): string {
   return path.join(getOutputDir(), OUTPUT_SUBDIRS.mp4);
 }
 
-/** outputs/webp — 최종 WebP */
 export function getOutputWebpDir(): string {
   return path.join(getOutputDir(), OUTPUT_SUBDIRS.webp);
 }
 
-/** outputs 하위 형식별 경로 */
 export function getOutputSubdir(subdir: OutputSubdir): string {
   return path.join(getOutputDir(), subdir);
+}
+
+/** export 메타·히스토리 (temp와 분리) */
+export function getExportMetaDir(): string {
+  return path.join(getOutputDir(), 'meta');
+}
+
+export function getExportHistoryPath(): string {
+  return path.join(getExportMetaDir(), 'history.json');
+}
+
+export function getTemplatesDir(): string {
+  return resolveFromRoot(process.env.TEMPLATES_DIR ?? 'templates');
 }
 
 export function getPresetsDir(): string {

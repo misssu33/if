@@ -15,6 +15,9 @@ export {
   getOutputMp4Dir,
   getOutputWebpDir,
   getOutputSubdir,
+  getExportMetaDir,
+  getExportHistoryPath,
   getPresetsDir,
+  getTemplatesDir,
 } from './paths';
 export { ensureStorageDirs } from './ensure-dirs';

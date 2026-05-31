@@ -4,10 +4,26 @@ import type { BatchProgressState, ConversionJobItem } from '../types';
 import { computeBatchProgress } from '../utils/compute-batch-progress';
 import { mapServerStatus } from '../utils/map-server-status';
 
+export interface RegisterBatchJobItem {
+  fileId: string;
+  fileName: string;
+  inputPath: string;
+  presetId: string;
+  format: ConversionJobItem['format'];
+  quality?: PresetQualityLevel;
+  width: number;
+  height: number;
+  fps: number;
+  loop?: boolean;
+  maxFileSizeBytes?: number;
+}
+
 interface RegisterBatchInput {
   batchId: string;
   jobIds: string[];
-  files: UploadFileMeta[];
+  /** 다중 포맷 배치: jobIds와 1:1 */
+  items?: RegisterBatchJobItem[];
+  files?: UploadFileMeta[];
   presetId: string;
   format: ConversionJobItem['format'];
   quality?: PresetQualityLevel;
@@ -54,7 +70,8 @@ export const useConversionStore = create<ConversionState>((set, get) => ({
     const {
       batchId,
       jobIds,
-      files,
+      items,
+      files = [],
       presetId,
       format,
       quality,
@@ -65,23 +82,31 @@ export const useConversionStore = create<ConversionState>((set, get) => ({
       maxFileSizeBytes,
     } = input;
 
-    const jobs: ConversionJobItem[] = files.map((file, i) => ({
-      fileId: file.id,
-      jobId: jobIds[i] ?? '',
-      batchId,
-      fileName: file.originalName,
-      inputPath: file.tempPath,
-      presetId,
-      format,
-      quality,
-      width,
-      height,
-      fps,
-      loop,
-      maxFileSizeBytes,
-      status: 'queued',
-      progress: 0,
-    }));
+    const jobs: ConversionJobItem[] = items
+      ? items.map((item, i) => ({
+          ...item,
+          jobId: jobIds[i] ?? '',
+          batchId,
+          status: 'queued' as const,
+          progress: 0,
+        }))
+      : files.map((file, i) => ({
+          fileId: file.id,
+          jobId: jobIds[i] ?? '',
+          batchId,
+          fileName: file.originalName,
+          inputPath: file.tempPath,
+          presetId,
+          format,
+          quality,
+          width,
+          height,
+          fps,
+          loop,
+          maxFileSizeBytes,
+          status: 'queued' as const,
+          progress: 0,
+        }));
 
     set({
       jobs,

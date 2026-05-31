@@ -2,6 +2,7 @@ import path from 'path';
 import { loadPreset } from '@/features/presets/server/load-preset';
 import { resolveExportSettings } from '@/features/presets/utils/resolve-export-settings';
 import { resolveOutputPath } from '@/features/export/services/export-service';
+import { recordExportResult } from '@/lib/export/record-result';
 import { convertByFormat } from '@/lib/ffmpeg/convert';
 import { isJobCancelled, setJobProgress } from '@/lib/queue';
 import type { ConvertJobPayload } from '@/types';
@@ -74,6 +75,12 @@ export async function executeConvert(
     progress: 100,
     message: '완료',
     outputPath: path.basename(outputPath),
+  });
+
+  await recordExportResult({
+    payload,
+    status: 'completed',
+    outputPath,
   });
 
   return outputPath;

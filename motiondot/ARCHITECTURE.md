@@ -26,7 +26,8 @@ motiondot/
 ├── features/               # 기능 단위 모듈 (격리)
 │   ├── workspace/          # 메인 화면 조합
 │   ├── upload/             # 업로드 파이프라인
-│   ├── preview/            # Remotion 미리보기
+│   ├── templates/          # 광고 모션 템플릿 엔진
+│   ├── preview/            # Remotion 미리보기 UI
 │   ├── export/             # outputs/ 저장 파이프라인
 │   ├── presets/            # JSON 프리셋 UI·로더
 │   └── queue/              # 진행률 UI
@@ -36,7 +37,8 @@ motiondot/
 │   ├── redis/              # Redis 연결
 │   └── storage/            # temp/outputs 경로
 ├── worker/                 # BullMQ Worker + processors
-├── presets/                # SNS 프리셋 JSON
+├── presets/                # SNS export 프리셋 JSON
+├── templates/              # 광고 모션 템플릿 JSON
 ├── stores/                 # 전역 Zustand
 ├── types/                  # 공유 TypeScript 타입
 ├── temp/                   # frames, gif, archive

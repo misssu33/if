@@ -1,4 +1,5 @@
 import { setJobProgress } from '@/lib/queue';
+import { recordExportResult } from '@/lib/export/record-result';
 import type { ConvertJobPayload } from '@/types';
 import { getConvertThreadPool } from '../pool/thread-pool';
 
@@ -19,6 +20,20 @@ export async function processConvertJob(
       progress: 0,
       error: message,
     });
+
+    if (!isCancelled) {
+      await recordExportResult({
+        payload,
+        status: 'failed',
+        error: message,
+      });
+    } else {
+      await recordExportResult({
+        payload,
+        status: 'cancelled',
+        error: message,
+      });
+    }
     throw err;
   }
 }
