@@ -58,6 +58,8 @@ export function useStartExport() {
         width: resolved.width,
         height: resolved.height,
         fps: resolved.fps,
+        loop: resolved.loop,
+i        maxFileSizeBytes: resolved.maxFileSizeBytes,
       });
     } finally {
       setLoading(false);
