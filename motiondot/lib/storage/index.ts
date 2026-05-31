@@ -1,7 +1,9 @@
 export {
   DEFAULT_ANDROID_PROJECT_ROOT,
   TEMP_SUBDIRS,
+  OUTPUT_SUBDIRS,
   type TempSubdir,
+  type OutputSubdir,
   getProjectRoot,
   getTempDir,
   getTempFramesDir,
@@ -9,5 +11,9 @@ export {
   getTempArchiveDir,
   getTempSubdir,
   getOutputDir,
+  getOutputGifDir,
+  getOutputMp4Dir,
+  getOutputWebpDir,
+  getOutputSubdir,
   getPresetsDir,
 } from './paths';

@@ -16,6 +16,9 @@ motiondot/
 │   ├── gif/              # GIF 생성 중간파일
 │   └── archive/          # 압축파일
 ├── outputs/              # 최종 결과물
+│   ├── gif/              # 최종 GIF
+│   ├── mp4/              # 최종 MP4
+│   └── webp/             # 최종 WebP
 ├── presets/              # SNS 프리셋 JSON
 ├── worker/               # 병렬 처리 worker
 ├── scripts/

@@ -16,6 +16,15 @@ export const TEMP_SUBDIRS = {
 
 export type TempSubdir = (typeof TEMP_SUBDIRS)[keyof typeof TEMP_SUBDIRS];
 
+/** outputs/ 하위 최종 산출물 형식 */
+export const OUTPUT_SUBDIRS = {
+  gif: 'gif',
+  mp4: 'mp4',
+  webp: 'webp',
+} as const;
+
+export type OutputSubdir = (typeof OUTPUT_SUBDIRS)[keyof typeof OUTPUT_SUBDIRS];
+
 /** 프로젝트 루트 (Android: PROJECT_ROOT, 그 외: cwd) */
 export function getProjectRoot(): string {
   const root = process.env.PROJECT_ROOT?.trim();
@@ -59,6 +68,26 @@ export function getTempSubdir(subdir: TempSubdir): string {
 
 export function getOutputDir(): string {
   return resolveFromRoot(process.env.OUTPUT_DIR ?? 'outputs');
+}
+
+/** outputs/gif — 최종 GIF */
+export function getOutputGifDir(): string {
+  return path.join(getOutputDir(), OUTPUT_SUBDIRS.gif);
+}
+
+/** outputs/mp4 — 최종 MP4 */
+export function getOutputMp4Dir(): string {
+  return path.join(getOutputDir(), OUTPUT_SUBDIRS.mp4);
+}
+
+/** outputs/webp — 최종 WebP */
+export function getOutputWebpDir(): string {
+  return path.join(getOutputDir(), OUTPUT_SUBDIRS.webp);
+}
+
+/** outputs 하위 형식별 경로 */
+export function getOutputSubdir(subdir: OutputSubdir): string {
+  return path.join(getOutputDir(), subdir);
 }
 
 export function getPresetsDir(): string {

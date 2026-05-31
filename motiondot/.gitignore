@@ -6,5 +6,7 @@ temp/**/*
 !temp/.gitkeep
 !temp/**/.gitkeep
 !temp/README.md
-outputs/*
+outputs/**/*
 !outputs/.gitkeep
+!outputs/**/.gitkeep
+!outputs/README.md

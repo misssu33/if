@@ -7,5 +7,7 @@ motiondot/temp/**/*
 !motiondot/temp/.gitkeep
 !motiondot/temp/**/.gitkeep
 !motiondot/temp/README.md
-motiondot/outputs/*
+motiondot/outputs/**/*
 !motiondot/outputs/.gitkeep
+!motiondot/outputs/**/.gitkeep
+!motiondot/outputs/README.md
