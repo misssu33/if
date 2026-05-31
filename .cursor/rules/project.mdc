@@ -1,0 +1,43 @@
+---
+description: Motiondot 프로젝트 구조·경로·스택 규칙
+globs: motiondot/**/*
+alwaysApply: false
+---
+
+# Motiondot
+
+SNS 영상 변환·export Next.js 앱. App Router, TypeScript, Tailwind. `src/` 디렉터리 없음.
+
+## 경로
+
+- Android 프로젝트 루트: `/storage/emulated/0/Projects/motiondot`
+- `PROJECT_ROOT` 환경 변수 → `lib/storage/paths.ts`의 `getProjectRoot()`
+- 임시: `temp/frames`, `temp/gif`, `temp/archive`
+- 최종 산출: `outputs/gif`, `outputs/mp4`, `outputs/webp`
+- SNS 프리셋 JSON: `presets/`
+- BullMQ 워커: `worker/index.js` (`npm run worker`)
+
+## 디렉터리
+
+```
+motiondot/
+├── app/              # App Router (no src/)
+├── components/
+├── features/         # upload, preview, export, presets, queue
+├── lib/              # ffmpeg, workers, storage, utils
+├── temp/ outputs/ presets/ worker/ scripts/ types/
+```
+
+## 스택
+
+- Next.js App Router + TypeScript + Tailwind
+- zustand, react-dropzone, remotion
+- fluent-ffmpeg, ffmpeg-static (서버 전용, `serverExternalPackages`)
+- bullmq, ioredis (Redis 필요)
+
+## 코딩 규칙
+
+- 경로는 `lib/storage` 헬퍼 사용 (`getTempFramesDir`, `getOutputMp4Dir` 등). 하드코딩 지양.
+- `temp/`, `outputs/` 실제 파일은 Git에 커밋하지 않음.
+- UI·기능 코드는 `features/`에 모듈별로 분리.
+- 주석·사용자-facing 문구는 한국어, 식별자는 영어.

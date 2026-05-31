@@ -3,6 +3,7 @@ motiondot/node_modules/
 motiondot/.next/
 motiondot/out/
 motiondot/.env
+!.env.example
 motiondot/temp/**/*
 !motiondot/temp/.gitkeep
 !motiondot/temp/**/.gitkeep

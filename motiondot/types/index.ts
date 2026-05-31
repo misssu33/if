@@ -1,4 +1,3 @@
-/** SNS export 프리셋 */
 export type PresetPlatform = 'instagram-reels' | 'youtube-shorts' | 'tiktok';
 
 export interface VideoPreset {
