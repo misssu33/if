@@ -1,0 +1,18 @@
+{
+  "id": "threads-loop",
+  "name": "Threads",
+  "platform": "threads",
+  "outputFormat": "gif",
+  "aspectRatio": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "fps": 12,
+  "frameDelayMs": 83,
+  "maxColors": 128,
+  "maxFileSizeBytes": 10485760,
+  "loop": true,
+  "quality": "medium",
+  "maxDurationSec": 60,
+  "recommendedUseCase": "Threads 피드·루프 GIF (용량 절약)",
+  "aspectRatioRecommendation": "4:5 세로 (1080×1350) — 피드 카드"
+}

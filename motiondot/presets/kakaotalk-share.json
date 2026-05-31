@@ -1,0 +1,18 @@
+{
+  "id": "kakaotalk-share",
+  "name": "KakaoTalk",
+  "platform": "kakaotalk",
+  "outputFormat": "gif",
+  "aspectRatio": "4:5",
+  "width": 800,
+  "height": 1000,
+  "fps": 10,
+  "frameDelayMs": 100,
+  "maxColors": 128,
+  "maxFileSizeBytes": 8388608,
+  "loop": false,
+  "quality": "medium",
+  "maxDurationSec": 20,
+  "recommendedUseCase": "카카오톡 공유용 GIF (용량·해상도 최적화)",
+  "aspectRatioRecommendation": "4:5 (800×1000) — 채팅·공유"
+}

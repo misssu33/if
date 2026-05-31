@@ -1,0 +1,18 @@
+{
+  "id": "instagram-reels",
+  "name": "Instagram Reels",
+  "platform": "instagram",
+  "outputFormat": "gif",
+  "aspectRatio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 12,
+  "frameDelayMs": 83,
+  "maxColors": 256,
+  "maxFileSizeBytes": 15728640,
+  "loop": true,
+  "quality": "high",
+  "maxDurationSec": 90,
+  "recommendedUseCase": "Instagram Reels·스토리 루프 GIF",
+  "aspectRatioRecommendation": "9:16 세로 (1080×1920) — Reels·스토리"
+}

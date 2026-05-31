@@ -1,0 +1,18 @@
+{
+  "id": "tiktok-short-clip",
+  "name": "TikTok",
+  "platform": "tiktok",
+  "outputFormat": "gif",
+  "aspectRatio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 15,
+  "frameDelayMs": 67,
+  "maxColors": 256,
+  "maxFileSizeBytes": 15728640,
+  "loop": true,
+  "quality": "high",
+  "maxDurationSec": 60,
+  "recommendedUseCase": "TikTok 숏폼·바이럴 GIF (빠른 모션, 선명 팔레트)",
+  "aspectRatioRecommendation": "9:16 세로 (1080×1920) — 숏폼 피드"
+}

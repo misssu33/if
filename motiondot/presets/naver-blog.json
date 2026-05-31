@@ -1,0 +1,15 @@
+{
+  "id": "naver-blog",
+  "name": "Naver Blog",
+  "platform": "naver",
+  "outputFormat": "webp",
+  "aspectRatio": "16:9",
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "maxFileSizeBytes": 20971520,
+  "loop": true,
+  "quality": "medium",
+  "maxDurationSec": 120,
+  "recommendedUseCase": "네이버 블로그 본문·가이드용 WebP 애니메이션"
+}

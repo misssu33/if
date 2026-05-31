@@ -1,0 +1,54 @@
+---
+description: MotionDot production architecture and coding standards
+globs: motiondot/**/*
+alwaysApply: true
+---
+
+# MotionDot — Project Rules
+
+Production batch GIF/MP4/WebP converter for TikTok, Instagram Reels, Threads, Coupang, and creators.
+
+## Stack
+
+Next.js (App Router) · TypeScript (strict) · Tailwind · Zustand · ffmpeg (`lib/ffmpeg`) · BullMQ · Redis · Remotion
+
+## Folder architecture
+
+| Path | Purpose |
+|------|---------|
+| `app/` | Thin routes + `api/` only |
+| `features/<name>/` | Isolated feature modules (`components/`, `hooks/`, `services/`, `stores/`) |
+| `components/` | **Shared** UI only — never duplicate in features |
+| `lib/ffmpeg/` | **All** FFmpeg logic |
+| `worker/` | **All** BullMQ workers + `processors/` |
+| `presets/` | SNS specs as **JSON only** |
+| `stores/` | Global Zustand |
+| `types/` | Shared TS types |
+| `temp/` | frames, gif, archive |
+| `outputs/` | gif, mp4, webp finals |
+
+## Pipelines
+
+- **Upload**: `features/upload` → `POST /api/upload` → `temp/archive`
+- **Preview**: `features/preview` → Remotion
+- **Export**: `features/export` → `POST /api/jobs` → `outputs/`
+- **Queue / progress**: `worker/` → Redis → `GET /api/jobs/progress`
+
+## Rules
+
+- Feature-based structure; isolated features
+- No monolithic `page.tsx` — use `features/workspace`
+- Strict TypeScript; `server-only` on fs/queue services
+- Tailwind only
+- Server barrels must not export `load-preset`, `upload-service`, `export-service` to client
+- Import server helpers by full path: `@/features/presets/load-preset`
+
+## Anti-patterns
+
+- Duplicate components across features
+- FFmpeg outside `lib/ffmpeg`
+- Workers outside `worker/`
+- Hardcoded preset dimensions when JSON exists
+- Large page files
+
+See `motiondot/ARCHITECTURE.md` for full map.

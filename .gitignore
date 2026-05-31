@@ -1,0 +1,19 @@
+# Local / runtime artifacts
+dump.rdb
+.DS_Store
+
+node_modules/
+motiondot/dump.rdb
+motiondot/node_modules/
+motiondot/.next/
+motiondot/out/
+motiondot/.env
+!.env.example
+motiondot/temp/**/*
+!motiondot/temp/.gitkeep
+!motiondot/temp/**/.gitkeep
+!motiondot/temp/README.md
+motiondot/outputs/**/*
+!motiondot/outputs/.gitkeep
+!motiondot/outputs/**/.gitkeep
+!motiondot/outputs/README.md
