@@ -46,7 +46,7 @@ export async function runConvertPipeline(
 
     const outputPath = resolveOutputPath(jobId, format);
     logger.info(
-      `preset=${settings.presetId} ${settings.width}x${settings.height} @${settings.fps}fps quality=${settings.quality}`,
+      `preset=${settings.presetId} ${settings.width}x${settings.height} @${settings.fps}fps quality=${settings.quality} maxColors=${settings.maxColors ?? 'auto'}`,
     );
 
     await onProgress?.(10, `${format.toUpperCase()} FFmpeg 변환 시작`);
@@ -60,6 +60,7 @@ export async function runConvertPipeline(
         height: settings.height,
         fps: settings.fps,
         quality: settings.quality as ConvertQuality,
+        maxColors: settings.maxColors,
         format,
       },
       {

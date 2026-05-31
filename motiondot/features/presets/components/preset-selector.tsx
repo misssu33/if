@@ -11,9 +11,14 @@ export function PresetSelector() {
 
   return (
     <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
-      <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-        Export 프리셋
+      <div className="flex flex-col gap-1">
+        <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+        SNS GIF Export
       </h2>
+        <p className="text-xs text-zinc-500">
+          TikTok · Reels · Threads · 쿠팡 · 카카오톡 — 플랫폼별 최적 GIF 설정
+        </p>
+      </div>
 
       {error && (
         <p className="text-xs text-red-600 dark:text-red-400">{error}</p>

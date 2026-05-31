@@ -11,6 +11,8 @@ export interface ConvertOptions {
   height: number;
   fps: number;
   quality?: ConvertQuality;
+  /** GIF palettegen max_colors (프리셋·수동 조정) */
+  maxColors?: number;
 }
 
 export interface ConvertByFormatOptions extends ConvertOptions {

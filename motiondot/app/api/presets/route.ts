@@ -1,7 +1,7 @@
-import { listPresets } from '@/features/presets/server/load-preset';
+import { listSnsExportPresets } from '@/features/presets/server/load-preset';
 
-/** SNS 프리셋 목록 */
+/** SNS GIF export 프리셋 목록 (config/sns-export-presets.json) */
 export async function GET() {
-  const presets = await listPresets();
+  const presets = await listSnsExportPresets();
   return Response.json(presets);
 }

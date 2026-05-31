@@ -10,7 +10,7 @@ export function encodeGif(
 ): Promise<void> {
   const { inputPath, outputPath, width, height, fps } = options;
   const quality = resolveQuality(options.quality);
-  const maxColors = getGifMaxColors(quality);
+  const maxColors = options.maxColors ?? getGifMaxColors(quality);
   const vf = buildVideoFilterChain(width, height, fps);
 
   return runFfmpegCommand(

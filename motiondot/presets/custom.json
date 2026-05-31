@@ -2,14 +2,17 @@
   "id": "custom",
   "name": "Custom",
   "platform": "custom",
-  "outputFormat": "mp4",
+  "outputFormat": "gif",
   "aspectRatio": "custom",
-  "width": 1920,
+  "width": 1080,
   "height": 1080,
-  "fps": 30,
+  "fps": 12,
+  "frameDelayMs": 83,
+  "maxColors": 256,
   "maxFileSizeBytes": 52428800,
   "loop": false,
   "quality": "medium",
   "maxDurationSec": 600,
-  "recommendedUseCase": "직접 FPS·해상도·품질·용량을 설정하는 사용자 정의 프리셋"
+  "recommendedUseCase": "FPS·해상도·품질·색 수를 직접 설정",
+  "aspectRatioRecommendation": "직접 지정 (아래 수동 조정)"
 }
