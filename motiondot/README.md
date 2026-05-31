@@ -33,6 +33,11 @@ outputs/      → 최종 GIF · MP4 · WebP
 
 `.cursor/rules/project.mdc`
 
+## MVP (모바일 · GIF 워크플로)
+
+- 모바일: `AppShell` 사이드 드로어 + 반응형 3단계 워크스페이스
+- GIF: 업로드 → BullMQ → FFmpeg → `outputs/gif/` → 미리보기/다운로드 ([E2E 가이드](docs/E2E_CONVERT_TEST.md))
+
 ## E2E 변환 테스트
 
 전체 파이프라인(업로드 → 큐 → FFmpeg → GIF → 미리보기 → 다운로드): [docs/E2E_CONVERT_TEST.md](docs/E2E_CONVERT_TEST.md)

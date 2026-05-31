@@ -1,4 +1,9 @@
+# Local / runtime artifacts
+dump.rdb
+.DS_Store
+
 node_modules/
+motiondot/dump.rdb
 motiondot/node_modules/
 motiondot/.next/
 motiondot/out/
