@@ -1,43 +1,38 @@
 ---
-description: Motiondot 프로젝트 구조·경로·스택 규칙
+description: Motiondot architecture and coding standards
 globs: motiondot/**/*
-alwaysApply: false
+alwaysApply: true
 ---
 
-# Motiondot
+# Motiondot — Project Rules
 
-SNS 영상 변환·export Next.js 앱. App Router, TypeScript, Tailwind. `src/` 디렉터리 없음.
+## Folder architecture
 
-## 경로
+- **Feature-based structure**: UI and logic for a capability live under `features/<name>/` (e.g. `features/upload/components/`, `features/upload/hooks/`).
+- **Shared UI only** in `components/` — never duplicate the same component in `features/` and `components/`.
+- **`lib/ffmpeg/`** — all FFmpeg / fluent-ffmpeg logic. Do not call ffmpeg from `app/`, `features/`, or `worker/` directly.
+- **`worker/`** — BullMQ workers and job processors only. Do not put worker runtime under `lib/workers/`.
+- **`presets/`** — SNS preset definitions as **JSON files only**. Load via `features/presets/` helpers, not hardcoded in TS.
 
-- Android 프로젝트 루트: `/storage/emulated/0/Projects/motiondot`
-- `PROJECT_ROOT` 환경 변수 → `lib/storage/paths.ts`의 `getProjectRoot()`
-- 임시: `temp/frames`, `temp/gif`, `temp/archive`
-- 최종 산출: `outputs/gif`, `outputs/mp4`, `outputs/webp`
-- SNS 프리셋 JSON: `presets/`
-- BullMQ 워커: `worker/index.js` (`npm run worker`)
+## TypeScript & styling
 
-## 디렉터리
+- **TypeScript strictly** — no new `.js` files; `strict` mode; prefer typed APIs.
+- **Tailwind only** for styling — no CSS modules or inline `style={{}}` unless required for dynamic values.
+- **Modular components** — small, single-purpose files.
+- **`app/page.tsx`** — thin composition only (import feature views). No large JSX blocks in route files.
 
-```
-motiondot/
-├── app/              # App Router (no src/)
-├── components/
-├── features/         # upload, preview, export, presets, queue
-├── lib/              # ffmpeg, workers, storage, utils
-├── temp/ outputs/ presets/ worker/ scripts/ types/
-```
+## Imports
 
-## 스택
+- `@/features/*` — feature modules
+- `@/components/*` — shared UI
+- `@/lib/ffmpeg/*` — video processing
+- `@/lib/storage/*` — paths and I/O
+- `@/worker/*` — only from worker entry scripts, not from React components
 
-- Next.js App Router + TypeScript + Tailwind
-- zustand, react-dropzone, remotion
-- fluent-ffmpeg, ffmpeg-static (서버 전용, `serverExternalPackages`)
-- bullmq, ioredis (Redis 필요)
+## Anti-patterns (do not)
 
-## 코딩 규칙
-
-- 경로는 `lib/storage` 헬퍼 사용 (`getTempFramesDir`, `getOutputMp4Dir` 등). 하드코딩 지양.
-- `temp/`, `outputs/` 실제 파일은 Git에 커밋하지 않음.
-- UI·기능 코드는 `features/`에 모듈별로 분리.
-- 주석·사용자-facing 문구는 한국어, 식별자는 영어.
+- Duplicate components across features
+- FFmpeg calls outside `lib/ffmpeg`
+- BullMQ `Worker` / `Queue` processors outside `worker/`
+- Preset dimensions hardcoded in TS when a JSON exists in `presets/`
+- Large `page.tsx` files or non-Tailwind styling

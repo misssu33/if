@@ -1,2 +1,1 @@
-// SNS 프리셋 선택·적용
-export {};
+export { loadPreset, listPresets } from './load-preset';

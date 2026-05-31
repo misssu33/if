@@ -1,2 +1,2 @@
-// BullMQ 작업 큐 UI·상태
+// features/queue/components — 작업 큐 상태 UI
 export {};

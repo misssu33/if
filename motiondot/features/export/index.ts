@@ -1,2 +1,2 @@
-// export / 렌더 결과 다운로드
+// features/export/components — 최종 export UI
 export {};
