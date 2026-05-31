@@ -12,6 +12,9 @@ motiondot/
 ├── lib/                  # ffmpeg, workers, storage, utils
 ├── public/
 ├── temp/                 # 임시 변환 파일
+│   ├── frames/           # 프레임 추출
+│   ├── gif/              # GIF 생성 중간파일
+│   └── archive/          # 압축파일
 ├── outputs/              # 최종 결과물
 ├── presets/              # SNS 프리셋 JSON
 ├── worker/               # 병렬 처리 worker
