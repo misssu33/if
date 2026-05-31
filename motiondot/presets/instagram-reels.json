@@ -1,0 +1,15 @@
+{
+  "id": "instagram-reels",
+  "name": "Instagram Reels",
+  "platform": "instagram",
+  "outputFormat": "mp4",
+  "aspectRatio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "maxFileSizeBytes": 31457280,
+  "loop": false,
+  "quality": "high",
+  "maxDurationSec": 90,
+  "recommendedUseCase": "Instagram Reels·스토리 리퍼프 (세로)"
+}

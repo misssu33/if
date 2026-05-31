@@ -1,0 +1,149 @@
+{
+  "id": "lifestyle-promo",
+  "name": "Lifestyle Promo",
+  "description": "라이프스타일 브랜드 프로모",
+  "category": "lifestyle",
+  "durationSec": 6,
+  "fps": 30,
+  "width": 1080,
+  "height": 1350,
+  "aspectRatio": "4:5",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 0,
+        "durationFrames": 90
+      },
+      "position": {
+        "x": "0",
+        "y": "0",
+        "width": "100%",
+        "height": "100%"
+      },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 20,
+        "durationFrames": 50
+      },
+      "position": {
+        "x": "0",
+        "y": "0",
+        "width": "100%",
+        "height": "100%"
+      },
+      "objectFit": "cover"
+    },
+    "logo": {
+      "kind": "image",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 0,
+        "durationFrames": 90
+      },
+      "position": {
+        "x": "6%",
+        "y": "6%",
+        "width": "20%",
+        "height": "10%"
+      },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "일상을 바꾸는 한 끗",
+      "animation": "fade",
+      "timing": {
+        "startFrame": 12,
+        "durationFrames": 45
+      },
+      "position": {
+        "x": "8%",
+        "y": "72%",
+        "width": "84%"
+      }
+    },
+    "subline": {
+      "defaultText": "지금 만나보세요",
+      "animation": "slide-up",
+      "timing": {
+        "startFrame": 22,
+        "durationFrames": 35
+      },
+      "position": {
+        "x": "8%",
+        "y": "72%",
+        "width": "84%"
+      }
+    },
+    "cta": {
+      "defaultText": "브랜드 스토리",
+      "animation": "pop",
+      "timing": {
+        "startFrame": 25,
+        "durationFrames": 35
+      },
+      "position": {
+        "x": "50%",
+        "y": "85%"
+      },
+      "borderRadius": 12
+    }
+  },
+  "timeline": [
+    {
+      "id": "bg",
+      "layer": "background",
+      "startFrame": 0,
+      "durationFrames": 150,
+      "animation": "fade"
+    },
+    {
+      "id": "head",
+      "layer": "headline",
+      "startFrame": 10,
+      "durationFrames": 50,
+      "animation": "slide-up"
+    },
+    {
+      "id": "cta",
+      "layer": "cta",
+      "startFrame": 25,
+      "durationFrames": 40,
+      "animation": "pop"
+    }
+  ],
+  "theme": {
+    "primary": "#0d9488",
+    "secondary": "#a78bfa",
+    "text": "#ffffff",
+    "ctaBackground": "#0d9488",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.45)"
+  },
+  "typography": {
+    "headline": {
+      "fontSize": 48,
+      "fontWeight": 800,
+      "lineHeight": 1.1
+    },
+    "subline": {
+      "fontSize": 24,
+      "fontWeight": 500,
+      "lineHeight": 1.3
+    },
+    "cta": {
+      "fontSize": 18,
+      "fontWeight": 700
+    },
+    "badge": {
+      "fontSize": 14,
+      "fontWeight": 700
+    }
+  }
+}

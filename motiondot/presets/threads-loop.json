@@ -1,0 +1,15 @@
+{
+  "id": "threads-loop",
+  "name": "Threads Loop",
+  "platform": "threads",
+  "outputFormat": "mp4",
+  "aspectRatio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "maxFileSizeBytes": 20971520,
+  "loop": true,
+  "quality": "medium",
+  "maxDurationSec": 300,
+  "recommendedUseCase": "Threads 루프 영상·짧은 반복 클립"
+}

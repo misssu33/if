@@ -1,0 +1,15 @@
+{
+  "id": "tiktok-short-clip",
+  "name": "TikTok Short Clip",
+  "platform": "tiktok",
+  "outputFormat": "mp4",
+  "aspectRatio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "maxFileSizeBytes": 28745728,
+  "loop": false,
+  "quality": "high",
+  "maxDurationSec": 180,
+  "recommendedUseCase": "TikTok 숏폼·바이럴 클립 (세로 9:16)"
+}
