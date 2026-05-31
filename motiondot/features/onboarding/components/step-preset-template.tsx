@@ -5,11 +5,13 @@ import { TemplateSettingsPanel } from '@/features/preview/components/template-se
 import { PreviewGrid } from '@/features/preview/components/preview-grid';
 import { useBatchStore } from '@/stores';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
+import { OnboardingFlowPlaceholder } from './onboarding-flow-placeholder';
 import { OnboardingTooltip } from './onboarding-tooltip';
 import { Button } from '@/components/ui';
 
 export function StepPresetTemplate() {
   const files = useBatchStore((s) => s.files);
+  const intent = useOnboardingStore((s) => s.uploadIntent);
   const nextStep = useOnboardingStore((s) => s.nextStep);
   const prevStep = useOnboardingStore((s) => s.prevStep);
 
@@ -17,6 +19,9 @@ export function StepPresetTemplate() {
     <div className="flex min-w-0 flex-col gap-6">
       <OnboardingTooltip id="sns-presets" />
       <OnboardingTooltip id="motion-templates" />
+      {intent === 'template' && (
+        <OnboardingFlowPlaceholder intent="template" />
+      )}
       <PresetSelector />
       {files.length > 0 && (
         <div className="min-w-0">

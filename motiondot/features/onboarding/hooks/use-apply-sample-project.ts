@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { startTransition, useCallback } from 'react';
 import { useExportSettingsStore } from '@/features/presets/stores/use-export-settings-store';
 import { usePresetCatalog } from '@/features/presets/hooks/use-preset-catalog';
 import { usePreviewStore } from '@/features/preview/stores/use-preview-store';
@@ -15,17 +15,17 @@ export function useApplySampleProject() {
   const setTemplateId = usePreviewStore((s) => s.setTemplateId);
   const setFormats = useExportSessionStore((s) => s.setFormats);
   const startFlow = useOnboardingStore((s) => s.startFlow);
-  const setStep = useOnboardingStore((s) => s.setStep);
 
   return useCallback(
     (project: SampleProject) => {
-      const preset = presets.find((p) => p.id === project.presetId);
-      if (preset) setPreset(preset);
-      setTemplateId(project.templateId as Parameters<typeof setTemplateId>[0]);
-      setFormats(project.formats);
-      startFlow('template');
-      setStep(2);
+      startTransition(() => {
+        const preset = presets.find((p) => p.id === project.presetId);
+        if (preset) setPreset(preset);
+        setTemplateId(project.templateId as Parameters<typeof setTemplateId>[0]);
+        setFormats(project.formats);
+        startFlow('template');
+      });
     },
-    [presets, setPreset, setTemplateId, setFormats, startFlow, setStep],
+    [presets, setPreset, setTemplateId, setFormats, startFlow],
   );
 }
