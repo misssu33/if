@@ -1,55 +1,34 @@
-# Motiondot
+# MotionDot
 
-SNS 영상 변환·export — Next.js (App Router, TypeScript, Tailwind, **no `src/`**).
+TikTok · Instagram Reels · Threads · Coupang · 크리에이터용 **배치 GIF/MP4/WebP** 변환기.
 
-## 구조
+## Stack
 
-```
-motiondot/
-├── app/
-├── components/
-├── features/         # upload, preview, export, presets, queue
-├── lib/              # ffmpeg, workers, storage, utils
-├── public/
-├── temp/
-│   ├── frames/       # 프레임 추출
-│   ├── gif/          # GIF 중간파일
-│   └── archive/      # 압축파일
-├── outputs/
-│   ├── gif/          # 최종 GIF
-│   ├── mp4/          # 최종 MP4
-│   └── webp/         # 최종 WebP
-├── presets/          # SNS 프리셋 JSON
-├── worker/
-├── scripts/
-└── types/
-```
+Next.js · TypeScript · Tailwind · Zustand · ffmpeg · BullMQ · Redis · Remotion
 
-## 시작하기
+## Quick start
 
 ```bash
-cd motiondot
 npm install
 cp .env.example .env
-npm run dev
+npm run ensure-dirs
+npm run dev          # http://localhost:3000
+npm run worker       # 별도 터미널, Redis 필요
 ```
 
-## Android (Termux)
+## Architecture
+
+전체 구조는 **[ARCHITECTURE.md](./ARCHITECTURE.md)** 참고.
 
 ```
-/storage/emulated/0/Projects/motiondot
+features/     → upload · preview · export · presets · queue · workspace
+lib/ffmpeg/   → 미디어 처리 (유일)
+worker/       → BullMQ 배치 처리
+presets/      → SNS JSON
+temp/         → 중간 파일
+outputs/      → 최종 GIF · MP4 · WebP
 ```
-
-`.env`의 `PROJECT_ROOT`를 위 경로로 설정합니다.
-
-## 스크립트
-
-| 명령 | 설명 |
-|------|------|
-| `npm run dev` | 개발 서버 |
-| `npm run build` | 프로덕션 빌드 |
-| `npm run worker` | BullMQ 워커 (Redis 필요) |
 
 ## Cursor
 
-프로젝트 규칙: [`.cursor/rules/project.mdc`](../.cursor/rules/project.mdc)
+`.cursor/rules/project.mdc`

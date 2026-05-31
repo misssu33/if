@@ -6,3 +6,10 @@ export type FfmpegEncodeOptions = {
   height?: number;
   fps?: number;
 };
+
+/** 프레임 추출 옵션 */
+export type FfmpegExtractFramesOptions = {
+  inputPath: string;
+  outputDir: string;
+  fps?: number;
+};

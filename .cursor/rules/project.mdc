@@ -1,38 +1,54 @@
 ---
-description: Motiondot architecture and coding standards
+description: MotionDot production architecture and coding standards
 globs: motiondot/**/*
 alwaysApply: true
 ---
 
-# Motiondot — Project Rules
+# MotionDot — Project Rules
+
+Production batch GIF/MP4/WebP converter for TikTok, Instagram Reels, Threads, Coupang, and creators.
+
+## Stack
+
+Next.js (App Router) · TypeScript (strict) · Tailwind · Zustand · ffmpeg (`lib/ffmpeg`) · BullMQ · Redis · Remotion
 
 ## Folder architecture
 
-- **Feature-based structure**: UI and logic for a capability live under `features/<name>/` (e.g. `features/upload/components/`, `features/upload/hooks/`).
-- **Shared UI only** in `components/` — never duplicate the same component in `features/` and `components/`.
-- **`lib/ffmpeg/`** — all FFmpeg / fluent-ffmpeg logic. Do not call ffmpeg from `app/`, `features/`, or `worker/` directly.
-- **`worker/`** — BullMQ workers and job processors only. Do not put worker runtime under `lib/workers/`.
-- **`presets/`** — SNS preset definitions as **JSON files only**. Load via `features/presets/` helpers, not hardcoded in TS.
+| Path | Purpose |
+|------|---------|
+| `app/` | Thin routes + `api/` only |
+| `features/<name>/` | Isolated feature modules (`components/`, `hooks/`, `services/`, `stores/`) |
+| `components/` | **Shared** UI only — never duplicate in features |
+| `lib/ffmpeg/` | **All** FFmpeg logic |
+| `worker/` | **All** BullMQ workers + `processors/` |
+| `presets/` | SNS specs as **JSON only** |
+| `stores/` | Global Zustand |
+| `types/` | Shared TS types |
+| `temp/` | frames, gif, archive |
+| `outputs/` | gif, mp4, webp finals |
 
-## TypeScript & styling
+## Pipelines
 
-- **TypeScript strictly** — no new `.js` files; `strict` mode; prefer typed APIs.
-- **Tailwind only** for styling — no CSS modules or inline `style={{}}` unless required for dynamic values.
-- **Modular components** — small, single-purpose files.
-- **`app/page.tsx`** — thin composition only (import feature views). No large JSX blocks in route files.
+- **Upload**: `features/upload` → `POST /api/upload` → `temp/archive`
+- **Preview**: `features/preview` → Remotion
+- **Export**: `features/export` → `POST /api/jobs` → `outputs/`
+- **Queue / progress**: `worker/` → Redis → `GET /api/jobs/progress`
 
-## Imports
+## Rules
 
-- `@/features/*` — feature modules
-- `@/components/*` — shared UI
-- `@/lib/ffmpeg/*` — video processing
-- `@/lib/storage/*` — paths and I/O
-- `@/worker/*` — only from worker entry scripts, not from React components
+- Feature-based structure; isolated features
+- No monolithic `page.tsx` — use `features/workspace`
+- Strict TypeScript; `server-only` on fs/queue services
+- Tailwind only
+- Server barrels must not export `load-preset`, `upload-service`, `export-service` to client
+- Import server helpers by full path: `@/features/presets/load-preset`
 
-## Anti-patterns (do not)
+## Anti-patterns
 
 - Duplicate components across features
-- FFmpeg calls outside `lib/ffmpeg`
-- BullMQ `Worker` / `Queue` processors outside `worker/`
-- Preset dimensions hardcoded in TS when a JSON exists in `presets/`
-- Large `page.tsx` files or non-Tailwind styling
+- FFmpeg outside `lib/ffmpeg`
+- Workers outside `worker/`
+- Hardcoded preset dimensions when JSON exists
+- Large page files
+
+See `motiondot/ARCHITECTURE.md` for full map.

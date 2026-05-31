@@ -1,0 +1,10 @@
+{
+  "id": "threads",
+  "name": "Threads",
+  "platform": "threads",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "maxDurationSec": 300,
+  "description": "Threads 피드·릴스"
+}

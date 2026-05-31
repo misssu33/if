@@ -1,0 +1,10 @@
+{
+  "id": "coupang-product",
+  "name": "Coupang 상품",
+  "platform": "coupang-product",
+  "width": 1000,
+  "height": 1000,
+  "fps": 30,
+  "maxDurationSec": 60,
+  "description": "쿠팡 상품 상세 GIF/영상"
+}

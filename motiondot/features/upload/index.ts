@@ -1,2 +1,2 @@
-// features/upload/components — 업로드 UI (react-dropzone)
-export {};
+export { UploadZone } from './components/upload-zone';
+export { useFileDropzone } from './hooks/use-file-dropzone';

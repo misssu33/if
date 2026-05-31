@@ -1,27 +1,31 @@
 import { Worker } from 'bullmq';
-import { QUEUE_NAME, redisConnection } from './config';
+import { JOB_NAMES, MOTIONDOT_QUEUE_NAME } from '@/lib/queue';
+import { getRedisConnection, getRedisHostConfig } from '@/lib/redis';
+import { processConvertJob } from './processors/convert-job';
+import type { ConvertJobPayload } from './jobs/types';
 
 /**
- * BullMQ 병렬 처리 워커
+ * MotionDot BullMQ Worker — 배치 변환 처리
  * 실행: npm run worker
  */
-const worker = new Worker(
-  QUEUE_NAME,
+const worker = new Worker<ConvertJobPayload>(
+  MOTIONDOT_QUEUE_NAME,
   async (job) => {
-    console.log(`[worker] job ${job.id} — ${job.name}`, job.data);
-    // FFmpeg 작업은 lib/ffmpeg를 import해 처리 (구현 예정)
+    if (job.name !== JOB_NAMES.CONVERT) {
+      throw new Error(`Unknown job: ${job.name}`);
+    }
+    return processConvertJob(job.data);
   },
-  { connection: redisConnection },
+  { connection: getRedisConnection() },
 );
 
 worker.on('completed', (job) => {
-  console.log(`[worker] completed ${job.id}`);
+  console.log(`[MotionDot worker] completed ${job.id}`);
 });
 
 worker.on('failed', (job, err) => {
-  console.error(`[worker] failed ${job?.id}`, err);
+  console.error(`[MotionDot worker] failed ${job?.id}`, err);
 });
 
-console.log(
-  `[worker] listening on ${QUEUE_NAME} @ ${redisConnection.host}:${redisConnection.port}`,
-);
+const { host, port } = getRedisHostConfig();
+console.log(`[MotionDot worker] ${MOTIONDOT_QUEUE_NAME} @ ${host}:${port}`);

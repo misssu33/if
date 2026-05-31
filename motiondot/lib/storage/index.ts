@@ -17,3 +17,4 @@ export {
   getOutputSubdir,
   getPresetsDir,
 } from './paths';
+export { ensureStorageDirs } from './ensure-dirs';

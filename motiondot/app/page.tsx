@@ -1,5 +1,5 @@
-import { HomeView } from '@/features/home';
+import { ConverterWorkspace } from '@/features/workspace';
 
 export default function Page() {
-  return <HomeView />;
+  return <ConverterWorkspace />;
 }

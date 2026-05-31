@@ -1,1 +1,1 @@
-export { loadPreset, listPresets } from './load-preset';
+export { PresetSelector } from './components/preset-selector';

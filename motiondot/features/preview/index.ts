@@ -1,2 +1,2 @@
-// features/preview/components — 미리보기 (Remotion)
-export {};
+export { PreviewPanel } from './components/preview-panel';
+export { REMOTION_COMPOSITION_ID } from './remotion/root';
