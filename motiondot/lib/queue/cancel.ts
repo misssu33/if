@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { Redis } from 'ioredis';
 import { getConvertQueue } from './client';
 import { getRedisHostConfig } from '@/lib/redis';

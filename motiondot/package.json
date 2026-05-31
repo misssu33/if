@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "worker": "tsx worker/index.ts",
-    "ensure-dirs": "tsx scripts/ensure-dirs.ts"
+    "ensure-dirs": "tsx scripts/ensure-dirs.ts",
+    "test:convert": "tsx scripts/test-convert-pipeline.ts --direct",
+    "test:convert:queue": "tsx scripts/test-convert-pipeline.ts --queue"
   },
   "dependencies": {
     "@remotion/player": "^4.0.469",

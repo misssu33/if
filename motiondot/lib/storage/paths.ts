@@ -9,6 +9,8 @@ export const TEMP_SUBDIRS = {
   frames: 'frames',
   gif: 'gif',
   archive: 'archive',
+  logs: 'logs',
+  jobs: 'jobs',
 } as const;
 
 export type TempSubdir = (typeof TEMP_SUBDIRS)[keyof typeof TEMP_SUBDIRS];
@@ -48,6 +50,18 @@ export function getTempGifDir(): string {
 
 export function getTempArchiveDir(): string {
   return path.join(getTempDir(), TEMP_SUBDIRS.archive);
+}
+
+export function getTempLogsDir(): string {
+  return path.join(getTempDir(), TEMP_SUBDIRS.logs);
+}
+
+export function getTempJobsDir(): string {
+  return path.join(getTempDir(), TEMP_SUBDIRS.jobs);
+}
+
+export function getJobTempDir(jobId: string): string {
+  return path.join(getTempJobsDir(), jobId);
 }
 
 export function getTempSubdir(subdir: TempSubdir): string {

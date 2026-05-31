@@ -1,5 +1,3 @@
-import 'server-only';
-
 import type { BatchProgressResponse, JobProgress } from '@/types';
 import { getBatchJobIds } from './batch-registry';
 import { getJobProgress } from './progress';

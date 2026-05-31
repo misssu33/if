@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { randomUUID } from 'crypto';
 import type { BatchConvertResponse, ConvertJobPayload } from '@/types';
 import { getConvertQueue } from './client';

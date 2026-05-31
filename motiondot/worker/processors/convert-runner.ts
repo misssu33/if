@@ -1,9 +1,8 @@
 import path from 'path';
 import { loadPreset } from '@/features/presets/server/load-preset';
 import { resolveExportSettings } from '@/features/presets/utils/resolve-export-settings';
-import { resolveOutputPath } from '@/features/export/services/export-service';
 import { recordExportResult } from '@/lib/export/record-result';
-import { convertByFormat } from '@/lib/ffmpeg/convert';
+import { runConvertPipeline } from '@/lib/ffmpeg/pipeline';
 import { isJobCancelled, setJobProgress } from '@/lib/queue';
 import type { ConvertJobPayload } from '@/types';
 
@@ -37,51 +36,57 @@ export async function executeConvert(
       payload.maxFileSizeBytes ?? overrides?.maxFileSizeBytes,
   });
 
-  const outputPath = resolveOutputPath(jobId, settings.outputFormat);
+  try {
+    const outputPath = await runConvertPipeline(
+      {
+        jobId,
+        batchId,
+        inputPath: payload.inputPath,
+        settings,
+        format: payload.format,
+      },
+      async (progress, message) => {
+        if (await isJobCancelled(jobId)) {
+          throw new Error('Job cancelled');
+        }
+        await setJobProgress({
+          jobId,
+          batchId,
+          status: 'processing',
+          progress,
+          message,
+        });
+      },
+    );
 
-  await setJobProgress({
-    jobId,
-    batchId,
-    status: 'processing',
-    progress: 10,
-    message: `${settings.outputFormat.toUpperCase()} 변환 중`,
-  });
+    if (await isJobCancelled(jobId)) {
+      await setJobProgress({
+        jobId,
+        batchId,
+        status: 'cancelled',
+        progress: 0,
+        message: 'Cancelled',
+      });
+      throw new Error('Job cancelled');
+    }
 
-  await convertByFormat({
-    inputPath: payload.inputPath,
-    outputPath,
-    width: settings.width,
-    height: settings.height,
-    fps: settings.fps,
-    quality: settings.quality,
-    format: settings.outputFormat,
-  });
-
-  if (await isJobCancelled(jobId)) {
     await setJobProgress({
       jobId,
       batchId,
-      status: 'cancelled',
-      progress: 0,
-      message: 'Cancelled',
+      status: 'completed',
+      progress: 100,
+      message: '완료',
+      outputPath: path.basename(outputPath),
     });
-    throw new Error('Job cancelled');
+
+    await recordExportResult({
+      payload,
+      status: 'completed',
+      outputPath,
+    });
+
+    return outputPath;
+  } catch (err) {
+    throw err;
   }
-
-  await setJobProgress({
-    jobId,
-    batchId,
-    status: 'completed',
-    progress: 100,
-    message: '완료',
-    outputPath: path.basename(outputPath),
-  });
-
-  await recordExportResult({
-    payload,
-    status: 'completed',
-    outputPath,
-  });
-
-  return outputPath;
 }

@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { Redis } from 'ioredis';
 import type { JobProgress } from '@/types';
 import { getRedisHostConfig } from '@/lib/redis';

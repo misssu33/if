@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { Queue } from 'bullmq';
 import type { ConvertJobPayload } from '@/types';
 import { getRedisConnection } from '@/lib/redis';

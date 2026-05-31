@@ -3,6 +3,8 @@ import 'server-only';
 import { mkdir } from 'fs/promises';
 import {
   getTempArchiveDir,
+  getTempLogsDir,
+  getTempJobsDir,
   getTempFramesDir,
   getTempGifDir,
   getOutputGifDir,
@@ -17,6 +19,8 @@ export async function ensureStorageDirs(): Promise<void> {
     getTempFramesDir(),
     getTempGifDir(),
     getTempArchiveDir(),
+    getTempLogsDir(),
+    getTempJobsDir(),
     getOutputGifDir(),
     getOutputMp4Dir(),
     getOutputWebpDir(),

@@ -8,3 +8,4 @@ export {
 } from './history';
 export { createBatchZip } from './zip-batch';
 export { recordExportResult } from './record-result';
+export { resolveOutputPath } from './resolve-output-path';
