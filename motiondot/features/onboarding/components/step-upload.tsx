@@ -3,6 +3,7 @@
 import { useBatchStore } from '@/stores';
 import { UploadZone } from '@/features/upload';
 import type { UploadMediaKind } from '@/features/upload';
+import { VideoGifPanel } from '@/features/video-gif';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { EmptyState } from './empty-state';
 import { OnboardingTooltip } from './onboarding-tooltip';
@@ -31,6 +32,7 @@ export function StepUpload() {
           }
         />
       ) : null}
+      {mediaKind === 'video' && <VideoGifPanel />}
       <UploadZone mediaKind={mediaKind} />
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
         <Button
