@@ -59,7 +59,7 @@ export function useStartExport() {
         height: resolved.height,
         fps: resolved.fps,
         loop: resolved.loop,
-i        maxFileSizeBytes: resolved.maxFileSizeBytes,
+        maxFileSizeBytes: resolved.maxFileSizeBytes,
       });
     } finally {
       setLoading(false);
