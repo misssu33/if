@@ -3,7 +3,9 @@ motiondot/node_modules/
 motiondot/.next/
 motiondot/out/
 motiondot/.env
-motiondot/temp/*
+motiondot/temp/**/*
 !motiondot/temp/.gitkeep
+!motiondot/temp/**/.gitkeep
+!motiondot/temp/README.md
 motiondot/outputs/*
 !motiondot/outputs/.gitkeep
