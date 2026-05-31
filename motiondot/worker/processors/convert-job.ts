@@ -1,14 +1,14 @@
 import { setJobProgress } from '@/lib/queue';
 import { recordExportResult } from '@/lib/export/record-result';
 import type { ConvertJobPayload } from '@/types';
-import { getConvertThreadPool } from '../pool/thread-pool';
+import { executeConvert } from './convert-runner';
 
-/** BullMQ job → worker_thread 풀에서 변환 */
+/** BullMQ job → FFmpeg 변환 (메인 worker 프로세스에서 실행) */
 export async function processConvertJob(
   payload: ConvertJobPayload,
 ): Promise<string> {
   try {
-    return await getConvertThreadPool().run(payload);
+    return await executeConvert(payload);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Convert failed';
     const isCancelled = message.includes('cancelled');

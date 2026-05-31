@@ -32,3 +32,13 @@ outputs/      → 최종 GIF · MP4 · WebP
 ## Cursor
 
 `.cursor/rules/project.mdc`
+
+## E2E 변환 테스트
+
+전체 파이프라인(업로드 → 큐 → FFmpeg → GIF → 미리보기 → 다운로드): [docs/E2E_CONVERT_TEST.md](docs/E2E_CONVERT_TEST.md)
+
+```bash
+redis-server && npm run worker   # 별도 터미널
+npm run test:e2e
+npm run test:e2e -- ./your-sample.mp4
+```

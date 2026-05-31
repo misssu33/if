@@ -50,3 +50,4 @@ outputs/**/*
 !outputs/.gitkeep
 !outputs/**/.gitkeep
 !outputs/README.md
+dump.rdb

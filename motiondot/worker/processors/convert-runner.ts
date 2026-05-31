@@ -1,5 +1,5 @@
 import path from 'path';
-import { loadPreset } from '@/features/presets/server/load-preset';
+import { readPresetJson } from '@/features/presets/utils/read-preset-json';
 import { resolveExportSettings } from '@/features/presets/utils/resolve-export-settings';
 import { recordExportResult } from '@/lib/export/record-result';
 import { runConvertPipeline } from '@/lib/ffmpeg/pipeline';
@@ -23,7 +23,7 @@ export async function executeConvert(
     throw new Error('Job cancelled');
   }
 
-  const preset = await loadPreset(payload.presetId);
+  const preset = await readPresetJson(payload.presetId);
   const settings = resolveExportSettings(preset, {
     ...overrides,
     outputFormat: payload.format,

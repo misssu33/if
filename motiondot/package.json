@@ -10,7 +10,9 @@
     "worker": "tsx worker/index.ts",
     "ensure-dirs": "tsx scripts/ensure-dirs.ts",
     "test:convert": "tsx scripts/test-convert-pipeline.ts --direct",
-    "test:convert:queue": "tsx scripts/test-convert-pipeline.ts --queue"
+    "test:convert:queue": "tsx scripts/test-convert-pipeline.ts --queue",
+    "test:e2e": "tsx scripts/test-convert-e2e.ts",
+    "test:e2e:api": "tsx scripts/test-convert-e2e.ts --api"
   },
   "dependencies": {
     "@remotion/player": "^4.0.469",

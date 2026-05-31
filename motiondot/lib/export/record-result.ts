@@ -1,4 +1,3 @@
-import 'server-only';
 
 import { stat } from 'fs/promises';
 import path from 'path';
@@ -6,7 +5,7 @@ import { appendExportHistory } from './history';
 import { estimateExportSize } from './estimate-size';
 import type { ConvertJobPayload } from '@/types';
 import type { ExportHistoryRecord } from '@/types/export';
-import { loadPreset } from '@/features/presets/server/load-preset';
+import { readPresetJson } from '@/features/presets/utils/read-preset-json';
 
 type RecordExportInput = {
   payload: ConvertJobPayload;
@@ -20,7 +19,7 @@ export async function recordExportResult(
   input: RecordExportInput,
 ): Promise<void> {
   const { payload, status, outputPath, error } = input;
-  const preset = await loadPreset(payload.presetId);
+  const preset = await readPresetJson(payload.presetId);
   const quality = payload.quality ?? preset.quality;
   const loop = payload.loop ?? preset.loop;
 
