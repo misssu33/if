@@ -1,7 +1,22 @@
-import { runEncode } from './encode';
-import type { FfmpegEncodeOptions } from './types';
+import type { ConvertOptions } from './types';
+import { buildVideoFilterChain } from './filters';
+import { getGifMaxColors, resolveQuality } from './quality';
+import { runFfmpegCommand } from './run-command';
 
-/** GIF 인코딩 — fluent-ffmpeg 래퍼 */
-export function encodeGif(options: FfmpegEncodeOptions): Promise<void> {
-  return runEncode({ ...options, outputPath: options.outputPath });
+/** GIF 변환 (팔레트 · FPS · 해상도 · 품질) */
+export function encodeGif(options: ConvertOptions): Promise<void> {
+  const { inputPath, outputPath, width, height, fps } = options;
+  const quality = resolveQuality(options.quality);
+  const maxColors = getGifMaxColors(quality);
+  const vf = buildVideoFilterChain(width, height, fps);
+
+  return runFfmpegCommand(inputPath, outputPath, (cmd) =>
+    cmd
+      .outputOptions(['-loop', '0'])
+      .complexFilter([
+        `[0:v] ${vf},split [a][b]`,
+        `[a] palettegen=max_colors=${maxColors} [p]`,
+        `[b][p] paletteuse=dither=bayer`,
+      ]),
+  );
 }

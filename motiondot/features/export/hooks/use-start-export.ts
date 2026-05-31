@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { useBatchStore } from '@/stores';
 import { useQueueUiStore } from '@/features/queue';
 
-/** export 파이프라인: 큐에 배치 작업 등록 */
+/** export 파이프라인: 배치 큐 일괄 등록 */
 export function useStartExport() {
   const [loading, setLoading] = useState(false);
   const files = useBatchStore((s) => s.files);
@@ -16,20 +16,22 @@ export function useStartExport() {
     if (!presetId || files.length === 0) return;
     setLoading(true);
     try {
-      for (const file of files) {
-        const res = await fetch('/api/jobs', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+      const res = await fetch('/api/jobs/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jobs: files.map((file) => ({
             inputPath: file.tempPath,
             presetId,
             format,
-          }),
-        });
-        if (!res.ok) throw new Error('Job enqueue failed');
-        const { jobId } = (await res.json()) as { jobId: string };
-        trackJob(jobId);
-      }
+          })),
+        }),
+      });
+
+      if (!res.ok) throw new Error('Batch enqueue failed');
+
+      const { jobIds } = (await res.json()) as { jobIds: string[] };
+      jobIds.forEach(trackJob);
     } finally {
       setLoading(false);
     }

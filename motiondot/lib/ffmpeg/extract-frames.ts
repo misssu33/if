@@ -1,5 +1,5 @@
 import path from 'path';
-import { createFfmpegCommand } from './encode';
+import { createFfmpegCommand } from './binary';
 import type { FfmpegExtractFramesOptions } from './types';
 
 /** 영상 → 프레임 시퀀스 추출 (temp/frames) */

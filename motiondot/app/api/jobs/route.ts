@@ -2,23 +2,24 @@ import { randomUUID } from 'crypto';
 import { enqueueConvertJob } from '@/lib/queue';
 import type { ConvertJobPayload, OutputFormat } from '@/types';
 
-/** 배치 작업 큐 등록 */
+/** 단일 변환 작업 큐 등록 */
 export async function POST(request: Request) {
   const body = (await request.json()) as {
     inputPath: string;
     presetId: string;
     format: OutputFormat;
+    quality?: ConvertJobPayload['quality'];
+    batchId?: string;
   };
 
-  const jobId = randomUUID();
-  const payload: ConvertJobPayload = {
-    jobId,
+  const jobId = await enqueueConvertJob({
+    jobId: randomUUID(),
     inputPath: body.inputPath,
     presetId: body.presetId,
     format: body.format,
-  };
-
-  await enqueueConvertJob(payload);
+    quality: body.quality,
+    batchId: body.batchId,
+  });
 
   return Response.json({ jobId, status: 'queued' });
 }
