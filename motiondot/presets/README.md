@@ -1,12 +1,17 @@
 # presets/
 
-SNS·커머스 플랫폼별 변환 규격 JSON. TypeScript에 수치를 하드코딩하지 않습니다.
+SNS·커머스 플랫폼별 **JSON 프리셋** (TypeScript에 수치 하드코딩 금지).
 
-| 파일 | 용도 |
+| 파일 | 이름 |
 |------|------|
-| `tiktok.json` | TikTok |
+| `tiktok-short-clip.json` | TikTok Short Clip |
 | `instagram-reels.json` | Instagram Reels |
-| `threads.json` | Threads |
-| `coupang-product.json` | 쿠팡 상품 페이지 |
+| `threads-loop.json` | Threads Loop |
+| `facebook-feed.json` | Facebook Feed |
+| `kakaotalk-share.json` | KakaoTalk Share |
+| `coupang-product-detail-gif.json` | Coupang Product Detail GIF |
+| `naver-blog.json` | Naver Blog |
+| `custom.json` | Custom |
 
-로드: `features/presets/load-preset.ts`
+로드: `features/presets/server/load-preset.ts`  
+UI·설정: `features/presets/`

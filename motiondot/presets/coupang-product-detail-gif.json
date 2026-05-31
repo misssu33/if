@@ -1,0 +1,15 @@
+{
+  "id": "coupang-product-detail-gif",
+  "name": "Coupang Product Detail GIF",
+  "platform": "coupang",
+  "outputFormat": "gif",
+  "aspectRatio": "1:1",
+  "width": 1000,
+  "height": 1000,
+  "fps": 15,
+  "maxFileSizeBytes": 5242880,
+  "loop": true,
+  "quality": "medium",
+  "maxDurationSec": 30,
+  "recommendedUseCase": "쿠팡 상품 상세 GIF·자동 재생 루프"
+}

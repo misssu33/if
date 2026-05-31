@@ -1,0 +1,15 @@
+{
+  "id": "facebook-feed",
+  "name": "Facebook Feed",
+  "platform": "facebook",
+  "outputFormat": "mp4",
+  "aspectRatio": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "fps": 30,
+  "maxFileSizeBytes": 41943040,
+  "loop": false,
+  "quality": "medium",
+  "maxDurationSec": 240,
+  "recommendedUseCase": "Facebook 피드·광고 소재 (4:5)"
+}

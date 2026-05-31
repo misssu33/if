@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { UploadFileMeta } from '@/types';
+import type { PresetQualityLevel, UploadFileMeta } from '@/types';
 import type { BatchProgressState, ConversionJobItem } from '../types';
 import { computeBatchProgress } from '../utils/compute-batch-progress';
 import { mapServerStatus } from '../utils/map-server-status';
@@ -10,7 +10,12 @@ interface RegisterBatchInput {
   files: UploadFileMeta[];
   presetId: string;
   format: ConversionJobItem['format'];
-  quality?: ConversionJobItem['quality'];
+  quality?: PresetQualityLevel;
+  width: number;
+  height: number;
+  fps: number;
+  loop?: boolean;
+  maxFileSizeBytes?: number;
 }
 
 interface ConversionState {
@@ -45,7 +50,21 @@ export const useConversionStore = create<ConversionState>((set, get) => ({
 
   syncUploadFiles: (files) => set({ uploadFiles: files }),
 
-  registerBatch: ({ batchId, jobIds, files, presetId, format, quality }) => {
+  registerBatch: (input) => {
+    const {
+      batchId,
+      jobIds,
+      files,
+      presetId,
+      format,
+      quality,
+      width,
+      height,
+      fps,
+      loop,
+      maxFileSizeBytes,
+    } = input;
+
     const jobs: ConversionJobItem[] = files.map((file, i) => ({
       fileId: file.id,
       jobId: jobIds[i] ?? '',
@@ -55,6 +74,11 @@ export const useConversionStore = create<ConversionState>((set, get) => ({
       presetId,
       format,
       quality,
+      width,
+      height,
+      fps,
+      loop,
+      maxFileSizeBytes,
       status: 'queued',
       progress: 0,
     }));
@@ -104,7 +128,6 @@ export const useConversionStore = create<ConversionState>((set, get) => ({
       progress: 0,
       message: '취소됨',
     }),
-
 
   replaceJobId: (oldJobId, newJobId) =>
     set((s) => {

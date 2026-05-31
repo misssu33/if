@@ -1,4 +1,4 @@
-import type { ConvertQuality } from '@/lib/ffmpeg/types';
+import type { PresetQualityLevel } from '@/types';
 import type { OutputFormat } from '@/types';
 
 /** 파일별 변환 상태 */
@@ -19,7 +19,12 @@ export interface ConversionJobItem {
   inputPath: string;
   presetId: string;
   format: OutputFormat;
-  quality?: ConvertQuality;
+  quality?: PresetQualityLevel;
+  width: number;
+  height: number;
+  fps: number;
+  loop?: boolean;
+  maxFileSizeBytes?: number;
   status: ConversionFileStatus;
   progress: number;
   message?: string;

@@ -1,0 +1,15 @@
+{
+  "id": "kakaotalk-share",
+  "name": "KakaoTalk Share",
+  "platform": "kakaotalk",
+  "outputFormat": "mp4",
+  "aspectRatio": "1:1",
+  "width": 720,
+  "height": 720,
+  "fps": 24,
+  "maxFileSizeBytes": 10485760,
+  "loop": false,
+  "quality": "medium",
+  "maxDurationSec": 60,
+  "recommendedUseCase": "카카오톡 공유용 짧은 영상 (정사각형·용량 제한)"
+}

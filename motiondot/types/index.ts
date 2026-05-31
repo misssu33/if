@@ -1,4 +1,12 @@
-export type { PresetPlatform, VideoPreset } from './preset';
+export type {
+  PresetPlatform,
+  AspectRatio,
+  PresetQualityLevel,
+  MotionDotPreset,
+  PresetOverrides,
+  ResolvedExportSettings,
+  VideoPreset,
+} from './preset';
 export type {
   JobStatus,
   ConvertJobPayload,

@@ -58,6 +58,11 @@ export function useBatchConversionActions() {
           presetId: job.presetId,
           format: job.format,
           quality: job.quality,
+          width: job.width,
+          height: job.height,
+          fps: job.fps,
+          loop: job.loop,
+          maxFileSizeBytes: job.maxFileSizeBytes,
         });
         replaceJobId(jobId, newJobId);
       } catch (err) {

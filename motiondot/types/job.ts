@@ -1,7 +1,7 @@
-import type { ConvertQuality } from '@/lib/ffmpeg/types';
+import type { PresetOverrides, PresetQualityLevel } from './preset';
 import type { OutputFormat } from './upload';
 
-/** 서버/Redis 작업 상태 */
+/** BullMQ 배치 작업 상태 */
 export type JobStatus =
   | 'pending'
   | 'queued'
@@ -19,7 +19,14 @@ export interface ConvertJobPayload {
   inputPath: string;
   presetId: string;
   format: OutputFormat;
-  quality?: ConvertQuality;
+  quality?: PresetQualityLevel;
+  width: number;
+  height: number;
+  fps: number;
+  loop?: boolean;
+  maxFileSizeBytes?: number;
+  /** 서버 재현용 (선택) */
+  overrides?: PresetOverrides;
 }
 
 /** 배치 등록 요청 */
