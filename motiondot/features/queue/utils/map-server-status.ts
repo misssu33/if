@@ -9,6 +9,7 @@ export function mapServerStatus(status: JobStatus | string): ConversionFileStatu
     case 'queued':
       return 'queued';
     case 'active':
+    case 'processing':
       return 'processing';
     case 'completed':
       return 'completed';

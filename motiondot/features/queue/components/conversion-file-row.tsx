@@ -9,18 +9,36 @@ type ConversionFileRowProps = {
   job: ConversionJobItem;
   onCancel: (jobId: string) => void;
   onRetry: (jobId: string) => void;
+  onRemove?: () => void;
 };
 
 export function ConversionFileRow({
   job,
   onCancel,
   onRetry,
+  onRemove,
 }: ConversionFileRowProps) {
+  const isUploadPhase =
+    job.status === 'pending' &&
+    job.uploadProgress !== undefined &&
+    job.uploadProgress < 100;
+
+  const displayProgress = isUploadPhase
+    ? job.uploadProgress ?? 0
+    : job.progress;
+
+  const progressLabel = isUploadPhase
+    ? `업로드 ${displayProgress}%`
+    : job.status === 'processing'
+      ? `변환 ${displayProgress}%`
+      : undefined;
+
   const canCancel =
-    job.status === 'pending' ||
-    job.status === 'queued' ||
-    job.status === 'processing';
-  const canRetry = job.status === 'failed' || job.status === 'cancelled';
+    !isUploadPhase &&
+    (job.status === 'queued' || job.status === 'processing');
+  const canRetry =
+    job.status === 'failed' || job.status === 'cancelled';
+  const canRemove = !!onRemove && job.status === 'pending' && !isUploadPhase;
 
   return (
     <li className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
@@ -32,11 +50,16 @@ export function ConversionFileRow({
           {job.message && (
             <p className="mt-0.5 text-xs text-zinc-500">{job.message}</p>
           )}
+          {progressLabel && (
+            <p className="mt-0.5 text-xs text-violet-600 dark:text-violet-400">
+              {progressLabel}
+            </p>
+          )}
         </div>
         <ConversionStatusBadge status={job.status} />
       </div>
 
-      <ProgressBar value={job.progress} />
+      <ProgressBar value={displayProgress} />
 
       {job.error && (
         <p className="mt-2 text-xs text-red-600 dark:text-red-400">{job.error}</p>
@@ -48,8 +71,18 @@ export function ConversionFileRow({
         </p>
       )}
 
-      <div className="mt-3 flex gap-2">
-        {canCancel && (
+      <div className="mt-3 flex flex-wrap gap-2">
+        {onRemove && (
+          <Button
+            type="button"
+            variant="secondary"
+            className="!px-2 !py-1 text-xs"
+            onClick={onRemove}
+          >
+            제거
+          </Button>
+        )}
+        {canCancel && !job.jobId.startsWith('pending:') && (
           <Button
             type="button"
             variant="secondary"
@@ -59,7 +92,7 @@ export function ConversionFileRow({
             취소
           </Button>
         )}
-        {canRetry && (
+        {canRetry && !job.jobId.startsWith('pending:') && (
           <Button
             type="button"
             variant="primary"

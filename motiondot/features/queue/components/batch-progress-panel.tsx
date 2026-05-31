@@ -1,18 +1,15 @@
 'use client';
 
 import { useConversionStore } from '../stores/use-conversion-store';
-import { useConversionSync } from '../hooks/use-conversion-sync';
-import { useSyncUploadFiles } from '../hooks/use-sync-upload-files';
 import { useBatchConversionActions } from '../hooks/use-batch-conversion-actions';
 import { BatchProgressSummary } from './batch-progress-summary';
 import { ConversionFileRow } from './conversion-file-row';
 
-/** 배치 변환 진행률 패널 (상태 · 폴링 · 액션) */
+/** 배치 변환 진행률 (실시간 폴링) */
 export function BatchProgressPanel() {
-  useSyncUploadFiles();
-  useConversionSync();
-
-  const jobs = useConversionStore((s) => s.jobs);
+  const jobs = useConversionStore((s) =>
+    s.jobs.filter((j) => !j.localId),
+  );
   const batch = useConversionStore((s) => s.batch);
   const { cancelJob, retryJob } = useBatchConversionActions();
 
@@ -37,7 +34,7 @@ export function BatchProgressPanel() {
         </ul>
       ) : (
         <p className="text-sm text-zinc-500">
-          업로드 후 배치 변환을 시작하면 진행률이 표시됩니다.
+          업로드가 완료되면 비디오가 자동으로 큐에 등록됩니다.
         </p>
       )}
     </section>

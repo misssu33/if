@@ -1,1 +1,7 @@
-export type { ConversionFileStatus, ConversionJobItem, BatchProgressState } from './conversion';
+export type {
+  ConversionFileStatus,
+  ConversionJobItem,
+  BatchProgressState,
+  PendingUploadInput,
+  EnqueueJobMapping,
+} from './conversion';

@@ -3,9 +3,15 @@
 import { useEffect } from 'react';
 import { PageShell } from '@/components/ui';
 import { AppHeader } from '@/components/layout';
+import { useConversionSync } from '@/features/queue/hooks/use-conversion-sync';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { LandingDashboard } from './landing-dashboard';
 import { GuidedWorkspace } from './guided-workspace';
+
+function ConversionSyncBridge() {
+  useConversionSync();
+  return null;
+}
 
 /** 랜딩 ↔ 3단계 가이드 전환 */
 export function OnboardingShell() {
@@ -16,14 +22,17 @@ export function OnboardingShell() {
     hydrate();
   }, [hydrate]);
 
-  if (showLanding) {
-    return (
-      <PageShell className="min-h-screen">
-        <AppHeader />
-        <LandingDashboard />
-      </PageShell>
-    );
-  }
-
-  return <GuidedWorkspace />;
+  return (
+    <>
+      <ConversionSyncBridge />
+      {showLanding ? (
+        <PageShell className="min-h-screen">
+          <AppHeader />
+          <LandingDashboard />
+        </PageShell>
+      ) : (
+        <GuidedWorkspace />
+      )}
+    </>
+  );
 }

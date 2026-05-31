@@ -1,24 +1,32 @@
 'use client';
 
+import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
+import { ConversionFileRow } from '@/features/queue/components/conversion-file-row';
+import { useBatchConversionActions } from '@/features/queue/hooks/use-batch-conversion-actions';
 import { useUploadQueue } from '../hooks/use-upload-queue';
-import { useUploadUiStore } from '../stores/use-upload-ui-store';
-import { UploadFileItem } from './upload-file-item';
 
-/** 업로드된 / 업로드 중인 비디오 목록 */
+/** 업로드·큐 통합 파이프라인 목록 (Zustand) */
 export function UploadFileList() {
-  const items = useUploadUiStore((s) => s.items);
+  const jobs = useConversionStore((s) =>
+    s.jobs.filter((j) => j.localId),
+  );
   const { removeUploadedFile } = useUploadQueue();
+  const { cancelJob, retryJob } = useBatchConversionActions();
 
-  if (items.length === 0) return null;
+  if (jobs.length === 0) return null;
 
   return (
-    <ul className="flex flex-col gap-2" aria-label="업로드 파일 목록">
-      {items.map((item) => (
-        <UploadFileItem
-          key={item.localId}
-          item={item}
-          onRemove={() =>
-            removeUploadedFile(item.localId, item.meta?.id)
+    <ul className="flex flex-col gap-2" aria-label="업로드·변환 파이프라인">
+      {jobs.map((job) => (
+        <ConversionFileRow
+          key={job.localId ?? job.jobId}
+          job={job}
+          onCancel={cancelJob}
+          onRetry={retryJob}
+          onRemove={
+            job.localId
+              ? () => removeUploadedFile(job.localId!, job.fileId)
+              : undefined
           }
         />
       ))}

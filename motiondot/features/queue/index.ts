@@ -14,3 +14,5 @@ export type {
 export type { ProgressTransport } from './services/progress-transport';
 export { createPollingTransport } from './services/polling-transport';
 export { createSseTransport } from './services/sse-transport';
+export { enqueueConvertBatch } from './services/enqueue-batch-client';
+export { useEnqueueUploadedMedia } from './hooks/use-enqueue-uploaded-media';
