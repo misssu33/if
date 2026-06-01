@@ -63,19 +63,8 @@ async function ensureSampleMp4(targetPath: string): Promise<string> {
   e2eLog('info', '샘플 MP4 생성', { path: targetPath });
 
   await new Promise<void>((resolve, reject) => {
-    createFfmpegCommand('/dev/zero')
-      .inputOptions([
-        '-f',
-        'rawvideo',
-        '-pix_fmt',
-        'rgb24',
-        '-s',
-        '640x360',
-        '-r',
-        '15',
-        '-t',
-        '3',
-      ])
+    createFfmpegCommand('testsrc=size=640x360:rate=15:duration=3')
+      .inputOptions(['-f', 'lavfi'])
       .outputOptions(['-pix_fmt', 'yuv420p', '-an'])
       .output(targetPath)
       .on('end', () => resolve())

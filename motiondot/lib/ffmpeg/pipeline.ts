@@ -61,6 +61,7 @@ export async function runConvertPipeline(
         fps: settings.fps,
         quality: settings.quality as ConvertQuality,
         maxColors: settings.maxColors,
+        watermarkText: input.settings.watermarkText,
         format,
       },
       {

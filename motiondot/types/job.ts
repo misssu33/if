@@ -1,6 +1,8 @@
 import type { PresetOverrides, PresetQualityLevel } from './preset';
 import type { OutputFormat } from './upload';
 
+export type SubscriptionTier = 'free' | 'pro';
+
 /** BullMQ 배치 작업 상태 */
 export type JobStatus =
   | 'pending'
@@ -27,6 +29,8 @@ export interface ConvertJobPayload {
   maxFileSizeBytes?: number;
   /** 서버 재현용 (선택) */
   overrides?: PresetOverrides;
+  tier?: SubscriptionTier;
+  watermarkText?: string;
 }
 
 /** 배치 등록 요청 */

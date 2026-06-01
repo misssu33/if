@@ -13,6 +13,8 @@ export interface ConvertOptions {
   quality?: ConvertQuality;
   /** GIF palettegen max_colors (프리셋·수동 조정) */
   maxColors?: number;
+  /** free-tier 워터마크 텍스트 (없으면 비활성) */
+  watermarkText?: string;
 }
 
 export interface ConvertByFormatOptions extends ConvertOptions {

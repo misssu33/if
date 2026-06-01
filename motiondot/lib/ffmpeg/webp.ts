@@ -8,9 +8,9 @@ export function encodeWebp(
   options: ConvertOptions,
   runOptions?: RunFfmpegOptions,
 ): Promise<void> {
-  const { inputPath, outputPath, width, height, fps } = options;
+  const { inputPath, outputPath, width, height, fps, watermarkText } = options;
   const quality = resolveQuality(options.quality);
-  const vf = buildVideoFilterChain(width, height, fps);
+  const vf = buildVideoFilterChain(width, height, fps, watermarkText);
   const q = getWebpQuality(quality);
 
   return runFfmpegCommand(

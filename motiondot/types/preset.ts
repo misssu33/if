@@ -70,6 +70,8 @@ export interface ResolvedExportSettings {
   quality: PresetQualityLevel;
   maxColors?: number;
   maxDurationSec?: number;
+  /** free-tier 워터마크 텍스트 (없으면 비활성) */
+  watermarkText?: string;
 }
 
 /** @deprecated MotionDotPreset 사용 */

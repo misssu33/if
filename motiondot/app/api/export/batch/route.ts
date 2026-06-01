@@ -1,6 +1,11 @@
 import { randomUUID } from 'crypto';
 import { enqueueBatchConvertJobs } from '@/lib/queue';
 import type { ConvertJobPayload } from '@/types';
+import {
+  resolveSubscriptionTier,
+  resolveWatermarkTextByTier,
+  validateFreeTierJobs,
+} from '@/features/billing/server/free-tier-policy';
 
 type ExportBatchBody = {
   batchId?: string;
@@ -14,6 +19,13 @@ export async function POST(request: Request) {
   if (!body.jobs?.length) {
     return Response.json({ error: 'jobs required' }, { status: 400 });
   }
+  const tier = resolveSubscriptionTier(request);
+  if (tier === 'free') {
+    const error = validateFreeTierJobs(body.jobs);
+    if (error) {
+      return Response.json({ error }, { status: 400 });
+    }
+  }
 
   const batchId = body.batchId ?? randomUUID();
   const result = await enqueueBatchConvertJobs(
@@ -21,6 +33,8 @@ export async function POST(request: Request) {
       ...job,
       jobId: randomUUID(),
       batchId,
+      tier,
+      watermarkText: resolveWatermarkTextByTier(tier),
     })),
     batchId,
   );

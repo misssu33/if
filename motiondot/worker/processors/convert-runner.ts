@@ -35,6 +35,10 @@ export async function executeConvert(
     maxFileSizeBytes:
       payload.maxFileSizeBytes ?? overrides?.maxFileSizeBytes,
   });
+  const effectiveSettings = {
+    ...settings,
+    watermarkText: payload.watermarkText,
+  };
 
   try {
     const outputPath = await runConvertPipeline(
@@ -42,7 +46,7 @@ export async function executeConvert(
         jobId,
         batchId,
         inputPath: payload.inputPath,
-        settings,
+        settings: effectiveSettings,
         format: payload.format,
       },
       async (progress, message) => {

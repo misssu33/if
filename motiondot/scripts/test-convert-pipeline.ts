@@ -8,7 +8,7 @@
  *   npx tsx scripts/test-convert-pipeline.ts --queue [input.mp4]
  */
 import { randomUUID } from 'crypto';
-import { access, mkdir, writeFile } from 'fs/promises';
+import { access, mkdir } from 'fs/promises';
 import path from 'path';
 import { readPresetJson } from '../features/presets/utils/read-preset-json';
 import { resolveExportSettings } from '../features/presets/utils/resolve-export-settings';
@@ -18,7 +18,6 @@ import { createFfmpegCommand } from '../lib/ffmpeg/binary';
 
 const args = process.argv.slice(2);
 const queueMode = args.includes('--queue');
-const directMode = args.includes('--direct') || !queueMode;
 const inputArg = args.find((a) => !a.startsWith('--'));
 
 const PRESET_ID = process.env.TEST_PRESET_ID ?? 'tiktok-short-clip';
@@ -35,14 +34,8 @@ async function ensureSampleMp4(targetPath: string): Promise<string> {
   console.log('[test] 샘플 MP4 생성:', targetPath);
 
   await new Promise<void>((resolve, reject) => {
-    createFfmpegCommand('/dev/zero')
-      .inputOptions([
-        '-f', 'rawvideo',
-        '-pix_fmt', 'rgb24',
-        '-s', '640x360',
-        '-r', '15',
-        '-t', '3',
-      ])
+    createFfmpegCommand('testsrc=size=640x360:rate=15:duration=3')
+      .inputOptions(['-f', 'lavfi'])
       .outputOptions(['-pix_fmt', 'yuv420p', '-an'])
       .output(targetPath)
       .on('end', () => resolve())

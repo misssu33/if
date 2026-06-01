@@ -16,6 +16,24 @@ export function buildVideoFilterChain(
   width: number,
   height: number,
   fps: number,
+  watermarkText?: string,
 ): string {
-  return `${buildScalePadFilter(width, height)},${buildFpsFilter(fps)}`;
+  const base = `${buildScalePadFilter(width, height)},${buildFpsFilter(fps)}`;
+  if (!watermarkText) return base;
+
+  const escaped = watermarkText
+    .replaceAll('\\', '\\\\')
+    .replaceAll(':', '\\:')
+    .replaceAll("'", "\\'");
+
+  const watermark = [
+    `drawtext=text='${escaped}'`,
+    'fontcolor=white@0.8',
+    'fontsize=h*0.04',
+    'x=w-tw-24',
+    'y=h-th-24',
+    "box=1:boxcolor=black@0.35:boxborderw=10",
+  ].join(':');
+
+  return `${base},${watermark}`;
 }
