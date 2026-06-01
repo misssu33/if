@@ -1,7 +1,9 @@
 'use client';
 
+import { startTransition } from 'react';
 import { Button } from '@/components/ui';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
+import type { UploadIntent } from '../types';
 import { OnboardingCtaCard } from './onboarding-cta-card';
 import { SampleProjectsGrid } from './sample-projects-grid';
 import { useApplySampleProject } from '../hooks/use-apply-sample-project';
@@ -10,6 +12,12 @@ import { useApplySampleProject } from '../hooks/use-apply-sample-project';
 export function LandingDashboard() {
   const startFlow = useOnboardingStore((s) => s.startFlow);
   const applySample = useApplySampleProject();
+
+  const enterFlow = (intent: UploadIntent) => {
+    startTransition(() => {
+      startFlow(intent);
+    });
+  };
 
   return (
     <div className="mx-auto flex w-full min-w-0 flex-col gap-8 py-4 sm:gap-10">
@@ -24,7 +32,7 @@ export function LandingDashboard() {
         <Button
           type="button"
           className="mt-6"
-          onClick={() => startFlow('video')}
+          onClick={() => enterFlow('video')}
         >
           3단계 가이드로 시작
         </Button>
@@ -39,19 +47,19 @@ export function LandingDashboard() {
             icon="🎬"
             title="Upload Videos"
             description="MP4·MOV로 GIF/MP4/WebP 배치 변환"
-            onClick={() => startFlow('video')}
+            onClick={() => enterFlow('video')}
           />
           <OnboardingCtaCard
             icon="🖼️"
             title="Upload Images"
             description="제품·배경 이미지 → 모션 템플릿"
-            onClick={() => startFlow('image')}
+            onClick={() => enterFlow('image')}
           />
           <OnboardingCtaCard
             icon="✨"
             title="Create from Template"
             description="TikTok·쿠팡·스토리 템플릿 선택"
-            onClick={() => startFlow('template')}
+            onClick={() => enterFlow('template')}
           />
         </div>
       </section>

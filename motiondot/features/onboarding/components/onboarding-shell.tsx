@@ -15,12 +15,21 @@ function ConversionSyncBridge() {
 
 /** 랜딩 ↔ 3단계 가이드 전환 */
 export function OnboardingShell() {
+  const bootstrapped = useOnboardingStore((s) => s.bootstrapped);
+  const bootstrapFromStorage = useOnboardingStore((s) => s.bootstrapFromStorage);
   const showLanding = useOnboardingStore((s) => s.showLanding);
-  const hydrate = useOnboardingStore((s) => s.hydrate);
 
   useEffect(() => {
-    hydrate();
-  }, [hydrate]);
+    bootstrapFromStorage();
+  }, [bootstrapFromStorage]);
+
+  if (!bootstrapped) {
+    return (
+      <PageShell className="flex min-h-screen items-center justify-center">
+        <p className="text-sm text-zinc-500">로딩 중…</p>
+      </PageShell>
+    );
+  }
 
   return (
     <>

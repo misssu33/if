@@ -1,13 +1,16 @@
 import { create } from 'zustand';
 import type { GuidedStep, UploadIntent } from '../types';
 import { readOnboardingStorage, writeOnboardingStorage } from '../utils/storage';
+import { readDismissedTooltips } from '../utils/init-onboarding-storage';
 
 interface OnboardingState {
   showLanding: boolean;
   currentStep: GuidedStep;
   uploadIntent: UploadIntent | null;
   dismissedTooltips: Set<string>;
-  hydrate: () => void;
+  /** 클라이언트 스토리지 초기화 완료 */
+  bootstrapped: boolean;
+  bootstrapFromStorage: () => void;
   startFlow: (intent?: UploadIntent) => void;
   openLanding: () => void;
   setStep: (step: GuidedStep) => void;
@@ -22,13 +25,16 @@ export const useOnboardingStore = create<OnboardingState>((set, get) => ({
   currentStep: 1,
   uploadIntent: null,
   dismissedTooltips: new Set(),
+  bootstrapped: false,
 
-  hydrate: () => {
+  /** 앱 부팅 1회 — showLanding은 여기서만 스토리지와 동기화 */
+  bootstrapFromStorage: () => {
+    if (get().bootstrapped) return;
     const stored = readOnboardingStorage();
-    const dismissed = new Set(stored.dismissedTooltips ?? []);
     set({
+      bootstrapped: true,
       showLanding: !stored.hasCompletedTour,
-      dismissedTooltips: dismissed,
+      dismissedTooltips: readDismissedTooltips(),
     });
   },
 
@@ -41,7 +47,11 @@ export const useOnboardingStore = create<OnboardingState>((set, get) => ({
     });
   },
 
-  openLanding: () => set({ showLanding: true }),
+  openLanding: () =>
+    set({
+      showLanding: true,
+      currentStep: 1,
+    }),
 
   setStep: (step) => set({ currentStep: step }),
 

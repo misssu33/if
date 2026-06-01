@@ -120,6 +120,22 @@ export interface MotionTemplateDefinition {
   typography: TemplateTypography;
 }
 
+
+export type OverlayTextStyle = {
+  fontSize?: number;
+  fontWeight?: number;
+  color?: string;
+  textAlign?: 'left' | 'center' | 'right';
+  opacity?: number;
+};
+
+export type OverlayStylesMap = {
+  headline?: OverlayTextStyle;
+  subline?: OverlayTextStyle;
+  cta?: OverlayTextStyle;
+  badge?: OverlayTextStyle;
+};
+
 /** Remotion composition 런타임 입력 */
 export interface MotionCompositionProps {
   width: number;
@@ -137,4 +153,6 @@ export interface MotionCompositionProps {
   logoSrc?: string;
   formatLabel?: string;
   showSafeZone?: boolean;
+  /** 편집기 사용자 스타일 (렌더만) */
+  overlayStyles?: OverlayStylesMap;
 }
