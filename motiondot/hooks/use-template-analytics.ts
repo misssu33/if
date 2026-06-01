@@ -9,6 +9,7 @@ import {
   hadExportThisSession,
   markTemplateSelected,
   noteCtaChange,
+  setActiveTemplateMeta,
   startTemplateEditSession,
   wasTemplateSelectedThisSession,
 } from '@/lib/analytics/session';
@@ -25,6 +26,15 @@ export function useTemplateAnalytics() {
   const prevTemplateRef = useRef(templateId);
 
   useEffect(() => {
+    if (currentStep !== 2 && currentStep !== 3) return;
+    const template = getById(templateId);
+    analytics.templateViewed({
+      template_id: templateId,
+      template_name: template?.name,
+    });
+  }, [currentStep, templateId, getById, analytics]);
+
+  useEffect(() => {
     const template = getById(templateId);
     const name = template?.name;
 
@@ -33,7 +43,8 @@ export function useTemplateAnalytics() {
       analytics.templateSelected({ template_id: templateId, template_name: name });
       markTemplateSelected();
       setLastTemplateUsed(templateId);
-      startTemplateEditSession(template?.layout?.cta?.defaultText ?? '지금 구매');
+            setActiveTemplateMeta(templateId, name);
+      startTemplateEditSession('지금 구매');
       prevTemplateRef.current = templateId;
     }
   }, [templateId, getById, analytics]);

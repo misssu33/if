@@ -10,6 +10,7 @@ import {
   trackTemplateExported,
 } from '@/lib/analytics/events';
 import {
+  getActiveTemplateMeta,
   getCtaEdited,
   getEditTimeSec,
   markExportCompleted,
@@ -25,7 +26,10 @@ export function useExportAnalytics() {
   const prevStatusRef = useRef<Map<string, string>>(new Map());
 
   useEffect(() => {
-    const templateId = usePreviewStore.getState().templateId;
+    const previewTemplateId = usePreviewStore.getState().templateId;
+    const meta = getActiveTemplateMeta();
+    const templateId = meta.id ?? previewTemplateId;
+    const templateName = meta.name ?? templateId;
     const ctaText = usePreviewStore.getState().ctaText;
     const resolved = useExportSettingsStore.getState().resolved;
     const preset = useExportSettingsStore.getState().preset;
@@ -55,7 +59,7 @@ export function useExportAnalytics() {
 
         trackTemplateExported({
           template_id: templateId,
-          template_name: templateId,
+          template_name: templateName,
           preset_used: presetUsed,
           export_format: exportFormat,
           aspect_ratio: resolved?.aspectRatio ?? preset?.aspectRatio,

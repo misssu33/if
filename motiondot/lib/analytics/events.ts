@@ -58,6 +58,8 @@ export function trackTemplateSelected(payload: {
   template_id: string;
   template_name?: string;
 }): void {
+  const key = `template_selected:${payload.template_id}`;
+  if (!markOnce(key)) return;
   captureEvent('template_selected', {
     ...baseDeviceProps(),
     template_id: payload.template_id,

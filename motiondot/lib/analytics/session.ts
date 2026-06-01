@@ -57,3 +57,18 @@ export function hadExportThisSession(): boolean {
 export function resetTemplateEditTimer(): void {
   templateEditStartedAt = Date.now();
 }
+
+let activeTemplateId: string | undefined;
+let activeTemplateName: string | undefined;
+
+export function setActiveTemplateMeta(id: string, name?: string): void {
+  activeTemplateId = id;
+  activeTemplateName = name;
+}
+
+export function getActiveTemplateMeta(): {
+  id?: string;
+  name?: string;
+} {
+  return { id: activeTemplateId, name: activeTemplateName };
+}
