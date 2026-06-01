@@ -1,5 +1,9 @@
 export { ExportPanel } from './components/export-panel';
+export { ExportProgressPanel } from './components/export-progress-panel';
+export { ExportStatusBadge } from './components/export-status-badge';
 export { ExportProgress } from './components/export-progress';
+export { useExportProgress } from './hooks/use-export-progress';
+export { useExportProgressStore } from './stores/use-export-progress-store';
 export { BatchDownloadPanel } from './components/batch-download-panel';
 export { ExportHistoryList } from './components/export-history-list';
 export { useStartExport } from './hooks/use-start-export';

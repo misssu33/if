@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useBatchStore } from '@/stores';
 import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
 import {
@@ -8,10 +8,10 @@ import {
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
 import { useExportSessionStore } from '../stores/use-export-session-store';
+import { useExportProgressStore } from '../stores/use-export-progress-store';
 
 /** 다중 포맷 · 다중 파일 배치 export → 기존 큐 연동 */
 export function useBatchExport() {
-  const [loading, setLoading] = useState(false);
   const files = useBatchStore((s) => s.files);
   const resolved = useExportSettingsStore((s) => s.resolved);
   const overrides = useExportSettingsStore((s) => s.overrides);
@@ -20,10 +20,23 @@ export function useBatchExport() {
   const namingPattern = useExportSessionStore((s) => s.namingPattern);
   const setLastBatchId = useExportSessionStore((s) => s.setLastBatchId);
   const registerBatch = useConversionStore((s) => s.registerBatch);
+  const beginSession = useExportProgressStore((s) => s.beginSession);
+  const attachBatch = useExportProgressStore((s) => s.attachBatch);
+  const markError = useExportProgressStore((s) => s.markError);
+  const isBlockingExport = useExportProgressStore((s) => s.isBlockingExport);
 
   const runBatchExport = useCallback(async () => {
-    if (!resolved || files.length === 0 || formats.length === 0) return;
-    setLoading(true);
+    if (
+      !resolved ||
+      files.length === 0 ||
+      formats.length === 0 ||
+      isBlockingExport
+    ) {
+      return;
+    }
+
+    beginSession();
+
     try {
       const jobs = files.flatMap((file) =>
         formats.map((format) => ({
@@ -48,7 +61,10 @@ export function useBatchExport() {
         body: JSON.stringify({ jobs }),
       });
 
-      if (!res.ok) throw new Error('Batch export failed');
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error ?? 'Batch export failed');
+      }
 
       const { batchId, jobIds } = (await res.json()) as {
         batchId: string;
@@ -56,6 +72,8 @@ export function useBatchExport() {
       };
 
       setLastBatchId(batchId);
+      attachBatch(batchId);
+
       const items = files.flatMap((file) =>
         formats.map((fmt) => ({
           fileId: file.id,
@@ -85,8 +103,10 @@ export function useBatchExport() {
         loop: resolved.loop,
         maxFileSizeBytes: resolved.maxFileSizeBytes,
       });
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Batch export failed';
+      markError(message);
     }
   }, [
     files,
@@ -96,12 +116,17 @@ export function useBatchExport() {
     namingPattern,
     setLastBatchId,
     registerBatch,
+    isBlockingExport,
+    beginSession,
+    attachBatch,
+    markError,
   ]);
 
   return {
     runBatchExport,
-    loading,
-    canExport: hasSettings && files.length > 0 && formats.length > 0,
+    loading: isBlockingExport,
+    canExport:
+      hasSettings && files.length > 0 && formats.length > 0 && !isBlockingExport,
     formats,
   };
 }

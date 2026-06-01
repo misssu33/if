@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useBatchStore } from '@/stores';
 import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
 import { enqueueConvertBatch } from '@/features/queue/services/enqueue-batch-client';
@@ -8,15 +8,20 @@ import {
   useExportSettingsStore,
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
+import { useExportProgressStore } from '../stores/use-export-progress-store';
 
 /** 수동 export — 아직 큐에 없는 파일만 등록 */
 export function useStartExport() {
-  const [loading, setLoading] = useState(false);
   const files = useBatchStore((s) => s.files);
   const resolved = useExportSettingsStore((s) => s.resolved);
   const overrides = useExportSettingsStore((s) => s.overrides);
   const hasSettings = useHasValidExportSettings();
   const registerBatch = useConversionStore((s) => s.registerBatch);
+  const beginSession = useExportProgressStore((s) => s.beginSession);
+  const attachBatch = useExportProgressStore((s) => s.attachBatch);
+  const markError = useExportProgressStore((s) => s.markError);
+  const isBlockingExport = useExportProgressStore((s) => s.isBlockingExport);
+
   const activeFileIds = useConversionStore((s) =>
     new Set(
       s.jobs
@@ -26,7 +31,7 @@ export function useStartExport() {
   );
 
   const startExport = useCallback(async () => {
-    if (!resolved || files.length === 0) return;
+    if (!resolved || files.length === 0 || isBlockingExport) return;
 
     const pendingFiles = files.filter(
       (f) =>
@@ -36,7 +41,8 @@ export function useStartExport() {
 
     if (pendingFiles.length === 0) return;
 
-    setLoading(true);
+    beginSession();
+
     try {
       const { batchId, jobIds } = await enqueueConvertBatch({
         jobs: pendingFiles.map((file) => ({
@@ -54,6 +60,8 @@ export function useStartExport() {
         })),
       });
 
+      attachBatch(batchId);
+
       registerBatch({
         batchId,
         jobIds,
@@ -67,14 +75,26 @@ export function useStartExport() {
         loop: resolved.loop,
         maxFileSizeBytes: resolved.maxFileSizeBytes,
       });
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Batch enqueue failed';
+      markError(message);
     }
-  }, [files, resolved, overrides, registerBatch, activeFileIds]);
+  }, [
+    files,
+    resolved,
+    overrides,
+    registerBatch,
+    activeFileIds,
+    isBlockingExport,
+    beginSession,
+    attachBatch,
+    markError,
+  ]);
 
   return {
     startExport,
-    loading,
-    canExport: hasSettings && files.length > 0,
+    loading: isBlockingExport,
+    canExport: hasSettings && files.length > 0 && !isBlockingExport,
   };
 }

@@ -2,11 +2,7 @@
 
 import { useBatchStore } from '@/stores';
 import { PreviewPanel } from '@/features/preview';
-import {
-  ExportPanel,
-  ExportProgress,
-  BatchDownloadPanel,
-} from '@/features/export';
+import { ExportPanel, BatchDownloadPanel } from '@/features/export';
 import { BatchProgressPanel } from '@/features/queue';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { OnboardingTooltip } from './onboarding-tooltip';
@@ -34,8 +30,7 @@ export function StepPreviewExport() {
         <div className="order-1 flex min-w-0 flex-col gap-6 lg:order-2">
           <ExportPanel />
           <section className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800 sm:p-6">
-            <h3 className="mb-3 text-sm font-semibold">Export 진행</h3>
-            <ExportProgress />
+            <h3 className="mb-3 text-sm font-semibold">다운로드</h3>
             <BatchDownloadPanel />
           </section>
           <BatchProgressPanel />

@@ -5,12 +5,13 @@ import { Button } from '@/components/ui';
 import { useStartExport } from '../hooks/use-start-export';
 import { useBatchExport } from '../hooks/use-batch-export';
 import { useExportSessionStore } from '../stores/use-export-session-store';
+import { ExportProgressPanel } from './export-progress-panel';
 
 const FORMATS: OutputFormat[] = ['gif', 'mp4', 'webp'];
 
 /** export 파이프라인 UI — 단일/다중 포맷 */
 export function ExportPanel() {
-  const { startExport, loading: singleLoading, canExport } = useStartExport();
+  const { startExport, loading, canExport } = useStartExport();
   const { runBatchExport, loading: batchLoading, canExport: canBatch } =
     useBatchExport();
   const selectedFormats = useExportSessionStore((s) => s.selectedFormats);
@@ -18,13 +19,15 @@ export function ExportPanel() {
   const namingPattern = useExportSessionStore((s) => s.namingPattern);
   const setNamingPattern = useExportSessionStore((s) => s.setNamingPattern);
 
-  const loading = singleLoading || batchLoading;
+  const isBusy = loading || batchLoading;
 
   return (
     <section className="flex min-w-0 flex-col gap-4 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         최종 Export
       </h2>
+
+      <ExportProgressPanel />
 
       <div>
         <span className="text-xs text-zinc-500">출력 포맷 (다중 선택)</span>
@@ -33,12 +36,13 @@ export function ExportPanel() {
             <button
               key={f}
               type="button"
+              disabled={isBusy}
               onClick={() => toggleFormat(f)}
               className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 py-2 text-xs font-medium uppercase sm:min-h-0 sm:min-w-0 sm:rounded sm:px-2 sm:py-1 ${
                 selectedFormats.includes(f)
                   ? 'bg-violet-600 text-white'
                   : 'bg-zinc-100 dark:bg-zinc-800'
-              }`}
+              } ${isBusy ? 'pointer-events-none opacity-50' : ''}`}
             >
               {f}
             </button>
@@ -51,8 +55,9 @@ export function ExportPanel() {
         <input
           type="text"
           value={namingPattern}
+          disabled={isBusy}
           onChange={(e) => setNamingPattern(e.target.value)}
-          className="min-h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900"
+          className="min-h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900 disabled:opacity-50"
           placeholder="{name}-{format}"
         />
       </label>
@@ -60,17 +65,17 @@ export function ExportPanel() {
       <div className="flex flex-wrap gap-2">
         <Button
           type="button"
-          disabled={!canExport || loading}
+          disabled={!canExport || isBusy}
           onClick={() => void startExport()}
         >
-          {singleLoading ? '등록 중…' : '단일 포맷 큐'}
+          {loading ? '변환 중…' : '단일 포맷 큐'}
         </Button>
         <Button
           type="button"
-          disabled={!canBatch || loading}
+          disabled={!canBatch || isBusy}
           onClick={() => void runBatchExport()}
         >
-          {batchLoading ? '배치 등록 중…' : '다중 포맷 배치'}
+          {batchLoading ? '변환 중…' : '다중 포맷 배치'}
         </Button>
       </div>
     </section>
