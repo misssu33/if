@@ -1,0 +1,74 @@
+{
+  "id": "tiktok-hook-caption",
+  "name": "TikTok Hook Caption",
+  "description": "틱톡 제휴·숏폼 훅 자막 — 세로 9:16 풀블리드",
+  "category": "product",
+  "targetPlatform": "tiktok",
+  "recommendedPresetId": "tiktok-short-clip",
+  "durationSec": 5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": { "startFrame": 0, "durationFrames": 150 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "zoom",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "3초 만에 궁금해지는",
+      "animation": "slide-up",
+      "timing": { "startFrame": 8, "durationFrames": 45 },
+      "position": { "x": "8%", "y": "58%", "width": "84%" }
+    },
+    "subline": {
+      "defaultText": "꿀템 추천",
+      "animation": "fade",
+      "timing": { "startFrame": 16, "durationFrames": 40 },
+      "position": { "x": "8%", "y": "66%", "width": "84%" }
+    },
+    "cta": {
+      "defaultText": "지금 확인하기",
+      "animation": "pop",
+      "timing": { "startFrame": 22, "durationFrames": 40 },
+      "position": { "x": "50%", "y": "86%" },
+      "borderRadius": 12
+    },
+    "badge": {
+      "defaultText": "HOT",
+      "animation": "loop-pulse",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
+      "position": { "x": "8%", "y": "6%" }
+    }
+  },
+  "timeline": [
+    { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 150, "animation": "fade" },
+    { "id": "head", "layer": "headline", "startFrame": 8, "durationFrames": 50, "animation": "slide-up" },
+    { "id": "cta", "layer": "cta", "startFrame": 22, "durationFrames": 45, "animation": "pop" }
+  ],
+  "theme": {
+    "primary": "#fe2c55",
+    "secondary": "#25f4ee",
+    "text": "#ffffff",
+    "ctaBackground": "#fe2c55",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.42)"
+  },
+  "typography": {
+    "headline": { "fontSize": 46, "fontWeight": 800, "lineHeight": 1.1 },
+    "subline": { "fontSize": 26, "fontWeight": 600, "lineHeight": 1.25 },
+    "cta": { "fontSize": 18, "fontWeight": 700 },
+    "badge": { "fontSize": 14, "fontWeight": 700 }
+  }
+}

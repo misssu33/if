@@ -4,6 +4,7 @@ import { useTemplateCatalog } from '@/features/templates/hooks/use-template-cata
 import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-store';
 import { OverlayTextFields } from './overlay-text-fields';
 import { overlaySelectClass } from '../constants/overlay-input-classes';
+import { formatTemplateOptionLabel } from '../utils/format-template-option-label';
 
 /** 템플릿·카피 설정 (미리보기 플레이어 제외) */
 export function TemplateSettingsPanel() {
@@ -22,11 +23,24 @@ export function TemplateSettingsPanel() {
         disabled={loading}
         onChange={(e) => setTemplateId(e.target.value as MotionAdTemplateId)}
       >
-        {templates.map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
-        ))}
+        {templates
+          .filter((t) => t.aspectRatio === '9:16')
+          .map((t) => (
+            <option key={t.id} value={t.id}>
+              {formatTemplateOptionLabel(t)}
+            </option>
+          ))}
+        {templates.some((t) => t.aspectRatio !== '9:16') && (
+          <optgroup label="기타 비율">
+            {templates
+              .filter((t) => t.aspectRatio !== '9:16')
+              .map((t) => (
+                <option key={t.id} value={t.id}>
+                  {formatTemplateOptionLabel(t)}
+                </option>
+              ))}
+          </optgroup>
+        )}
       </select>
       <OverlayTextFields />
     </section>

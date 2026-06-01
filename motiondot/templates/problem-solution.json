@@ -1,0 +1,75 @@
+{
+  "id": "problem-solution",
+  "name": "Problem Solution",
+  "description": "문제 제기 → 해결 제안 숏폼 — 세로 9:16",
+  "category": "product",
+  "targetPlatform": "multi",
+  "recommendedPresetId": "tiktok-short-clip",
+  "durationSec": 5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": { "startFrame": 0, "durationFrames": 150 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "zoom",
+      "timing": { "startFrame": 30, "durationFrames": 90 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "이런 고민 있으세요?",
+      "animation": "slide-up",
+      "timing": { "startFrame": 5, "durationFrames": 35 },
+      "position": { "x": "8%", "y": "52%", "width": "84%" }
+    },
+    "subline": {
+      "defaultText": "한 번에 해결됩니다",
+      "animation": "slide-up",
+      "timing": { "startFrame": 28, "durationFrames": 40 },
+      "position": { "x": "8%", "y": "66%", "width": "84%" }
+    },
+    "cta": {
+      "defaultText": "지금 확인하기",
+      "animation": "pop",
+      "timing": { "startFrame": 35, "durationFrames": 40 },
+      "position": { "x": "50%", "y": "86%" },
+      "borderRadius": 12
+    },
+    "badge": {
+      "defaultText": "TIP",
+      "animation": "fade",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
+      "position": { "x": "8%", "y": "6%" }
+    }
+  },
+  "timeline": [
+    { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 150, "animation": "fade" },
+    { "id": "head", "layer": "headline", "startFrame": 5, "durationFrames": 40, "animation": "slide-up" },
+    { "id": "sub", "layer": "subline", "startFrame": 28, "durationFrames": 45, "animation": "slide-up" },
+    { "id": "cta", "layer": "cta", "startFrame": 35, "durationFrames": 45, "animation": "pop" }
+  ],
+  "theme": {
+    "primary": "#4f46e5",
+    "secondary": "#818cf8",
+    "text": "#ffffff",
+    "ctaBackground": "#4f46e5",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.42)"
+  },
+  "typography": {
+    "headline": { "fontSize": 42, "fontWeight": 700, "lineHeight": 1.15 },
+    "subline": { "fontSize": 46, "fontWeight": 800, "lineHeight": 1.1 },
+    "cta": { "fontSize": 18, "fontWeight": 700 },
+    "badge": { "fontSize": 14, "fontWeight": 700 }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "time-sale-countdown",
+  "name": "Time Sale Countdown",
+  "description": "오늘만 특가·한정 세일 — 세로 9:16",
+  "category": "promo",
+  "targetPlatform": "tiktok",
+  "recommendedPresetId": "tiktok-short-clip",
+  "durationSec": 4,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": { "startFrame": 0, "durationFrames": 120 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "오늘만 특가",
+      "animation": "shake",
+      "timing": { "startFrame": 6, "durationFrames": 45 },
+      "position": { "x": "8%", "y": "58%", "width": "84%" }
+    },
+    "subline": {
+      "defaultText": "자정에 종료 · 놓치면 끝",
+      "animation": "slide-up",
+      "timing": { "startFrame": 12, "durationFrames": 38 },
+      "position": { "x": "8%", "y": "66%", "width": "84%" }
+    },
+    "cta": {
+      "defaultText": "지금 확인하기",
+      "animation": "pop",
+      "timing": { "startFrame": 18, "durationFrames": 40 },
+      "position": { "x": "50%", "y": "86%" },
+      "borderRadius": 12
+    },
+    "badge": {
+      "defaultText": "24H",
+      "animation": "loop-pulse",
+      "timing": { "startFrame": 4, "durationFrames": 100 },
+      "position": { "x": "8%", "y": "6%" }
+    }
+  },
+  "timeline": [
+    { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 120, "animation": "fade" },
+    { "id": "head", "layer": "headline", "startFrame": 6, "durationFrames": 50, "animation": "shake" },
+    { "id": "cta", "layer": "cta", "startFrame": 18, "durationFrames": 45, "animation": "pop" }
+  ],
+  "theme": {
+    "primary": "#dc2626",
+    "secondary": "#fbbf24",
+    "text": "#ffffff",
+    "ctaBackground": "#dc2626",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.45)"
+  },
+  "typography": {
+    "headline": { "fontSize": 52, "fontWeight": 900, "lineHeight": 1.05 },
+    "subline": { "fontSize": 22, "fontWeight": 600, "lineHeight": 1.3 },
+    "cta": { "fontSize": 18, "fontWeight": 700 },
+    "badge": { "fontSize": 14, "fontWeight": 800 }
+  }
+}

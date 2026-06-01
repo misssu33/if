@@ -11,6 +11,7 @@ import { useFocusOverlayInput } from '../hooks/use-focus-overlay-input';
 import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-store';
 import type { TextOverlayLayerId } from '../types/text-overlay-layer';
 import { overlaySelectClass } from '../constants/overlay-input-classes';
+import { formatTemplateOptionLabel } from '../utils/format-template-option-label';
 
 /** 광고 모션 템플릿 미리보기 패널 */
 export function PreviewPanel() {
@@ -45,11 +46,24 @@ export function PreviewPanel() {
           disabled={templatesLoading}
           onChange={(e) => setTemplateId(e.target.value as MotionAdTemplateId)}
         >
-          {templates.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
+          {templates
+            .filter((t) => t.aspectRatio === '9:16')
+            .map((t) => (
+              <option key={t.id} value={t.id}>
+                {formatTemplateOptionLabel(t)}
+              </option>
+            ))}
+          {templates.some((t) => t.aspectRatio !== '9:16') && (
+            <optgroup label="기타 비율">
+              {templates
+                .filter((t) => t.aspectRatio !== '9:16')
+                .map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {formatTemplateOptionLabel(t)}
+                  </option>
+                ))}
+            </optgroup>
+          )}
         </select>
       </div>
 

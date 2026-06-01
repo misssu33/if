@@ -1,17 +1,7 @@
 import { create } from 'zustand';
 
-/** 광고 모션 템플릿 ID (templates/*.json) */
-export type MotionAdTemplateId =
-  | 'tiktok-product-hook'
-  | 'coupang-discount-gif'
-  | 'before-after'
-  | 'product-review-highlight'
-  | 'flash-sale-banner'
-  | 'lifestyle-promo'
-  | 'sns-story-loop'
-  | 'mixed-media'
-  | 'text-overlay'
-  | 'product-hero';
+/** 광고 모션 템플릿 ID — templates/*.json 동적 로드 */
+export type MotionAdTemplateId = string;
 
 import type { OutputFormat } from '@/types';
 import type { TextOverlayLayerId } from '../types/text-overlay-layer';

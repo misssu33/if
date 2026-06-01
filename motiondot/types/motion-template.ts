@@ -103,11 +103,23 @@ export interface TimelineTrack {
   animation: AnimationPresetId;
 }
 
+export type TemplateTargetPlatform =
+  | 'tiktok'
+  | 'instagram'
+  | 'coupang'
+  | 'reels'
+  | 'affiliate'
+  | 'multi';
+
 export interface MotionTemplateDefinition {
   id: string;
   name: string;
   description: string;
   category: 'product' | 'promo' | 'story' | 'comparison' | 'lifestyle';
+  /** 주 타깃 플랫폼 (셀렉터·가이드용) */
+  targetPlatform?: TemplateTargetPlatform;
+  /** 권장 SNS export 프리셋 ID (presets/*.json) */
+  recommendedPresetId?: string;
   durationSec: number;
   fps: number;
   width: number;

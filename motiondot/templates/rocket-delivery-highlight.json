@@ -1,0 +1,74 @@
+{
+  "id": "rocket-delivery-highlight",
+  "name": "Rocket Delivery Highlight",
+  "description": "쿠팡 로켓배송·빠른 배송 강조 — 세로 9:16",
+  "category": "promo",
+  "targetPlatform": "coupang",
+  "recommendedPresetId": "tiktok-short-clip",
+  "durationSec": 4,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": { "startFrame": 0, "durationFrames": 120 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "slide-up",
+      "timing": { "startFrame": 5, "durationFrames": 90 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "로켓배송",
+      "animation": "pop",
+      "timing": { "startFrame": 8, "durationFrames": 40 },
+      "position": { "x": "8%", "y": "58%", "width": "84%" }
+    },
+    "subline": {
+      "defaultText": "내일 도착 · 빠른 배송",
+      "animation": "fade",
+      "timing": { "startFrame": 14, "durationFrames": 35 },
+      "position": { "x": "8%", "y": "66%", "width": "84%" }
+    },
+    "cta": {
+      "defaultText": "품절 전 확인",
+      "animation": "shake",
+      "timing": { "startFrame": 20, "durationFrames": 35 },
+      "position": { "x": "50%", "y": "86%" },
+      "borderRadius": 10
+    },
+    "badge": {
+      "defaultText": "로켓",
+      "animation": "glow",
+      "timing": { "startFrame": 5, "durationFrames": 100 },
+      "position": { "x": "8%", "y": "6%" }
+    }
+  },
+  "timeline": [
+    { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 120, "animation": "fade" },
+    { "id": "head", "layer": "headline", "startFrame": 8, "durationFrames": 45, "animation": "pop" },
+    { "id": "cta", "layer": "cta", "startFrame": 20, "durationFrames": 40, "animation": "shake" }
+  ],
+  "theme": {
+    "primary": "#0074e9",
+    "secondary": "#5eb6ff",
+    "text": "#ffffff",
+    "ctaBackground": "#0074e9",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.38)"
+  },
+  "typography": {
+    "headline": { "fontSize": 50, "fontWeight": 800, "lineHeight": 1.05 },
+    "subline": { "fontSize": 24, "fontWeight": 600, "lineHeight": 1.3 },
+    "cta": { "fontSize": 18, "fontWeight": 700 },
+    "badge": { "fontSize": 15, "fontWeight": 800 }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "review-proof",
+  "name": "Review Proof",
+  "description": "후기·평점 신뢰 강조 — 세로 9:16",
+  "category": "product",
+  "targetPlatform": "affiliate",
+  "recommendedPresetId": "tiktok-short-clip",
+  "durationSec": 5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "aspectRatio": "9:16",
+  "loop": true,
+  "layout": {
+    "background": {
+      "kind": "video",
+      "animation": "fade",
+      "timing": { "startFrame": 0, "durationFrames": 150 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "product": {
+      "kind": "image",
+      "animation": "fade",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
+      "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
+      "objectFit": "cover"
+    },
+    "headline": {
+      "defaultText": "후기 폭발",
+      "animation": "zoom",
+      "timing": { "startFrame": 10, "durationFrames": 42 },
+      "position": { "x": "8%", "y": "58%", "width": "84%" }
+    },
+    "subline": {
+      "defaultText": "별점 4.9 · 실구매 후기",
+      "animation": "fade",
+      "timing": { "startFrame": 18, "durationFrames": 38 },
+      "position": { "x": "8%", "y": "66%", "width": "84%" }
+    },
+    "cta": {
+      "defaultText": "지금 확인하기",
+      "animation": "glow",
+      "timing": { "startFrame": 24, "durationFrames": 38 },
+      "position": { "x": "50%", "y": "86%" },
+      "borderRadius": 12
+    },
+    "badge": {
+      "defaultText": "★4.9",
+      "animation": "loop-pulse",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
+      "position": { "x": "8%", "y": "6%" }
+    }
+  },
+  "timeline": [
+    { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 150, "animation": "fade" },
+    { "id": "head", "layer": "headline", "startFrame": 10, "durationFrames": 48, "animation": "zoom" },
+    { "id": "cta", "layer": "cta", "startFrame": 24, "durationFrames": 45, "animation": "glow" }
+  ],
+  "theme": {
+    "primary": "#059669",
+    "secondary": "#6ee7b7",
+    "text": "#ffffff",
+    "ctaBackground": "#059669",
+    "ctaText": "#ffffff",
+    "overlay": "rgba(0,0,0,0.4)"
+  },
+  "typography": {
+    "headline": { "fontSize": 48, "fontWeight": 800, "lineHeight": 1.1 },
+    "subline": { "fontSize": 24, "fontWeight": 500, "lineHeight": 1.3 },
+    "cta": { "fontSize": 18, "fontWeight": 700 },
+    "badge": { "fontSize": 16, "fontWeight": 800 }
+  }
+}
