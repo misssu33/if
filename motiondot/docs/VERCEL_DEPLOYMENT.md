@@ -26,10 +26,14 @@ FREE_TIER_WATERMARK_TEXT=MotionDot Free
 
 1. Vercel 대시보드에서 Git 저장소 연결
 2. Framework Preset: `Next.js`
-3. Root Directory: `motiondot`
+3. **Root Directory: `motiondot`** (필수 — 미설정 시 `/`가 404)
 4. Build Command: `npm run build`
 5. Install Command: `npm install`
-6. Output Directory: 기본값 사용
+6. **Output Directory: 비워 두기** (Next.js 기본값 사용)
+
+> 저장소 루트(`if/`)에 `vercel.json`이 있으면, Root Directory를 설정하지 않은 경우에도 `motiondot/package.json`을 Next.js 앱으로 빌드합니다.
+>
+> **주의:** Vercel의 Output Directory를 `outputs` 또는 `temp`로 설정하면 홈(`/`)이 404가 됩니다. 이 폴더는 변환 산출물용이며 정적 사이트 루트가 아닙니다.
 
 ## 3) 환경 변수 등록
 
