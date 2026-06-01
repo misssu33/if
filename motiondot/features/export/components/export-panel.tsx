@@ -5,6 +5,8 @@ import { Button } from '@/components/ui';
 import { useStartExport } from '../hooks/use-start-export';
 import { useBatchExport } from '../hooks/use-batch-export';
 import { useExportSessionStore } from '../stores/use-export-session-store';
+import { FreeTierUpgradeBanner } from '@/features/free-tier';
+import { useFreeTier } from '@/hooks/useFreeTier';
 
 const FORMATS: OutputFormat[] = ['gif', 'mp4', 'webp'];
 
@@ -18,10 +20,32 @@ export function ExportPanel() {
   const namingPattern = useExportSessionStore((s) => s.namingPattern);
   const setNamingPattern = useExportSessionStore((s) => s.setNamingPattern);
 
+  const {
+    isFree,
+    exportsRemaining,
+    limits,
+    watermarkOpacity,
+    setWatermarkOpacity,
+    canExport: tierCanExport,
+  } = useFreeTier();
   const loading = singleLoading || batchLoading;
 
   return (
     <section className="flex min-w-0 flex-col gap-4 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
+      <FreeTierUpgradeBanner
+        isFree={isFree}
+        exportsRemaining={exportsRemaining}
+        limits={limits}
+        watermarkOpacity={watermarkOpacity}
+        onWatermarkOpacityChange={setWatermarkOpacity}
+      />
+
+      {!tierCanExport && isFree && (
+        <p className="text-xs text-amber-800 dark:text-amber-200">
+          무료 플랜 Export 한도에 도달했습니다. Pro로 업그레이드하면 워터마크 제거·더 높은 품질·긴 길이를 사용할 수 있습니다.
+        </p>
+      )}
+
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         최종 Export
       </h2>

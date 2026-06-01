@@ -1,4 +1,8 @@
-import type { MotionCompositionProps, MotionTemplateDefinition } from '@/types/motion-template';
+import type {
+  CompositionWatermark,
+  MotionCompositionProps,
+  MotionTemplateDefinition,
+} from '@/types/motion-template';
 import type { OutputFormat } from '@/types';
 import { resolveTemplateContent, resolveTemplateDefinition } from './resolve-template';
 
@@ -22,6 +26,7 @@ export type BuildCompositionInput = {
     durationSec?: number;
   };
   showSafeZone?: boolean;
+  watermark?: CompositionWatermark;
 };
 
 /** 템플릿 JSON → Remotion inputProps (UI/FFmpeg와 분리) */
@@ -55,5 +60,6 @@ export function buildCompositionProps(
     ...content,
     formatLabel: input.format ? FORMAT_LABEL[input.format] : undefined,
     showSafeZone: input.showSafeZone ?? false,
+    watermark: input.watermark,
   };
 }

@@ -5,6 +5,7 @@ import { useBatchStore } from '@/stores';
 import { useExportSettingsStore } from '@/features/presets/stores/use-export-settings-store';
 import { useTemplateCatalog } from '@/features/templates/hooks/use-template-catalog';
 import { resolveTemplateId } from '@/features/templates/utils/legacy-template-map';
+import { useFreeTier } from '@/hooks/useFreeTier';
 import { buildPreviewProps } from '../engine/build-preview-props';
 import { usePreviewStore } from '../stores/use-preview-store';
 
@@ -23,6 +24,7 @@ export function usePreviewSource() {
   const badgeText = usePreviewStore((s) => s.badgeText);
   const durationSec = usePreviewStore((s) => s.durationSec);
   const loopPlayback = usePreviewStore((s) => s.loopPlayback);
+  const { watermark, clampPreviewDuration } = useFreeTier();
 
   const file = useMemo(() => {
     const id = selectedFileId ?? files[0]?.id;
@@ -53,11 +55,12 @@ export function usePreviewSource() {
       file,
       format: previewFormat,
       mediaSrc,
-      durationSec,
+      durationSec: clampPreviewDuration(durationSec),
       headline,
       subline,
       ctaText,
       badgeText,
+      watermark,
     });
   }, [
     template,
@@ -70,6 +73,8 @@ export function usePreviewSource() {
     subline,
     ctaText,
     badgeText,
+    watermark,
+    clampPreviewDuration,
   ]);
 
   return {

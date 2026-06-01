@@ -1,5 +1,8 @@
 import type { MotionDotPreset, OutputFormat, UploadFileMeta } from '@/types';
-import type { MotionTemplateDefinition } from '@/types/motion-template';
+import type {
+  CompositionWatermark,
+  MotionTemplateDefinition,
+} from '@/types/motion-template';
 import { buildCompositionProps } from '@/features/templates/engine/build-composition-props';
 
 type BuildInput = {
@@ -13,6 +16,7 @@ type BuildInput = {
   subline?: string;
   ctaText?: string;
   badgeText?: string;
+  watermark?: CompositionWatermark;
 };
 
 /** 프리셋·템플릿·업로드 → Remotion composition props */
@@ -32,5 +36,6 @@ export function buildPreviewProps(input: BuildInput) {
       productSrc: input.mediaSrc,
       durationSec,
     },
+    watermark: input.watermark,
   });
 }

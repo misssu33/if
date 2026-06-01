@@ -4,6 +4,7 @@ import type { OutputFormat } from '@/types';
 import { useExportSettingsStore } from '@/features/presets/stores/use-export-settings-store';
 import { usePreviewStore } from '../stores/use-preview-store';
 import { useSizeEstimate } from '@/features/export/hooks/use-size-estimate';
+import { useFreeTier } from '@/hooks/useFreeTier';
 
 const FORMATS: OutputFormat[] = ['gif', 'mp4', 'webp'];
 
@@ -15,6 +16,9 @@ export function ExportInspector() {
   const durationSec = usePreviewStore((s) => s.durationSec);
   const loopPlayback = usePreviewStore((s) => s.loopPlayback);
   const setLoopPlayback = usePreviewStore((s) => s.setLoopPlayback);
+  const { applyLimitsToSettings, isFree, limits } = useFreeTier();
+
+  const effective = resolved ? applyLimitsToSettings(resolved) : null;
 
   const estimate = useSizeEstimate({
     format,
@@ -51,7 +55,10 @@ export function ExportInspector() {
         <div>
           <dt className="text-zinc-500">해상도</dt>
           <dd className="font-medium">
-            {resolved.width}×{resolved.height}
+            {effective?.width ?? resolved.width}×{effective?.height ?? resolved.height}
+            {isFree && (
+              <span className="ml-1 text-amber-600">(무료 최대 {limits.maxWidth}×{limits.maxHeight})</span>
+            )}
           </dd>
         </div>
         <div>

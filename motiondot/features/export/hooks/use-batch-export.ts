@@ -8,6 +8,7 @@ import {
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
 import { useExportSessionStore } from '../stores/use-export-session-store';
+import { useFreeTier } from '@/hooks/useFreeTier';
 
 /** 다중 포맷 · 다중 파일 배치 export → 기존 큐 연동 */
 export function useBatchExport() {
@@ -16,27 +17,32 @@ export function useBatchExport() {
   const resolved = useExportSettingsStore((s) => s.resolved);
   const overrides = useExportSettingsStore((s) => s.overrides);
   const hasSettings = useHasValidExportSettings();
+  const { canExport: canExportTier, recordExport, applyLimitsToSettings, exportsRemaining } =
+    useFreeTier();
   const formats = useExportSessionStore((s) => s.selectedFormats);
   const namingPattern = useExportSessionStore((s) => s.namingPattern);
   const setLastBatchId = useExportSessionStore((s) => s.setLastBatchId);
   const registerBatch = useConversionStore((s) => s.registerBatch);
 
   const runBatchExport = useCallback(async () => {
-    if (!resolved || files.length === 0 || formats.length === 0) return;
+    if (!resolved || files.length === 0 || formats.length === 0 || !canExportTier) return;
+    const settings = applyLimitsToSettings(resolved);
+    const jobCount = files.length * formats.length;
+    if (exportsRemaining < jobCount) return;
     setLoading(true);
     try {
       const jobs = files.flatMap((file) =>
         formats.map((format) => ({
           fileId: file.id,
           inputPath: file.tempPath,
-          presetId: resolved.presetId,
+          presetId: settings.presetId,
           format,
-          quality: resolved.quality,
-          width: resolved.width,
-          height: resolved.height,
-          fps: resolved.fps,
-          loop: resolved.loop,
-          maxFileSizeBytes: resolved.maxFileSizeBytes,
+          quality: settings.quality,
+          width: settings.width,
+          height: settings.height,
+          fps: settings.fps,
+          loop: settings.loop,
+          maxFileSizeBytes: settings.maxFileSizeBytes,
           overrides,
           namingPattern,
         })),
@@ -56,19 +62,20 @@ export function useBatchExport() {
       };
 
       setLastBatchId(batchId);
+      recordExport(jobCount);
       const items = files.flatMap((file) =>
         formats.map((fmt) => ({
           fileId: file.id,
           fileName: file.originalName,
           inputPath: file.tempPath,
-          presetId: resolved.presetId,
+          presetId: settings.presetId,
           format: fmt,
-          quality: resolved.quality,
-          width: resolved.width,
-          height: resolved.height,
-          fps: resolved.fps,
-          loop: resolved.loop,
-          maxFileSizeBytes: resolved.maxFileSizeBytes,
+          quality: settings.quality,
+          width: settings.width,
+          height: settings.height,
+          fps: settings.fps,
+          loop: settings.loop,
+          maxFileSizeBytes: settings.maxFileSizeBytes,
         })),
       );
 
@@ -96,12 +103,21 @@ export function useBatchExport() {
     namingPattern,
     setLastBatchId,
     registerBatch,
+    canExportTier,
+    applyLimitsToSettings,
+    exportsRemaining,
+    recordExport,
   ]);
 
   return {
     runBatchExport,
     loading,
-    canExport: hasSettings && files.length > 0 && formats.length > 0,
+    canExport:
+      hasSettings &&
+      files.length > 0 &&
+      formats.length > 0 &&
+      canExportTier &&
+      exportsRemaining >= files.length * formats.length,
     formats,
   };
 }

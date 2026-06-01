@@ -2,6 +2,7 @@
 
 import { AbsoluteFill } from 'remotion';
 import type { MotionCompositionProps } from '@/types/motion-template';
+import { MotionDotWatermark } from '@/components/watermark';
 import {
   AnimatedBadge,
   AnimatedCTA,
@@ -93,18 +94,29 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
         />
       )}
 
+      {props.watermark?.enabled && (
+        <MotionDotWatermark
+          watermark={props.watermark}
+          width={props.width}
+          height={props.height}
+        />
+      )}
+
       {props.formatLabel && (
         <div
           style={{
             position: 'absolute',
             top: 16,
-            right: 16,
+            left: 16,
             background: 'rgba(124,58,237,0.9)',
             color: '#fff',
             padding: '6px 12px',
             borderRadius: 8,
             fontSize: 14,
             fontWeight: 600,
+            zIndex: 3,
+            maxWidth: '40%',
+            wordBreak: 'break-word',
           }}
         >
           {props.formatLabel}

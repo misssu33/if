@@ -4,6 +4,8 @@ import { useBatchStore } from '@/stores';
 import { PreviewPlayer } from './preview-player';
 import { PreviewGrid } from './preview-grid';
 import { ExportInspector } from './export-inspector';
+import { FreeTierUpgradeBanner } from '@/features/free-tier';
+import { useFreeTier } from '@/hooks/useFreeTier';
 import { usePreviewSource } from '../hooks/use-preview-source';
 import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-store';
 
@@ -20,6 +22,13 @@ export function PreviewPanel() {
   const setSubline = usePreviewStore((s) => s.setSubline);
   const ctaText = usePreviewStore((s) => s.ctaText);
   const setCtaText = usePreviewStore((s) => s.setCtaText);
+  const {
+    isFree,
+    exportsRemaining,
+    limits,
+    watermarkOpacity,
+    setWatermarkOpacity,
+  } = useFreeTier();
 
   return (
     <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
@@ -42,6 +51,14 @@ export function PreviewPanel() {
           ))}
         </select>
       </div>
+
+      <FreeTierUpgradeBanner
+        isFree={isFree}
+        exportsRemaining={exportsRemaining}
+        limits={limits}
+        watermarkOpacity={watermarkOpacity}
+        onWatermarkOpacityChange={setWatermarkOpacity}
+      />
 
       <PreviewGrid files={files} />
 

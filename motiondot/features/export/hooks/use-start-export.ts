@@ -8,6 +8,7 @@ import {
   useExportSettingsStore,
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
+import { useFreeTier } from '@/hooks/useFreeTier';
 
 /** 수동 export — 아직 큐에 없는 파일만 등록 */
 export function useStartExport() {
@@ -16,6 +17,8 @@ export function useStartExport() {
   const resolved = useExportSettingsStore((s) => s.resolved);
   const overrides = useExportSettingsStore((s) => s.overrides);
   const hasSettings = useHasValidExportSettings();
+  const { canExport: canExportTier, recordExport, applyLimitsToSettings } =
+    useFreeTier();
   const registerBatch = useConversionStore((s) => s.registerBatch);
   const activeFileIds = useConversionStore((s) =>
     new Set(
@@ -26,7 +29,7 @@ export function useStartExport() {
   );
 
   const startExport = useCallback(async () => {
-    if (!resolved || files.length === 0) return;
+    if (!resolved || files.length === 0 || !canExportTier) return;
 
     const pendingFiles = files.filter(
       (f) =>
@@ -36,20 +39,22 @@ export function useStartExport() {
 
     if (pendingFiles.length === 0) return;
 
+    const settings = applyLimitsToSettings(resolved);
+
     setLoading(true);
     try {
       const { batchId, jobIds } = await enqueueConvertBatch({
         jobs: pendingFiles.map((file) => ({
           fileId: file.id,
           inputPath: file.tempPath,
-          presetId: resolved.presetId,
-          format: resolved.outputFormat,
-          quality: resolved.quality,
-          width: resolved.width,
-          height: resolved.height,
-          fps: resolved.fps,
-          loop: resolved.loop,
-          maxFileSizeBytes: resolved.maxFileSizeBytes,
+          presetId: settings.presetId,
+          format: settings.outputFormat,
+          quality: settings.quality,
+          width: settings.width,
+          height: settings.height,
+          fps: settings.fps,
+          loop: settings.loop,
+          maxFileSizeBytes: settings.maxFileSizeBytes,
           overrides,
         })),
       });
@@ -58,23 +63,25 @@ export function useStartExport() {
         batchId,
         jobIds,
         files: pendingFiles,
-        presetId: resolved.presetId,
-        format: resolved.outputFormat,
-        quality: resolved.quality,
-        width: resolved.width,
-        height: resolved.height,
-        fps: resolved.fps,
-        loop: resolved.loop,
-        maxFileSizeBytes: resolved.maxFileSizeBytes,
+        presetId: settings.presetId,
+        format: settings.outputFormat,
+        quality: settings.quality,
+        width: settings.width,
+        height: settings.height,
+        fps: settings.fps,
+        loop: settings.loop,
+        maxFileSizeBytes: settings.maxFileSizeBytes,
       });
+
+      recordExport(pendingFiles.length);
     } finally {
       setLoading(false);
     }
-  }, [files, resolved, overrides, registerBatch, activeFileIds]);
+  }, [files, resolved, overrides, registerBatch, activeFileIds, canExportTier, applyLimitsToSettings, recordExport]);
 
   return {
     startExport,
     loading,
-    canExport: hasSettings && files.length > 0,
+    canExport: hasSettings && files.length > 0 && canExportTier,
   };
 }

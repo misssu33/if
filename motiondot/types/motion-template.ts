@@ -120,6 +120,12 @@ export interface MotionTemplateDefinition {
   typography: TemplateTypography;
 }
 
+/** Remotion 워터마크 (무료 플랜 미리보기) */
+export type CompositionWatermark = {
+  enabled: boolean;
+  opacity: number;
+};
+
 /** Remotion composition 런타임 입력 */
 export interface MotionCompositionProps {
   width: number;
@@ -137,4 +143,6 @@ export interface MotionCompositionProps {
   logoSrc?: string;
   formatLabel?: string;
   showSafeZone?: boolean;
+  /** 무료 플랜 MotionDot 워터마크 */
+  watermark?: CompositionWatermark;
 }
