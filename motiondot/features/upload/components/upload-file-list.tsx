@@ -1,5 +1,6 @@
 'use client';
 
+import { useShallow } from 'zustand/react/shallow';
 import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
 import { ConversionFileRow } from '@/features/queue/components/conversion-file-row';
 import { useBatchConversionActions } from '@/features/queue/hooks/use-batch-conversion-actions';
@@ -7,8 +8,8 @@ import { useUploadQueue } from '../hooks/use-upload-queue';
 
 /** 업로드·큐 통합 파이프라인 목록 (Zustand) */
 export function UploadFileList() {
-  const jobs = useConversionStore((s) =>
-    s.jobs.filter((j) => j.localId),
+  const jobs = useConversionStore(
+    useShallow((s) => s.jobs.filter((j) => j.localId)),
   );
   const { removeUploadedFile } = useUploadQueue();
   const { cancelJob, retryJob } = useBatchConversionActions();

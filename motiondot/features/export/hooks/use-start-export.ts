@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useBatchStore } from '@/stores';
 import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
 import { enqueueConvertBatch } from '@/features/queue/services/enqueue-batch-client';
@@ -20,12 +21,16 @@ export function useStartExport() {
   const { canExport: canExportTier, recordExport, applyLimitsToSettings } =
     useFreeTier();
   const registerBatch = useConversionStore((s) => s.registerBatch);
-  const activeFileIds = useConversionStore((s) =>
-    new Set(
+  const activeFileIdList = useConversionStore(
+    useShallow((s) =>
       s.jobs
         .filter((j) => j.status !== 'failed' && j.status !== 'cancelled')
         .map((j) => j.fileId),
     ),
+  );
+  const activeFileIds = useMemo(
+    () => new Set(activeFileIdList),
+    [activeFileIdList],
   );
 
   const startExport = useCallback(async () => {
@@ -77,7 +82,16 @@ export function useStartExport() {
     } finally {
       setLoading(false);
     }
-  }, [files, resolved, overrides, registerBatch, activeFileIds, canExportTier, applyLimitsToSettings, recordExport]);
+  }, [
+    files,
+    resolved,
+    overrides,
+    registerBatch,
+    activeFileIdList,
+    canExportTier,
+    applyLimitsToSettings,
+    recordExport,
+  ]);
 
   return {
     startExport,

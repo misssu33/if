@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ResolvedExportSettings } from '@/types/preset';
 import {
   FREE_TIER_LIMITS,
@@ -12,40 +12,38 @@ import {
   writeFreeTierPreferences,
   writeFreeTierUsage,
 } from '@/lib/freeTier';
-
-function subscribeUsage(cb: () => void) {
-  if (typeof window === 'undefined') return () => {};
-  const handler = () => cb();
-  window.addEventListener('motiondot:free-tier', handler);
-  return () => window.removeEventListener('motiondot:free-tier', handler);
-}
+import type { FreeTierPreferences, FreeTierUsage } from '@/lib/freeTier/types';
 
 function emitUsageChange() {
-  window.dispatchEvent(new Event('motiondot:free-tier'));
-}
-
-function getUsageSnapshot() {
-  return readFreeTierUsage();
-}
-
-function getPrefsSnapshot() {
-  return readFreeTierPreferences();
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('motiondot:free-tier'));
+  }
 }
 
 /** 무료 플랜 제한·워터마크·사용량 (localStorage / sessionStorage) */
 export function useFreeTier() {
-  const usage = useSyncExternalStore(
-    subscribeUsage,
-    getUsageSnapshot,
-    () => ({ exportCount: 0, sessionId: 'ssr' }),
-  );
-  const prefs = useSyncExternalStore(
-    subscribeUsage,
-    getPrefsSnapshot,
-    () => ({ watermarkOpacity: 0.55 }),
-  );
+  const [usage, setUsage] = useState<FreeTierUsage>({
+    exportCount: 0,
+    sessionId: '',
+  });
+  const [prefs, setPrefs] = useState<FreeTierPreferences>({
+    watermarkOpacity: 0.55,
+  });
+  const [mounted, setMounted] = useState(false);
 
-  const plan = useMemo(() => readPlanTier(), [usage.exportCount]);
+  useEffect(() => {
+    setUsage(readFreeTierUsage());
+    setPrefs(readFreeTierPreferences());
+    setMounted(true);
+    const handler = () => {
+      setUsage(readFreeTierUsage());
+      setPrefs(readFreeTierPreferences());
+    };
+    window.addEventListener('motiondot:free-tier', handler);
+    return () => window.removeEventListener('motiondot:free-tier', handler);
+  }, []);
+
+  const plan = useMemo(() => (mounted ? readPlanTier() : 'free'), [mounted, usage.exportCount]);
   const isFree = plan !== 'pro';
   const limits = FREE_TIER_LIMITS;
 
@@ -56,15 +54,18 @@ export function useFreeTier() {
 
   const canExport = !isFree || exportsRemaining > 0;
 
-  const recordExport = useCallback((count = 1) => {
-    if (!isFree) return;
-    const next = {
-      ...readFreeTierUsage(),
-      exportCount: readFreeTierUsage().exportCount + count,
-    };
-    writeFreeTierUsage(next);
-    emitUsageChange();
-  }, [isFree]);
+  const recordExport = useCallback(
+    (count = 1) => {
+      if (!isFree) return;
+      const current = readFreeTierUsage();
+      writeFreeTierUsage({
+        ...current,
+        exportCount: current.exportCount + count,
+      });
+      emitUsageChange();
+    },
+    [isFree],
+  );
 
   const setWatermarkOpacity = useCallback((opacity: number) => {
     const clamped = Math.min(1, Math.max(0.15, opacity));
@@ -84,7 +85,7 @@ export function useFreeTier() {
     [isFree, limits],
   );
 
-  const showWatermark = isFree;
+  const showWatermark = isFree && mounted;
 
   const watermark = useMemo(
     () => ({
@@ -108,5 +109,6 @@ export function useFreeTier() {
     clampPreviewDuration,
     showWatermark,
     watermark,
+    mounted,
   };
 }

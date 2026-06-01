@@ -1,5 +1,6 @@
 'use client';
 
+import { useShallow } from 'zustand/react/shallow';
 import { useConversionStore } from '../stores/use-conversion-store';
 import { useBatchConversionActions } from '../hooks/use-batch-conversion-actions';
 import { BatchProgressSummary } from './batch-progress-summary';
@@ -7,8 +8,8 @@ import { ConversionFileRow } from './conversion-file-row';
 
 /** 배치 변환 진행률 (실시간 폴링) */
 export function BatchProgressPanel() {
-  const jobs = useConversionStore((s) =>
-    s.jobs.filter((j) => !j.localId),
+  const jobs = useConversionStore(
+    useShallow((s) => s.jobs.filter((j) => !j.localId)),
   );
   const batch = useConversionStore((s) => s.batch);
   const { cancelJob, retryJob } = useBatchConversionActions();
