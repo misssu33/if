@@ -14,6 +14,7 @@ export type MotionAdTemplateId =
   | 'product-hero';
 
 import type { OutputFormat } from '@/types';
+import type { TextOverlayLayerId } from '../types/text-overlay-layer';
 
 interface PreviewState {
   selectedFileId: string | null;
@@ -25,6 +26,8 @@ interface PreviewState {
   ctaText: string;
   badgeText: string;
   durationSec: number;
+  /** 모바일 미리보기 탭으로 선택된 텍스트 레이어 */
+  activeTextLayer: TextOverlayLayerId | null;
   setSelectedFileId: (id: string | null) => void;
   setPreviewFormat: (format: OutputFormat) => void;
   setTemplateId: (id: MotionAdTemplateId) => void;
@@ -34,6 +37,7 @@ interface PreviewState {
   setCtaText: (text: string) => void;
   setBadgeText: (text: string) => void;
   setDurationSec: (sec: number) => void;
+  setActiveTextLayer: (layer: TextOverlayLayerId | null) => void;
 }
 
 export const usePreviewStore = create<PreviewState>((set) => ({
@@ -46,6 +50,7 @@ export const usePreviewStore = create<PreviewState>((set) => ({
   ctaText: '지금 구매',
   badgeText: 'NEW',
   durationSec: 5,
+  activeTextLayer: null,
   setSelectedFileId: (id) => set({ selectedFileId: id }),
   setPreviewFormat: (format) => set({ previewFormat: format }),
   setTemplateId: (id) => set({ templateId: id }),
@@ -55,4 +60,5 @@ export const usePreviewStore = create<PreviewState>((set) => ({
   setCtaText: (ctaText) => set({ ctaText }),
   setBadgeText: (badgeText) => set({ badgeText }),
   setDurationSec: (durationSec) => set({ durationSec }),
+  setActiveTextLayer: (activeTextLayer) => set({ activeTextLayer }),
 }));
