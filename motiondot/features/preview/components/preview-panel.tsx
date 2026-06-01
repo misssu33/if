@@ -12,11 +12,13 @@ import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-
 import type { TextOverlayLayerId } from '../types/text-overlay-layer';
 import { overlaySelectClass } from '../constants/overlay-input-classes';
 import { formatTemplateOptionLabel } from '../utils/format-template-option-label';
+import { trackTemplateSelected } from '@/lib/analytics';
+import { TemplateViewedTracker } from '@/components/analytics/TemplateViewedTracker';
 
 /** 광고 모션 템플릿 미리보기 패널 */
 export function PreviewPanel() {
   const files = useBatchStore((s) => s.files);
-  const { inputProps, loopPlayback, templates, templatesLoading } =
+  const { inputProps, loopPlayback, templates, templatesLoading, template } =
     usePreviewSource();
   const templateId = usePreviewStore((s) => s.templateId);
   const setTemplateId = usePreviewStore((s) => s.setTemplateId);
@@ -32,8 +34,15 @@ export function PreviewPanel() {
     [focusOverlayInput, setActiveTextLayer],
   );
 
+  const handleTemplateChange = (nextId: MotionAdTemplateId) => {
+    setTemplateId(nextId);
+    const next = templates.find((t) => t.id === nextId);
+    if (next) trackTemplateSelected(next);
+  };
+
   return (
     <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
+      <TemplateViewedTracker template={template} />
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
         광고 모션 미리보기
       </h2>
@@ -44,7 +53,9 @@ export function PreviewPanel() {
           className={overlaySelectClass}
           value={templateId}
           disabled={templatesLoading}
-          onChange={(e) => setTemplateId(e.target.value as MotionAdTemplateId)}
+          onChange={(e) =>
+            handleTemplateChange(e.target.value as MotionAdTemplateId)
+          }
         >
           {templates
             .filter((t) => t.aspectRatio === '9:16')

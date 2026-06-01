@@ -9,6 +9,7 @@ import {
 } from '@/features/presets/stores/use-export-settings-store';
 import { useExportSessionStore } from '../stores/use-export-session-store';
 import { useExportProgressStore } from '../stores/use-export-progress-store';
+import { trackExportStarted, trackTemplateAbandoned } from '@/lib/analytics';
 
 /** 다중 포맷 · 다중 파일 배치 export → 기존 큐 연동 */
 export function useBatchExport() {
@@ -36,6 +37,7 @@ export function useBatchExport() {
     }
 
     beginSession();
+    trackExportStarted();
 
     try {
       const jobs = files.flatMap((file) =>
@@ -106,6 +108,7 @@ export function useBatchExport() {
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Batch export failed';
+      trackTemplateAbandoned('enqueue_failed');
       markError(message);
     }
   }, [

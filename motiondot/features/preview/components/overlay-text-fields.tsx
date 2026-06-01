@@ -6,6 +6,7 @@ import {
   overlayTextInputActiveClass,
   overlayTextInputClass,
 } from '../constants/overlay-input-classes';
+import { trackTextOverlayEdited } from '@/lib/analytics';
 
 function fieldClass(layerId: TextOverlayLayerId, active: TextOverlayLayerId | null) {
   return [overlayTextInputClass, active === layerId ? overlayTextInputActiveClass : '']
@@ -40,7 +41,10 @@ export function OverlayTextFields() {
             if (next?.dataset.overlayInput) return;
             setActiveTextLayer(null);
           }}
-          onChange={(e) => setHeadline(e.target.value)}
+          onChange={(e) => {
+            trackTextOverlayEdited();
+            setHeadline(e.target.value);
+          }}
         />
       </label>
       <label className="text-xs">
@@ -55,7 +59,10 @@ export function OverlayTextFields() {
             if (next?.dataset.overlayInput) return;
             setActiveTextLayer(null);
           }}
-          onChange={(e) => setSubline(e.target.value)}
+          onChange={(e) => {
+            trackTextOverlayEdited();
+            setSubline(e.target.value);
+          }}
         />
       </label>
       <label className="text-xs sm:col-span-2">
@@ -70,7 +77,10 @@ export function OverlayTextFields() {
             if (next?.dataset.overlayInput) return;
             setActiveTextLayer(null);
           }}
-          onChange={(e) => setCtaText(e.target.value)}
+          onChange={(e) => {
+            trackTextOverlayEdited();
+            setCtaText(e.target.value);
+          }}
         />
       </label>
       <label className="text-xs sm:col-span-2">
@@ -85,7 +95,10 @@ export function OverlayTextFields() {
             if (next?.dataset.overlayInput) return;
             setActiveTextLayer(null);
           }}
-          onChange={(e) => setBadgeText(e.target.value)}
+          onChange={(e) => {
+            trackTextOverlayEdited();
+            setBadgeText(e.target.value);
+          }}
         />
       </label>
     </div>

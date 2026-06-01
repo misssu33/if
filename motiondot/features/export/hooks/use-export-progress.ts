@@ -11,6 +11,7 @@ import {
   EXPORT_STAGE_LABELS,
   type ExportStage,
 } from '../types/export-progress';
+import { trackTemplateAbandoned } from '@/lib/analytics';
 
 function formatEta(seconds: number): string | null {
   if (!Number.isFinite(seconds) || seconds <= 0) return null;
@@ -119,6 +120,7 @@ export function useExportProgress() {
 
     if (failed.length > 0) {
       const firstError = failed.find((j) => j.error)?.error;
+      trackTemplateAbandoned('export_failed');
       markError(firstError ?? '일부 파일 변환에 실패했습니다.');
       return;
     }

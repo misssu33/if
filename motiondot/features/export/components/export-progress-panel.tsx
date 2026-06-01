@@ -7,6 +7,10 @@ import { useExportProgress } from '../hooks/use-export-progress';
 import { useExportProgressStore } from '../stores/use-export-progress-store';
 import { ExportStatusBadge } from './export-status-badge';
 import { IOSDownloadGuide } from './ios-download-guide';
+import { ExportDestinationPrompt } from '@/components/analytics/ExportDestinationPrompt';
+import { useExportSuccessAnalytics } from '../hooks/use-export-success-analytics';
+import { usePreviewSource } from '@/features/preview/hooks/use-preview-source';
+import { trackTemplateAbandoned } from '@/lib/analytics';
 
 function Spinner() {
   return (
@@ -39,8 +43,18 @@ export function ExportProgressPanel() {
   );
   const dismiss = useExportProgressStore((s) => s.dismiss);
   const { retryJob } = useBatchConversionActions();
+  const { template } = usePreviewSource();
+
+  useExportSuccessAnalytics(isSuccess, template);
 
   if (!isVisible) return null;
+
+  const handleDismiss = () => {
+    if (isRunning) {
+      trackTemplateAbandoned('dismissed_while_running');
+    }
+    dismiss();
+  };
 
   return (
     <div
@@ -101,6 +115,7 @@ export function ExportProgressPanel() {
                 compact={completedJobs.length > 1}
               />
             ))}
+            <ExportDestinationPrompt visible />
           </div>
         )}
 
@@ -138,7 +153,7 @@ export function ExportProgressPanel() {
             type="button"
             variant="secondary"
             className="w-full sm:w-auto"
-            onClick={dismiss}
+            onClick={handleDismiss}
           >
             닫기
           </Button>

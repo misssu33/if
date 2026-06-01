@@ -9,6 +9,7 @@ import {
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
 import { useExportProgressStore } from '../stores/use-export-progress-store';
+import { trackExportStarted, trackTemplateAbandoned } from '@/lib/analytics';
 
 /** 수동 export — 아직 큐에 없는 파일만 등록 */
 export function useStartExport() {
@@ -42,6 +43,7 @@ export function useStartExport() {
     if (pendingFiles.length === 0) return;
 
     beginSession();
+    trackExportStarted();
 
     try {
       const { batchId, jobIds } = await enqueueConvertBatch({
@@ -78,6 +80,7 @@ export function useStartExport() {
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Batch enqueue failed';
+      trackTemplateAbandoned('enqueue_failed');
       markError(message);
     }
   }, [

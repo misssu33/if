@@ -2,6 +2,7 @@
 
 import type { MotionDotPreset } from '@/types';
 import { useExportSettingsStore } from '../stores/use-export-settings-store';
+import { trackPresetApplied } from '@/lib/analytics';
 
 const PLATFORM_META: Record<
   string,
@@ -88,7 +89,10 @@ export function PresetPlatformGrid({ presets, loading }: PresetPlatformGridProps
                 role="option"
                 aria-selected={active}
                 disabled={loading}
-                onClick={() => setPreset(p)}
+                onClick={() => {
+                  setPreset(p);
+                  trackPresetApplied(p);
+                }}
                 className={`flex min-h-[5.5rem] w-full flex-col items-start gap-1 rounded-xl border-2 p-3 text-left transition sm:min-h-[6rem] sm:p-4 ${
                   active
                     ? 'border-violet-600 ring-2 ring-violet-400/40 dark:border-violet-500'

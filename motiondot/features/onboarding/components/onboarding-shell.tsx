@@ -7,6 +7,7 @@ import { useConversionSync } from '@/features/queue/hooks/use-conversion-sync';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { LandingDashboard } from './landing-dashboard';
 import { GuidedWorkspace } from './guided-workspace';
+import { AnalyticsBootstrap } from '@/components/analytics/AnalyticsBootstrap';
 
 function ConversionSyncBridge() {
   useConversionSync();
@@ -24,6 +25,7 @@ export function OnboardingShell() {
 
   return (
     <>
+      <AnalyticsBootstrap />
       <ConversionSyncBridge />
       {showLanding ? (
         <PageShell className="min-h-screen">
