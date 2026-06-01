@@ -1,5 +1,18 @@
 'use client';
 
+import { useAnalytics } from '@/hooks/useAnalytics';
+import {
+  inferSegmentFromPlatform,
+  trackPresetApplied,
+  trackExportDestinationSelected,
+  trackSellerSegmentIdentified,
+} from '@/lib/analytics';
+import {
+  getSellerSegment,
+  setLastPresetUsed,
+  setSelectedDestination,
+  setSellerSegment,
+} from '@/lib/analytics/storage';
 import type { MotionDotPreset } from '@/types';
 import { useExportSettingsStore } from '../stores/use-export-settings-store';
 
@@ -54,6 +67,32 @@ export function PresetPlatformGrid({ presets, loading }: PresetPlatformGridProps
   const selected = useExportSettingsStore((s) => s.preset);
   const setPreset = useExportSettingsStore((s) => s.setPreset);
 
+  const handlePresetSelect = (p: MotionDotPreset) => {
+    setPreset(p);
+    setLastPresetUsed(p.id);
+    setSelectedDestination(p.platform);
+    trackPresetApplied({
+      preset_id: p.id,
+      preset_name: p.name,
+      platform: p.platform,
+    });
+    trackExportDestinationSelected({
+      destination: p.platform,
+      preset_id: p.id,
+    });
+    if (!getSellerSegment()) {
+      const inferred = inferSegmentFromPlatform(p.platform);
+      if (inferred) {
+        setSellerSegment(inferred, 'inferred', p.platform);
+        trackSellerSegmentIdentified({
+          segment: inferred,
+          source: 'inferred',
+          selected_destination: p.platform,
+        });
+      }
+    }
+  };
+
   if (loading) {
     return (
       <p className="text-xs text-zinc-500" aria-live="polite">
@@ -88,7 +127,7 @@ export function PresetPlatformGrid({ presets, loading }: PresetPlatformGridProps
                 role="option"
                 aria-selected={active}
                 disabled={loading}
-                onClick={() => setPreset(p)}
+                onClick={() => handlePresetSelect(p)}
                 className={`flex min-h-[5.5rem] w-full flex-col items-start gap-1 rounded-xl border-2 p-3 text-left transition sm:min-h-[6rem] sm:p-4 ${
                   active
                     ? 'border-violet-600 ring-2 ring-violet-400/40 dark:border-violet-500'

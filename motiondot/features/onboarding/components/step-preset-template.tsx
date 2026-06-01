@@ -7,6 +7,7 @@ import { useBatchStore } from '@/stores';
 import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { OnboardingTooltip } from './onboarding-tooltip';
 import { Button } from '@/components/ui';
+import { SellerSegmentPicker } from './seller-segment-picker';
 
 export function StepPresetTemplate() {
   const files = useBatchStore((s) => s.files);
@@ -17,6 +18,7 @@ export function StepPresetTemplate() {
     <div className="flex min-w-0 flex-col gap-6">
       <OnboardingTooltip id="sns-presets" />
       <OnboardingTooltip id="motion-templates" />
+      <SellerSegmentPicker />
       <PresetSelector />
       {files.length > 0 && (
         <div className="min-w-0">

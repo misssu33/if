@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useBatchStore } from '@/stores';
 import { useConversionStore } from '@/features/queue/stores/use-conversion-store';
 import { enqueueConvertBatch } from '@/features/queue/services/enqueue-batch-client';
@@ -8,6 +9,8 @@ import {
   useExportSettingsStore,
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
+import { trackExportStarted } from '@/lib/analytics/events';
+import { usePreviewStore } from '@/features/preview/stores/use-preview-store';
 
 /** 수동 export — 아직 큐에 없는 파일만 등록 */
 export function useStartExport() {
@@ -17,12 +20,16 @@ export function useStartExport() {
   const overrides = useExportSettingsStore((s) => s.overrides);
   const hasSettings = useHasValidExportSettings();
   const registerBatch = useConversionStore((s) => s.registerBatch);
-  const activeFileIds = useConversionStore((s) =>
-    new Set(
+  const activeJobFileIds = useConversionStore(
+    useShallow((s) =>
       s.jobs
         .filter((j) => j.status !== 'failed' && j.status !== 'cancelled')
         .map((j) => j.fileId),
     ),
+  );
+  const activeFileIds = useMemo(
+    () => new Set(activeJobFileIds),
+    [activeJobFileIds],
   );
 
   const startExport = useCallback(async () => {
@@ -52,6 +59,13 @@ export function useStartExport() {
           maxFileSizeBytes: resolved.maxFileSizeBytes,
           overrides,
         })),
+      });
+
+      trackExportStarted({
+        export_format: resolved.outputFormat,
+        template_id: usePreviewStore.getState().templateId,
+        preset_used: resolved.presetId,
+        job_count: pendingFiles.length,
       });
 
       registerBatch({

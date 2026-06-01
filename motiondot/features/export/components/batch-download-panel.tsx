@@ -1,15 +1,21 @@
 'use client';
 
 import { Button } from '@/components/ui';
+import { IosDownloadGuide } from '@/components/analytics/ios-download-guide';
 import { useExportSessionStore } from '../stores/use-export-session-store';
 import { useExportHistory } from '../hooks/use-export-history';
 import { useDownloadManager } from '../hooks/use-download-manager';
+import { usePreviewStore } from '@/features/preview/stores/use-preview-store';
+import { useExportSettingsStore } from '@/features/presets/stores/use-export-settings-store';
+import type { OutputFormat } from '@/types';
 
 /** 개별 · 전체 · ZIP 다운로드 */
 export function BatchDownloadPanel() {
   const lastBatchId = useExportSessionStore((s) => s.lastBatchId);
   const { records, loading } = useExportHistory(lastBatchId);
   const { downloadOne, downloadAll, downloadZip } = useDownloadManager();
+  const templateId = usePreviewStore((s) => s.templateId);
+  const presetId = useExportSettingsStore((s) => s.resolved?.presetId);
 
   const completed = records.filter(
     (r) => r.status === 'completed' && r.outputPath,
@@ -26,20 +32,22 @@ export function BatchDownloadPanel() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap gap-2">
-        <Button
-          type="button"
+        <DownloadAction
+          label="전체 다운로드"
           disabled={loading || completed.length === 0}
-          onClick={() => downloadAll(records)}
-        >
-          전체 다운로드
-        </Button>
-        <Button
-          type="button"
+          exportFormat={completed[0]?.format ?? 'gif'}
+          templateId={templateId}
+          presetUsed={presetId}
+          onProceed={() => downloadAll(records)}
+        />
+        <DownloadAction
+          label="ZIP 배치"
           disabled={loading || completed.length === 0}
-          onClick={() => downloadZip(lastBatchId)}
-        >
-          ZIP 배치
-        </Button>
+          exportFormat="gif"
+          templateId={templateId}
+          presetUsed={presetId}
+          onProceed={() => downloadZip(lastBatchId)}
+        />
       </div>
       <ul className="max-h-40 overflow-y-auto text-xs">
         {records.map((r) => (
@@ -51,17 +59,66 @@ export function BatchDownloadPanel() {
               {r.fileName} · {r.format.toUpperCase()} · {r.status}
             </span>
             {r.status === 'completed' && r.outputPath && (
-              <button
-                type="button"
-                className="shrink-0 text-violet-600 hover:underline"
-                onClick={() => downloadOne(r)}
-              >
-                받기
-              </button>
+              <DownloadAction
+                label="받기"
+                asLink
+                exportFormat={r.format}
+                templateId={templateId}
+                presetUsed={presetId}
+                onProceed={() => downloadOne(r)}
+              />
             )}
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function DownloadAction({
+  label,
+  disabled,
+  exportFormat,
+  templateId,
+  presetUsed,
+  onProceed,
+  asLink,
+}: {
+  label: string;
+  disabled?: boolean;
+  exportFormat: OutputFormat;
+  templateId: string;
+  presetUsed?: string;
+  onProceed: () => void;
+  asLink?: boolean;
+}) {
+  return (
+    <IosDownloadGuide
+      exportFormat={exportFormat}
+      templateId={templateId}
+      presetUsed={presetUsed}
+      onProceed={onProceed}
+    >
+      {({ onDownloadClick }) =>
+        asLink ? (
+          <button
+            type="button"
+            className="shrink-0 text-violet-600 hover:underline disabled:opacity-50"
+            disabled={disabled}
+            onClick={onDownloadClick}
+          >
+            {label}
+          </button>
+        ) : (
+          <Button
+            type="button"
+            disabled={disabled}
+            onClick={onDownloadClick}
+          >
+            {label}
+          </Button>
+        )
+      }
+    </IosDownloadGuide>
   );
 }
