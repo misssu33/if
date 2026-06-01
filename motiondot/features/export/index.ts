@@ -1,6 +1,7 @@
 export { ExportPanel } from './components/export-panel';
 export { ExportProgressPanel } from './components/export-progress-panel';
 export { ExportStatusBadge } from './components/export-status-badge';
+export { IOSDownloadGuide } from './components/ios-download-guide';
 export { ExportProgress } from './components/export-progress';
 export { useExportProgress } from './hooks/use-export-progress';
 export { useExportProgressStore } from './stores/use-export-progress-store';
@@ -9,6 +10,9 @@ export { ExportHistoryList } from './components/export-history-list';
 export { useStartExport } from './hooks/use-start-export';
 export { useBatchExport } from './hooks/use-batch-export';
 export { useDownloadManager } from './hooks/use-download-manager';
+export { useExportFileActions } from './hooks/use-export-file-actions';
+export { useIsIOS } from './hooks/use-is-ios';
+export { buildExportDownloadUrl } from './utils/build-export-download-url';
 export { useExportHistory } from './hooks/use-export-history';
 export { useSizeEstimate } from './hooks/use-size-estimate';
 export { useExportSessionStore } from './stores/use-export-session-store';

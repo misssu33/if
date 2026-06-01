@@ -6,6 +6,7 @@ import { useBatchConversionActions } from '@/features/queue/hooks/use-batch-conv
 import { useExportProgress } from '../hooks/use-export-progress';
 import { useExportProgressStore } from '../stores/use-export-progress-store';
 import { ExportStatusBadge } from './export-status-badge';
+import { IOSDownloadGuide } from './ios-download-guide';
 
 function Spinner() {
   return (
@@ -30,7 +31,12 @@ export function ExportProgressPanel() {
     failedJobs,
     completedCount,
     totalCount,
+    exportJobs,
   } = useExportProgress();
+
+  const completedJobs = exportJobs.filter(
+    (j) => j.status === 'completed' && j.outputPath,
+  );
   const dismiss = useExportProgressStore((s) => s.dismiss);
   const { retryJob } = useBatchConversionActions();
 
@@ -82,8 +88,19 @@ export function ExportProgressPanel() {
         )}
 
         {isSuccess && (
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
-            변환이 완료되었습니다. 아래에서 다운로드할 수 있습니다.
+          <div className="flex flex-col gap-3">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
+              변환이 완료되었습니다. 아래에서 파일을 받을 수 있습니다.
+            </div>
+            {completedJobs.map((job) => (
+              <IOSDownloadGuide
+                key={job.jobId}
+                fileName={job.fileName}
+                outputPath={job.outputPath!}
+                format={job.format}
+                compact={completedJobs.length > 1}
+              />
+            ))}
           </div>
         )}
 

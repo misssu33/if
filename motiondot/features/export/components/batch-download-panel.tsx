@@ -4,12 +4,15 @@ import { Button } from '@/components/ui';
 import { useExportSessionStore } from '../stores/use-export-session-store';
 import { useExportHistory } from '../hooks/use-export-history';
 import { useDownloadManager } from '../hooks/use-download-manager';
+import { useIsIOS } from '../hooks/use-is-ios';
+import { IOSDownloadGuide } from './ios-download-guide';
 
 /** 개별 · 전체 · ZIP 다운로드 */
 export function BatchDownloadPanel() {
   const lastBatchId = useExportSessionStore((s) => s.lastBatchId);
   const { records, loading } = useExportHistory(lastBatchId);
   const { downloadOne, downloadAll, downloadZip } = useDownloadManager();
+  const isIOS = useIsIOS();
 
   const completed = records.filter(
     (r) => r.status === 'completed' && r.outputPath,
@@ -25,6 +28,19 @@ export function BatchDownloadPanel() {
 
   return (
     <div className="flex flex-col gap-3">
+      {isIOS && completed.length > 0 && (
+        <IOSDownloadGuide
+          fileName={completed[0]!.fileName}
+          outputPath={completed[0]!.outputPath!}
+          format={completed[0]!.format}
+          compact={completed.length > 1}
+        />
+      )}
+      {isIOS && completed.length > 1 && (
+        <p className="text-xs text-zinc-500">
+          파일별로 아래 「받기」를 누르거나, 위 안내의 공유·열기를 사용하세요.
+        </p>
+      )}
       <div className="flex flex-wrap gap-2">
         <Button
           type="button"
