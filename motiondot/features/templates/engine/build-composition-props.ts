@@ -1,4 +1,8 @@
-import type { MotionCompositionProps, MotionTemplateDefinition } from '@/types/motion-template';
+import type {
+  MotionCompositionProps,
+  MotionTemplateDefinition,
+  OverlayStylesMap,
+} from '@/types/motion-template';
 import type { OutputFormat } from '@/types';
 import { resolveTemplateContent, resolveTemplateDefinition } from './resolve-template';
 
@@ -20,6 +24,7 @@ export type BuildCompositionInput = {
     productSrc?: string;
     logoSrc?: string;
     durationSec?: number;
+    overlayStyles?: OverlayStylesMap;
   };
   showSafeZone?: boolean;
 };
@@ -53,6 +58,7 @@ export function buildCompositionProps(
     loop: template.loop,
     template,
     ...content,
+    overlayStyles: input.overrides?.overlayStyles,
     formatLabel: input.format ? FORMAT_LABEL[input.format] : undefined,
     showSafeZone: input.showSafeZone ?? false,
   };

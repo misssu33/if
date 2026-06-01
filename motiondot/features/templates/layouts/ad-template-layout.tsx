@@ -103,6 +103,7 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
                 typography={typography}
                 loopComposition={loop}
                 stackLayout
+                customStyle={props.overlayStyles?.badge}
               />
             ) : null
           }
@@ -117,6 +118,7 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
                 variant="headline"
                 loopComposition={loop}
                 stackLayout
+                customStyle={props.overlayStyles?.headline}
               />
               {layout.subline && (
                 <AnimatedText
@@ -127,6 +129,7 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
                   variant="subline"
                   loopComposition={loop}
                   stackLayout
+                  customStyle={props.overlayStyles?.subline}
                 />
               )}
               {layout.cta && (
@@ -137,6 +140,7 @@ export function AdTemplateLayout(props: MotionCompositionProps) {
                   typography={typography}
                   loopComposition={loop}
                   stackLayout
+                  customStyle={props.overlayStyles?.cta}
                 />
               )}
             </>

@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 
 import { useBatchStore } from '@/stores';
+import { OverlayEditorPanel } from '@/features/editor';
 import { useOnboardingStore } from '@/features/onboarding/stores/use-onboarding-store';
 import { PreviewPlayer } from './preview-player';
 import { PreviewGrid } from './preview-grid';
@@ -12,7 +13,7 @@ import { PreviewFallback } from './preview-fallback';
 import { usePreviewSource } from '../hooks/use-preview-source';
 import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-store';
 
-/** 광고 모션 템플릿 미리보기 패널 */
+/** 광고 모션 템플릿 미리보기 패널 (편집기는 미리보기 아래) */
 export function PreviewPanel() {
   const files = useBatchStore((s) => s.files);
   const openLanding = useOnboardingStore((s) => s.openLanding);
@@ -25,12 +26,6 @@ export function PreviewPanel() {
   } = usePreviewSource();
   const templateId = usePreviewStore((s) => s.templateId);
   const setTemplateId = usePreviewStore((s) => s.setTemplateId);
-  const headline = usePreviewStore((s) => s.headline);
-  const setHeadline = usePreviewStore((s) => s.setHeadline);
-  const subline = usePreviewStore((s) => s.subline);
-  const setSubline = usePreviewStore((s) => s.setSubline);
-  const ctaText = usePreviewStore((s) => s.ctaText);
-  const setCtaText = usePreviewStore((s) => s.setCtaText);
 
   let previewBody: ReactNode;
   if (templatesLoading) {
@@ -88,34 +83,9 @@ export function PreviewPanel() {
 
       <PreviewGrid files={files} />
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        <label className="text-xs">
-          <span className="text-zinc-500">헤드라인</span>
-          <input
-            className="mt-1 min-h-11 w-full rounded-lg border border-zinc-200 px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900"
-            value={headline}
-            onChange={(e) => setHeadline(e.target.value)}
-          />
-        </label>
-        <label className="text-xs">
-          <span className="text-zinc-500">서브라인</span>
-          <input
-            className="mt-1 min-h-11 w-full rounded-lg border border-zinc-200 px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900"
-            value={subline}
-            onChange={(e) => setSubline(e.target.value)}
-          />
-        </label>
-        <label className="text-xs sm:col-span-2">
-          <span className="text-zinc-500">CTA</span>
-          <input
-            className="mt-1 min-h-11 w-full rounded-lg border border-zinc-200 px-3 py-2 sm:min-h-0 sm:py-1 dark:border-zinc-700 dark:bg-zinc-900"
-            value={ctaText}
-            onChange={(e) => setCtaText(e.target.value)}
-          />
-        </label>
-      </div>
+      <div className="min-w-0">{previewBody}</div>
 
-      {previewBody}
+      <OverlayEditorPanel template={template} />
 
       <ExportInspector />
     </section>
