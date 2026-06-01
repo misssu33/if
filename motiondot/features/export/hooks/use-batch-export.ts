@@ -8,6 +8,8 @@ import {
   useHasValidExportSettings,
 } from '@/features/presets/stores/use-export-settings-store';
 import { useExportSessionStore } from '../stores/use-export-session-store';
+import { trackExportStarted } from '@/lib/analytics/events';
+import { usePreviewStore } from '@/features/preview/stores/use-preview-store';
 
 /** 다중 포맷 · 다중 파일 배치 export → 기존 큐 연동 */
 export function useBatchExport() {
@@ -54,6 +56,15 @@ export function useBatchExport() {
         batchId: string;
         jobIds: string[];
       };
+
+      for (const fmt of formats) {
+        trackExportStarted({
+          export_format: fmt,
+          template_id: usePreviewStore.getState().templateId,
+          preset_used: resolved.presetId,
+          job_count: files.length,
+        });
+      }
 
       setLastBatchId(batchId);
       const items = files.flatMap((file) =>

@@ -7,8 +7,10 @@ import { useOnboardingStore } from '../stores/use-onboarding-store';
 import { StepUpload } from './step-upload';
 import { StepPresetTemplate } from './step-preset-template';
 import { StepPreviewExport } from './step-preview-export';
+import { useTemplateAnalytics } from '@/hooks/use-template-analytics';
 
 export function GuidedWorkspace() {
+  useTemplateAnalytics();
   const hydrate = useOnboardingStore((s) => s.hydrate);
   const currentStep = useOnboardingStore((s) => s.currentStep);
   const openLanding = useOnboardingStore((s) => s.openLanding);
