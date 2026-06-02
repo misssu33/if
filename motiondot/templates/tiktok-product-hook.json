@@ -1,8 +1,12 @@
 {
   "id": "tiktok-product-hook",
   "name": "TikTok Product Hook",
-  "description": "세로 숏폼 제품 훅 — 비디오 + 헤드라인 + CTA",
+  "description": "TikTok 제휴 기본 훅 — 세로 9:16 제품 숏폼",
   "category": "product",
+  "targetPlatform": "tiktok",
+  "affiliateCategory": "꿀템 추천",
+  "marketTier": "primary",
+  "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 5,
   "fps": 30,
   "width": 1080,

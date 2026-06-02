@@ -14,7 +14,9 @@ export function formatTemplateOptionLabel(template: MotionTemplateDefinition): s
   const platform = template.targetPlatform
     ? PLATFORM_LABEL[template.targetPlatform] ?? template.targetPlatform
     : null;
-  const parts = [template.name, template.aspectRatio];
+  const parts: string[] = [];
+  if (template.affiliateCategory) parts.push(template.affiliateCategory);
+  parts.push(template.name, template.aspectRatio);
   if (platform) parts.push(platform);
   return parts.join(' · ');
 }

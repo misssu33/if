@@ -32,12 +32,12 @@ interface PreviewState {
 
 export const usePreviewStore = create<PreviewState>((set) => ({
   selectedFileId: null,
-  previewFormat: 'mp4',
+  previewFormat: 'gif',
   templateId: 'tiktok-product-hook',
   loopPlayback: true,
-  headline: 'MotionDot',
-  subline: 'SNS 광고 미리보기',
-  ctaText: '지금 구매',
+  headline: '꿀템 추천',
+  subline: 'TikTok 제휴 · 9:16 미리보기',
+  ctaText: '지금 확인하기',
   badgeText: 'NEW',
   durationSec: 5,
   activeTextLayer: null,

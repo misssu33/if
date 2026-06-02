@@ -5,8 +5,10 @@ export type UploadIntent = 'video' | 'image' | 'template';
 
 export type SampleProjectId =
   | 'tiktok-product-gif'
-  | 'coupang-detail-gif'
-  | 'instagram-story-loop';
+  | 'tiktok-review-gif'
+  | 'tiktok-recommend-gif'
+  | 'instagram-story-loop'
+  | 'coupang-detail-gif';
 
 export type SampleProject = {
   id: SampleProjectId;

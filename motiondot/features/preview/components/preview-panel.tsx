@@ -10,8 +10,7 @@ import { usePreviewSource } from '../hooks/use-preview-source';
 import { useFocusOverlayInput } from '../hooks/use-focus-overlay-input';
 import { usePreviewStore, type MotionAdTemplateId } from '../stores/use-preview-store';
 import type { TextOverlayLayerId } from '../types/text-overlay-layer';
-import { overlaySelectClass } from '../constants/overlay-input-classes';
-import { formatTemplateOptionLabel } from '../utils/format-template-option-label';
+import { TemplateSelectField } from '@/features/templates/components/template-select-field';
 import { trackTemplateSelected } from '@/lib/analytics';
 import { TemplateViewedTracker } from '@/components/analytics/TemplateViewedTracker';
 
@@ -44,38 +43,17 @@ export function PreviewPanel() {
     <section className="flex flex-col gap-4 min-w-0 rounded-xl border border-zinc-200 p-4 sm:p-6 dark:border-zinc-800">
       <TemplateViewedTracker template={template} />
       <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-        광고 모션 미리보기
+        TikTok 제휴 9:16 미리보기
       </h2>
 
       <div>
         <span className="text-xs text-zinc-500">템플릿</span>
-        <select
-          className={overlaySelectClass}
-          value={templateId}
-          disabled={templatesLoading}
-          onChange={(e) =>
-            handleTemplateChange(e.target.value as MotionAdTemplateId)
-          }
-        >
-          {templates
-            .filter((t) => t.aspectRatio === '9:16')
-            .map((t) => (
-              <option key={t.id} value={t.id}>
-                {formatTemplateOptionLabel(t)}
-              </option>
-            ))}
-          {templates.some((t) => t.aspectRatio !== '9:16') && (
-            <optgroup label="기타 비율">
-              {templates
-                .filter((t) => t.aspectRatio !== '9:16')
-                .map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {formatTemplateOptionLabel(t)}
-                  </option>
-                ))}
-            </optgroup>
-          )}
-        </select>
+        <TemplateSelectField
+          templates={templates}
+          templateId={templateId}
+          loading={templatesLoading}
+          onChange={handleTemplateChange}
+        />
       </div>
 
       <PreviewGrid files={files} />
@@ -94,8 +72,8 @@ export function PreviewPanel() {
           <OverlayTextFields />
         </PreviewPlayerShell>
       ) : (
-        <div className="flex aspect-video w-full max-w-full items-center justify-center rounded-lg bg-zinc-900 text-sm text-zinc-400">
-          {templatesLoading ? '템플릿 로딩…' : '프리셋을 선택하면 미리보기가 표시됩니다.'}
+        <div className="mx-auto flex aspect-[9/16] w-full max-w-[280px] items-center justify-center rounded-lg bg-zinc-900 text-sm text-zinc-400 sm:max-w-xs">
+          {templatesLoading ? '템플릿 로딩…' : '파일을 업로드하면 9:16 미리보기가 표시됩니다.'}
         </div>
       )}
 

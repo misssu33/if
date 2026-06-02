@@ -3,13 +3,14 @@
 import type { MotionDotPreset } from '@/types';
 import { useExportSettingsStore } from '../stores/use-export-settings-store';
 import { trackPresetApplied } from '@/lib/analytics';
+import { groupPresetsForDisplay } from '../utils/sort-presets-for-display';
 
 const PLATFORM_META: Record<
   string,
   { label: string; icon: string; accent: string }
 > = {
   tiktok: {
-    label: 'TikTok',
+    label: 'TikTok Affiliate',
     icon: '♪',
     accent: 'border-zinc-900 bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900',
   },
@@ -26,7 +27,7 @@ const PLATFORM_META: Record<
       'border-zinc-400 bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-800/80',
   },
   coupang: {
-    label: 'Coupang',
+    label: 'Coupang (보조)',
     icon: 'C',
     accent:
       'border-red-300 bg-red-50/80 dark:border-red-900 dark:bg-red-950/30',
@@ -69,17 +70,17 @@ export function PresetPlatformGrid({ presets, loading }: PresetPlatformGridProps
     );
   }
 
-  return (
+  const { primary, secondary } = groupPresetsForDisplay(presets);
+
+  const renderGrid = (items: MotionDotPreset[], label: string) => (
     <div className="flex flex-col gap-2">
-      <p className="text-xs text-zinc-500">
-        플랫폼을 선택하면 GIF 해상도·프레임 간격·품질·색 수가 자동 적용됩니다.
-      </p>
+      <h4 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">{label}</h4>
       <ul
         className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3"
         role="listbox"
-        aria-label="SNS export 프리셋"
+        aria-label={label}
       >
-        {presets.map((p) => {
+        {items.map((p) => {
           const meta = PLATFORM_META[p.platform] ?? PLATFORM_META.custom;
           const active = selected?.id === p.id;
           return (
@@ -116,6 +117,17 @@ export function PresetPlatformGrid({ presets, loading }: PresetPlatformGridProps
           );
         })}
       </ul>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-xs text-zinc-500">
+        TikTok 제휴 숏폼(9:16)이 기본입니다. GIF·MP4·WebP 해상도·FPS·용량이 자동
+        적용됩니다.
+      </p>
+      {renderGrid(primary, 'TikTok · Reels · Threads (권장)')}
+      {secondary.length > 0 && renderGrid(secondary, '쿠팡 · 기타 (보조)')}
     </div>
   );
 }

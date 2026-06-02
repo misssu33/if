@@ -6,15 +6,15 @@ export const ONBOARDING_TOOLTIPS: Record<
 > = {
   'batch-conversion': {
     title: '배치 변환',
-    body: '여러 영상을 한 번에 업로드하고, 동일 프리셋으로 GIF·MP4·WebP를 일괄 생성할 수 있습니다.',
+    body: '제품 영상·이미지를 한 번에 업로드하고 TikTok 9:16 프리셋으로 GIF·MP4·WebP를 빠르게 반복 export 할 수 있습니다.',
   },
   'sns-presets': {
-    title: 'SNS 프리셋',
-    body: 'TikTok, Instagram, Coupang 등 플랫폼별 해상도·FPS·용량 제한이 미리 설정되어 있습니다.',
+    title: 'TikTok Affiliate Export',
+    body: '기본 TikTok 9:16 프리셋이 적용됩니다. Reels·Threads·쿠팡 보조 프리셋도 선택할 수 있습니다.',
   },
   'motion-templates': {
-    title: '모션 템플릿',
-    body: '텍스트 모션, CTA, 제품 영역이 포함된 광고 템플릿으로 Photoshop 없이 광고를 만듭니다.',
+    title: '제휴 숏폼 템플릿',
+    body: '꿀템 추천·후기 폭발·훅 등 TikTok 제휴 9:16 템플릿으로 Photoshop 없이 광고를 만듭니다.',
   },
   'export-formats': {
     title: 'Export 포맷',

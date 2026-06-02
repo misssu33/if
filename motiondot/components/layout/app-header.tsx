@@ -7,7 +7,7 @@ export function AppHeader() {
           MotionDot
         </span>
         <span className="hidden text-xs text-zinc-500 sm:inline">
-          GIF · MP4 · WebP 배치 변환
+          TikTok 제휴 · 9:16 · GIF · MP4 · WebP
         </span>
       </div>
     </header>

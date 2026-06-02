@@ -1,10 +1,10 @@
 {
-  "id": "product-recommendation",
-  "name": "Product Recommendation",
-  "description": "제휴·추천형 꿀템 소개 — 세로 9:16",
-  "category": "product",
-  "targetPlatform": "affiliate",
-  "affiliateCategory": "꿀템 추천",
+  "id": "tiktok-daily-find",
+  "name": "Daily Find",
+  "description": "오늘의 발견·데일리 픽 — TikTok 제휴 9:16",
+  "category": "lifestyle",
+  "targetPlatform": "tiktok",
+  "affiliateCategory": "오늘의 발견",
   "marketTier": "primary",
   "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 5,
@@ -23,32 +23,32 @@
     },
     "product": {
       "kind": "image",
-      "animation": "pop",
-      "timing": { "startFrame": 6, "durationFrames": 110 },
+      "animation": "zoom",
+      "timing": { "startFrame": 5, "durationFrames": 120 },
       "position": { "x": "0", "y": "0", "width": "100%", "height": "100%" },
       "objectFit": "cover"
     },
     "headline": {
-      "defaultText": "꿀템 추천",
-      "animation": "zoom",
-      "timing": { "startFrame": 10, "durationFrames": 45 },
+      "defaultText": "오늘의 발견",
+      "animation": "slide-up",
+      "timing": { "startFrame": 8, "durationFrames": 45 },
       "position": { "x": "8%", "y": "58%", "width": "84%" }
     },
     "subline": {
-      "defaultText": "찐후기만 골라 담았어요",
+      "defaultText": "데일리 꿀템 한 가지",
       "animation": "fade",
-      "timing": { "startFrame": 18, "durationFrames": 38 },
+      "timing": { "startFrame": 16, "durationFrames": 40 },
       "position": { "x": "8%", "y": "66%", "width": "84%" }
     },
     "cta": {
-      "defaultText": "지금 확인하기",
-      "animation": "glow",
-      "timing": { "startFrame": 24, "durationFrames": 38 },
+      "defaultText": "저장하기",
+      "animation": "pop",
+      "timing": { "startFrame": 22, "durationFrames": 40 },
       "position": { "x": "50%", "y": "86%" },
-      "borderRadius": 14
+      "borderRadius": 12
     },
     "badge": {
-      "defaultText": "BEST",
+      "defaultText": "TODAY",
       "animation": "loop-pulse",
       "timing": { "startFrame": 5, "durationFrames": 120 },
       "position": { "x": "8%", "y": "6%" }
@@ -56,20 +56,20 @@
   },
   "timeline": [
     { "id": "bg", "layer": "background", "startFrame": 0, "durationFrames": 150, "animation": "fade" },
-    { "id": "head", "layer": "headline", "startFrame": 10, "durationFrames": 50, "animation": "zoom" },
-    { "id": "cta", "layer": "cta", "startFrame": 24, "durationFrames": 45, "animation": "glow" }
+    { "id": "head", "layer": "headline", "startFrame": 8, "durationFrames": 50, "animation": "slide-up" },
+    { "id": "cta", "layer": "cta", "startFrame": 22, "durationFrames": 45, "animation": "pop" }
   ],
   "theme": {
-    "primary": "#7c3aed",
-    "secondary": "#c4b5fd",
+    "primary": "#2563eb",
+    "secondary": "#60a5fa",
     "text": "#ffffff",
-    "ctaBackground": "#7c3aed",
+    "ctaBackground": "#2563eb",
     "ctaText": "#ffffff",
-    "overlay": "rgba(0,0,0,0.4)"
+    "overlay": "rgba(0,0,0,0.42)"
   },
   "typography": {
-    "headline": { "fontSize": 48, "fontWeight": 800, "lineHeight": 1.1 },
-    "subline": { "fontSize": 24, "fontWeight": 500, "lineHeight": 1.3 },
+    "headline": { "fontSize": 46, "fontWeight": 800, "lineHeight": 1.1 },
+    "subline": { "fontSize": 24, "fontWeight": 600, "lineHeight": 1.25 },
     "cta": { "fontSize": 18, "fontWeight": 700 },
     "badge": { "fontSize": 14, "fontWeight": 700 }
   }

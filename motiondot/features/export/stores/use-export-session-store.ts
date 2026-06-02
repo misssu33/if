@@ -12,7 +12,7 @@ interface ExportSessionState {
 }
 
 export const useExportSessionStore = create<ExportSessionState>((set, get) => ({
-  selectedFormats: ['mp4'],
+  selectedFormats: ['gif'],
   namingPattern: '{name}-{format}',
   lastBatchId: null,
   toggleFormat: (format) => {

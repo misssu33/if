@@ -1,8 +1,11 @@
 {
   "id": "coupang-discount-gif",
   "name": "Coupang Discount GIF",
-  "description": "쿠팡 스타일 할인 강조 GIF",
+  "description": "쿠팡 상세페이지 할인 강조 GIF (보조)",
   "category": "promo",
+  "targetPlatform": "coupang",
+  "marketTier": "secondary",
+  "recommendedPresetId": "coupang-product-detail-gif",
   "durationSec": 4,
   "fps": 15,
   "width": 800,

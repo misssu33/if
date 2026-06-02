@@ -6,6 +6,7 @@ import { getTemplatesDir } from '@/lib/storage';
 import type { MotionTemplateDefinition } from '@/types/motion-template';
 import { registerTemplate } from '../engine/template-registry';
 import { validateMotionTemplate } from '../utils/validate-template';
+import { sortTemplatesForDisplay } from '../utils/sort-templates-for-display';
 
 /** templates/{id}.json 단일 로드 */
 export async function loadMotionTemplate(
@@ -37,5 +38,5 @@ export async function listMotionTemplates(): Promise<MotionTemplateDefinition[]>
     ),
   );
 
-  return templates.sort((a, b) => a.name.localeCompare(b.name));
+  return sortTemplatesForDisplay(templates);
 }

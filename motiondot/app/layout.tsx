@@ -15,20 +15,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://motiondot.vercel.app'),
   title: {
-    default: 'MotionDot | GIF MP4 WebP 변환기',
+    default: 'MotionDot | TikTok 제휴 숏폼 GIF·MP4·WebP',
     template: '%s | MotionDot',
   },
   description:
-    'MotionDot은 TikTok, Instagram Reels, Threads용 GIF/MP4/WebP를 빠르게 변환하는 웹 앱입니다.',
+    'TikTok 제휴 크리에이터를 위한 9:16 숏폼 광고 제작. 꿀템·후기·훅 템플릿으로 GIF·MP4·WebP를 모바일에서 빠르게 반복 export.',
   applicationName: 'MotionDot',
   keywords: [
+    'TikTok affiliate',
+    'TikTok 제휴',
+    'short-form commerce',
     'GIF converter',
     'MP4 converter',
     'WebP converter',
-    'SNS video export',
-    'TikTok',
+    '9:16 vertical video',
     'Instagram Reels',
-    'Threads',
   ],
   alternates: {
     canonical: '/',
@@ -41,9 +42,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     url: '/',
-    title: 'MotionDot | GIF MP4 WebP 변환기',
+    title: 'MotionDot | TikTok 제휴 숏폼 GIF·MP4·WebP',
     description:
-      'SNS 업로드용 영상 포맷을 빠르게 변환하고, 프리셋과 오버레이 편집으로 바로 내보내세요.',
+      '9:16 TikTok 제휴 제품 영상·GIF·MP4·WebP를 모바일에서 빠르게 만들고 반복 export 하세요.',
     siteName: 'MotionDot',
     images: [
       {
@@ -56,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MotionDot | GIF MP4 WebP 변환기',
+    title: 'MotionDot | TikTok 제휴 숏폼 GIF·MP4·WebP',
     description:
-      'SNS 업로드용 영상 포맷을 빠르게 변환하고, 프리셋과 오버레이 편집으로 바로 내보내세요.',
+      '9:16 TikTok 제휴 제품 영상·GIF·MP4·WebP를 모바일에서 빠르게 만들고 반복 export 하세요.',
     images: ['/og-image.svg'],
   },
   robots: {

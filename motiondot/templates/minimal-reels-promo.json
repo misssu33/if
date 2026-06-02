@@ -4,6 +4,7 @@
   "description": "미니멀 릴스·스토리 프로모 — 세로 9:16",
   "category": "lifestyle",
   "targetPlatform": "reels",
+  "marketTier": "primary",
   "recommendedPresetId": "instagram-reels",
   "durationSec": 4,
   "fps": 30,

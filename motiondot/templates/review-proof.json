@@ -4,6 +4,8 @@
   "description": "후기·평점 신뢰 강조 — 세로 9:16",
   "category": "product",
   "targetPlatform": "affiliate",
+  "affiliateCategory": "후기 폭발",
+  "marketTier": "primary",
   "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 5,
   "fps": 30,

@@ -8,7 +8,7 @@ const RemotionPlayer = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex aspect-video items-center justify-center rounded-lg bg-zinc-900 text-sm text-zinc-400">
+      <div className="flex aspect-[9/16] max-w-[280px] items-center justify-center rounded-lg bg-zinc-900 text-sm text-zinc-400 sm:max-w-xs">
         미리보기 로딩…
       </div>
     ),

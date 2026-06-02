@@ -4,6 +4,8 @@
   "description": "틱톡 제휴·숏폼 훅 자막 — 세로 9:16 풀블리드",
   "category": "product",
   "targetPlatform": "tiktok",
+  "affiliateCategory": "꿀템 추천",
+  "marketTier": "primary",
   "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 5,
   "fps": 30,

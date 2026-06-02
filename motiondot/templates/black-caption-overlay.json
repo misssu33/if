@@ -4,6 +4,8 @@
   "description": "하단 자막형 블랙 오버레이 — 세로 9:16",
   "category": "story",
   "targetPlatform": "tiktok",
+  "affiliateCategory": "꿀템 추천",
+  "marketTier": "primary",
   "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 5,
   "fps": 30,

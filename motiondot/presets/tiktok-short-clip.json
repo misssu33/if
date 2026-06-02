@@ -1,6 +1,6 @@
 {
   "id": "tiktok-short-clip",
-  "name": "TikTok",
+  "name": "TikTok Affiliate",
   "platform": "tiktok",
   "outputFormat": "gif",
   "aspectRatio": "9:16",
@@ -13,6 +13,6 @@
   "loop": true,
   "quality": "high",
   "maxDurationSec": 60,
-  "recommendedUseCase": "TikTok 숏폼·바이럴 GIF (빠른 모션, 선명 팔레트)",
+  "recommendedUseCase": "TikTok 제휴 숏폼·9:16 GIF/MP4/WebP (기본 프리셋)",
   "aspectRatioRecommendation": "9:16 세로 (1080×1920) — 숏폼 피드"
 }

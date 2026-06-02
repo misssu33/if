@@ -111,6 +111,18 @@ export type TemplateTargetPlatform =
   | 'affiliate'
   | 'multi';
 
+/** TikTok 제휴 숏폼 카테고리 (셀렉터 정렬용) */
+export type TikTokAffiliateCategory =
+  | '꿀템 추천'
+  | '후기 폭발'
+  | '돈 버는 법'
+  | '모르면 손해'
+  | '오늘의 발견'
+  | '문제 해결템'
+  | '구매 전 확인';
+
+export type TemplateMarketTier = 'primary' | 'secondary';
+
 export interface MotionTemplateDefinition {
   id: string;
   name: string;
@@ -118,6 +130,10 @@ export interface MotionTemplateDefinition {
   category: 'product' | 'promo' | 'story' | 'comparison' | 'lifestyle';
   /** 주 타깃 플랫폼 (셀렉터·가이드용) */
   targetPlatform?: TemplateTargetPlatform;
+  /** TikTok 제휴 숏폼 카테고리 */
+  affiliateCategory?: TikTokAffiliateCategory;
+  /** primary = TikTok 제휴 우선 · secondary = 쿠팡 등 보조 */
+  marketTier?: TemplateMarketTier;
   /** 권장 SNS export 프리셋 ID (presets/*.json) */
   recommendedPresetId?: string;
   durationSec: number;

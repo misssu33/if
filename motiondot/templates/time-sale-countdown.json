@@ -4,6 +4,8 @@
   "description": "오늘만 특가·한정 세일 — 세로 9:16",
   "category": "promo",
   "targetPlatform": "tiktok",
+  "affiliateCategory": "모르면 손해",
+  "marketTier": "primary",
   "recommendedPresetId": "tiktok-short-clip",
   "durationSec": 4,
   "fps": 30,
