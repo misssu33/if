@@ -4,6 +4,7 @@ import { usePresetCatalog } from '../hooks/use-preset-catalog';
 import { PresetOverridesPanel } from './preset-overrides-panel';
 import { PresetPicker } from './preset-picker';
 import { PresetSummary } from './preset-summary';
+import { ImageCompressionPanel } from '@/features/export/components/image-compression-panel';
 
 /** SNS 프리셋 선택 + 수동 조정 (재사용 UI) */
 export function PresetSelector() {
@@ -26,6 +27,7 @@ export function PresetSelector() {
 
       <PresetPicker presets={presets} loading={loading} />
       <PresetSummary />
+      <ImageCompressionPanel />
       <PresetOverridesPanel />
     </section>
   );

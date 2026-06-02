@@ -9,6 +9,9 @@ import { uploadMediaParallel } from '../services/upload-client';
 import { useUploadUiStore } from '../stores/use-upload-ui-store';
 import { validateImageFile } from '../utils/validate-image-file';
 import { validateVideoFile } from '../utils/validate-video-file';
+import { compressImageFile } from '@/lib/image/compress-image-client';
+import { useImageCompressionStore } from '@/features/export/stores/use-image-compression-store';
+import { formatBytes } from '../utils/format-bytes';
 
 /** 업로드 → Zustand 큐 파이프라인 (pending → queued → …) */
 export function useUploadQueue(mediaKind: UploadMediaKind = 'video') {
@@ -57,8 +60,33 @@ export function useUploadQueue(mediaKind: UploadMediaKind = 'video') {
       const toUpload = valid.slice(0, slots);
       const localIds = toUpload.map(() => crypto.randomUUID());
 
+      let filesToUpload = toUpload;
+      if (mediaKind === 'image') {
+        const compressionPresetId =
+          useImageCompressionStore.getState().presetId;
+        if (compressionPresetId !== 'off') {
+          const compressedFiles: File[] = [];
+          let savedTotal = 0;
+          for (const file of toUpload) {
+            const result = await compressImageFile(file, compressionPresetId);
+            compressedFiles.push(result.file);
+            if (result.compressed) {
+              savedTotal += result.originalBytes - result.resultBytes;
+            }
+          }
+          filesToUpload = compressedFiles;
+          if (savedTotal > 0) {
+            useImageCompressionStore
+              .getState()
+              .setLastUploadSummary(
+                `압축 완료 — 약 ${formatBytes(savedTotal)} 절약 (업로드 전)`,
+              );
+          }
+        }
+      }
+
       registerPendingUploads(
-        toUpload.map((file, i) => ({
+        filesToUpload.map((file, i) => ({
           localId: localIds[i],
           fileName: file.name,
           mediaKind,
@@ -68,7 +96,7 @@ export function useUploadQueue(mediaKind: UploadMediaKind = 'video') {
       setUploading(true);
 
       const results = await uploadMediaParallel(
-        toUpload.map((file, i) => ({
+        filesToUpload.map((file, i) => ({
           file,
           onProgress: (progress) =>
             setUploadProgress(localIds[i], progress, `업로드 중 ${progress}%`),

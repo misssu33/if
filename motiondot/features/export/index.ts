@@ -16,3 +16,5 @@ export { buildExportDownloadUrl } from './utils/build-export-download-url';
 export { useExportHistory } from './hooks/use-export-history';
 export { useSizeEstimate } from './hooks/use-size-estimate';
 export { useExportSessionStore } from './stores/use-export-session-store';
+export { useImageCompressionStore } from './stores/use-image-compression-store';
+export { ImageCompressionPanel } from './components/image-compression-panel';

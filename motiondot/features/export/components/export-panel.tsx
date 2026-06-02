@@ -6,6 +6,7 @@ import { useStartExport } from '../hooks/use-start-export';
 import { useBatchExport } from '../hooks/use-batch-export';
 import { useExportSessionStore } from '../stores/use-export-session-store';
 import { ExportProgressPanel } from './export-progress-panel';
+import { ImageCompressionPanel } from './image-compression-panel';
 
 const FORMATS: OutputFormat[] = ['gif', 'mp4', 'webp'];
 
@@ -28,6 +29,8 @@ export function ExportPanel() {
       </h2>
 
       <ExportProgressPanel />
+
+      <ImageCompressionPanel />
 
       <div>
         <span className="text-xs text-zinc-500">출력 포맷 (다중 선택)</span>
