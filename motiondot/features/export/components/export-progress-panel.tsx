@@ -1,6 +1,6 @@
 'use client';
 
-import { ProgressBar, ExportSuccessIndicator } from '@/components/feedback';
+import { ProgressBar, ExportSuccessIndicator, ExportSuccessContent } from '@/components/feedback';
 import { Button } from '@/components/ui';
 import { useBatchConversionActions } from '@/features/queue/hooks/use-batch-conversion-actions';
 import { useExportProgress } from '../hooks/use-export-progress';
@@ -67,8 +67,10 @@ export function ExportProgressPanel() {
       <div className="flex flex-col gap-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex min-w-0 flex-1 items-center gap-2">
-            {isRunning && <Spinner />}
-            {isSuccess && <ExportSuccessIndicator />}
+            <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center">
+              {isRunning && <Spinner />}
+              {isSuccess && <ExportSuccessIndicator />}
+            </span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                 {isSuccess
@@ -103,8 +105,8 @@ export function ExportProgressPanel() {
         )}
 
         {isSuccess && (
-          <div className="flex flex-col gap-3">
-            <div className="animate-export-success-banner motion-reduce:animate-none rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
+          <ExportSuccessContent>
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
               변환이 완료되었습니다. 아래에서 파일을 받을 수 있습니다.
             </div>
             {completedJobs.map((job) => (
@@ -117,7 +119,7 @@ export function ExportProgressPanel() {
               />
             ))}
             <ExportDestinationPrompt visible />
-          </div>
+          </ExportSuccessContent>
         )}
 
         {isFailed && (
